@@ -19,12 +19,6 @@ pipeline {
         stage('Prepare') {
             steps {
                 script {
-                    length = params.org_name.length()
-                    if( length <= 4) {
-                        org = params.org_name.substring(0,length)
-                    } else {
-                    org = params.org_name.substring(0,4)
-                    }
                     if( "${params.deploy_action}" == "new_org") {
                         buildType = "${params.deploy_action}"
                         neworgPrepare()
@@ -63,7 +57,7 @@ def neworgPrepare(){
                 async: false,
                 importTowerLogs: true,
                 extraVars: """---
-                org_name: '${org}'
+                org_name: '${org_name}'
                 env: '${params.env}'
                 deploy_action: "new_org_prereq"
                 channel_name: '${params.channel_name}'
@@ -82,14 +76,14 @@ def deployBAF(thestage){
                 towerServer: 'AWX',
                 towerCredentialsId: 'AWX',
                 templateType: 'job',
-                jobTemplate: "${params.jobPrefix}${org}-${params.env}-openidl-baf",
+                jobTemplate: "${params.jobPrefix}${params.org_name}-${params.env}-openidl-baf",
                 jobType: "run",
                 towerLogLevel: 'full',
                 removeColor: false,
                 async: false,
                 importTowerLogs: true,
                 extraVars: """---
-                org_name: '${org}'
+                org_name: '${params.org_name}'
                 env: '${params.env}'
                 deploy_action: '${params.deploy_action}'
                 channel_name: '${params.channel_name}'
@@ -108,14 +102,14 @@ def registerUsers(thestage){
                 towerServer: 'AWX',
                 towerCredentialsId: 'AWX',
                 templateType: 'job',
-                jobTemplate: "${params.jobPrefix}${org}-${params.env}-openidl-register-users",
+                jobTemplate: "${params.jobPrefix}${params.org_name}-${params.env}-openidl-register-users",
                 jobType: "run",
                 towerLogLevel: 'full',
                 removeColor: false,
                 async: false,
                 importTowerLogs: true,
                 extraVars: """---
-                org_name: '${org}'
+                org_name: '${params.org_name}'
                 env: '${params.env}'
                 network:
                     org_name: '${params.org_name}'
