@@ -1,5 +1,5 @@
 
-- hosts: ansible_provisioners
+- hosts: all
   gather_facts: yes
   no_log: "{{ no_ansible_log | default(false) }}"
   vars_files:
