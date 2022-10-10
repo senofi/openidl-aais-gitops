@@ -1,6 +1,6 @@
-ordererorg_domain: "thetech.digital"
-domain: "thetech.digital"
-internal_domain: "internal.thetech.digital"
+ordererorg_domain: "testnet.openidl.org"
+domain: "testnet.openidl.org"
+internal_domain: "internal.testnet.openidl.org"
 node_type: "aais"
 network:
   org_name: "aais"
@@ -8,9 +8,9 @@ network:
   ordererorg_name: "ordererorg"
   organizations:
     - name: "analytics"
-      domain: "analytics.thetech.digital"
+      domain: "analytics.testnet.openidl.org"
     - name: "cnd"
-      domain: "cnd.thetech.digital"
+      domain: "cnd.testnet.openidl.org"
   channels:
   - name: defaultchannel
     chaincode:
