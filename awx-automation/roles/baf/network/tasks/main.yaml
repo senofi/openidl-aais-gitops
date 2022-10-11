@@ -202,22 +202,22 @@
   debug:
     msg: '{{ baf_logs.stdout_lines }}'
 
-- name: Delete baf pod
-  community.kubernetes.k8s:
-    name: openidl-baf
-    namespace: openidl-baf
-    api_version: v1
-    kind: Pod
-    state: absent
-    wait: yes
-
-- name: Delete k8s namespace
-  community.kubernetes.k8s:
-    name: openidl-baf
-    api_version: v1
-    kind: Namespace
-    state: absent
-    wait: yes
+#- name: Delete baf pod
+#  community.kubernetes.k8s:
+#    name: openidl-baf
+#    namespace: openidl-baf
+#    api_version: v1
+#    kind: Pod
+#    state: absent
+#    wait: yes
+#
+#- name: Delete k8s namespace
+#  community.kubernetes.k8s:
+#    name: openidl-baf
+#    api_version: v1
+#    kind: Namespace
+#    state: absent
+#    wait: yes
 
 - name: Delete network-setup.yml file
   file:
