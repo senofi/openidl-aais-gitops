@@ -6,7 +6,9 @@ network:
   org_name: "openidl"
   ordererorg: "true"
   ordererorg_name: "openidl_orderer"
-  organizations: []
+  organizations:
+    - name: "openidl"
+      domain: "openidl.testnet.openidl.org"
   channels:
   - name: defaultchannel
     chaincode:
