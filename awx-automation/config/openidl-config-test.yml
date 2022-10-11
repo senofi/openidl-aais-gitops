@@ -5,7 +5,7 @@ node_type: "carrier"
 network:
   org_name: "openidl"
   ordererorg: "true"
-  ordererorg_name: "openidl_orderer"
+  ordererorg_name: "openidl-orderer"
   organizations:
     - name: "openidl"
       domain: "openidl.testnet.openidl.org"
