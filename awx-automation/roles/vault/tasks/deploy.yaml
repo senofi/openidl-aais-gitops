@@ -29,7 +29,7 @@
 
 - name: Install vault helm chart
   shell: |
-    helm --namespace=vault install vault hashicorp/vault -f ./vault-values.yaml \
+    helm upgrade --install --namespace=vault vault hashicorp/vault -f ./vault-values.yaml \
     --set server.ha.enabled=true \
     --set server.ha.raft.enabled=true \
     --set tlsDisable=false \
