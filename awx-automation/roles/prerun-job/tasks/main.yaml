@@ -10,7 +10,7 @@
     - python3-pip
     - curl
     - python3-requests-oauthlib
-    - python-yaml
+    - python3-yaml
     - jq
   when: ansible_distribution == "Ubuntu"
 
