@@ -3,9 +3,9 @@ domain: "testnet.openidl.org"
 internal_domain: "internal.testnet.openidl.org"
 node_type: "carrier"
 network:
-  org_name: "openidl_test"
+  org_name: "openidl"
   ordererorg: "true"
-  ordererorg_name: "openidl_test_orderer"
+  ordererorg_name: "openidl_orderer"
   organizations: []
   channels:
   - name: defaultchannel
