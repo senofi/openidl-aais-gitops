@@ -22,7 +22,7 @@
     - name: Get KMS ID
       shell: |
         export AWS_PROFILE=cicd-role
-        aws kms describe-key --key-id alias/{{ network.org_name[:4] }}-{{ env }}-vault-kmskey --region {{ aws_region }} | jq -r .KeyMetadata.KeyId
+        aws kms describe-key --key-id alias/{{ network.org_name }}-{{ env }}-vault-kmskey --region {{ aws_region }} | jq -r .KeyMetadata.KeyId
       register: output
       when: deploy_action == "vault-deploy"
 
