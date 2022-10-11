@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: ansible_provisioners
   gather_facts: yes
   no_log: "{{ no_ansible_log | default(false) }}"
   tasks:
