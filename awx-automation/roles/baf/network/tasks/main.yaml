@@ -176,7 +176,6 @@
               echo "Hello World"
               kubectl get ns
             fi
-            sleep 999999
           volumeMounts:
           - name: network-config
             mountPath: "/home/config/"
