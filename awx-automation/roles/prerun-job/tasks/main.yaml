@@ -78,7 +78,7 @@
 
 - name: Configure awscli credentials for IAM user
   shell: aws configure set {{ item.key }} {{ item.value }} --profile cicd-user
-  no_log: true
+  no_log: false
   with_dict:
     aws_access_key_id: "{{ aws_access_key }}"
     aws_secret_access_key: "{{ aws_secret_key }}"
@@ -89,7 +89,7 @@
 
 - name: Configure awscli credentials for IAM role
   shell: aws configure set {{ item.key }} {{ item.value }} --profile cicd-role
-  no_log: true
+  no_log: false
   with_dict:
     external_id: "{{ aws_external_id }}"
     source_profile: "cicd-user"
