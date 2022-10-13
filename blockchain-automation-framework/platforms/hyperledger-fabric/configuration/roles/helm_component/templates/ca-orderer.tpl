@@ -11,7 +11,7 @@ spec:
     git: {{ git_url }}
     ref: {{ git_branch }}
     secretRef:
-      name: git-auth-test
+      name: git-https-credentials
     path: {{ charts_dir }}/ca    
   values:
 {% if network.env.annotations is defined %}

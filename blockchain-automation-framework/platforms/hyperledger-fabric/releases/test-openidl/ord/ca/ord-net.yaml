@@ -11,7 +11,7 @@ spec:
     git: https://bitbucket.org/senofi/openidl-openidl-aais-gitops.git
     ref: testnet
     secretRef:
-      name: git-auth-test
+      name: git-https-credentials
     path: blockchain-automation-framework/platforms/hyperledger-fabric/charts/ca    
   values:
     metadata:
