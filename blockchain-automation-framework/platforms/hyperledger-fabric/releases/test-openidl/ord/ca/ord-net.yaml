@@ -8,9 +8,9 @@ metadata:
 spec:
   releaseName: ord-net-ca
   chart:
-    git: https://bitbucket.org/senofi/openidl-openidl-aais-gitops.git
+    git: https://openidl-senofi:ATBBtqXJCAZgbVvt9PuqKmVzxLZf5ABDB1E6@bitbucket.org/senofi/openidl-openidl-aais-gitops.git
     ref: testnet
-    path: blockchain-automation-framework/platforms/hyperledger-fabric/charts/ca    
+    path: blockchain-automation-framework/platforms/hyperledger-fabric/charts/ca
   values:
     metadata:
       namespace: ord-net
