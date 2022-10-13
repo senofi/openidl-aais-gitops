@@ -10,6 +10,8 @@ spec:
   chart:
     git: {{ git_url }}
     ref: {{ git_branch }}
+    secretRef:
+      name: git-https-credentials
     path: {{ charts_dir }}/upgrade_chaincode
   values:
     metadata:
