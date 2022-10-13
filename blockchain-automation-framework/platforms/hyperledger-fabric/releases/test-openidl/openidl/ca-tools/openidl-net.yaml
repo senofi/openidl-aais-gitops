@@ -1,0 +1,27 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: openidl-net-ca-tools
+  namespace: openidl-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: openidl-net-ca-tools
+  chart:
+    git: https://openidl-senofi:ATBBtqXJCAZgbVvt9PuqKmVzxLZf5ABDB1E6@bitbucket.org/senofi/openidl-openidl-aais-gitops.git
+    ref: testnet
+    path: blockchain-automation-framework/platforms/hyperledger-fabric/charts/catools
+  values:
+    metadata:
+      namespace: openidl-net
+      name: ca-tools
+    replicaCount: 1
+
+    image:
+      repository: hyperledger/fabric-ca-tools
+      tag: 1.2.1
+      pullPolicy: IfNotPresent
+      
+    storage:
+      storageclassname: openidlsc
+      storagesize: 10Gi
