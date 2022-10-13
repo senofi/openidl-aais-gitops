@@ -11,7 +11,7 @@ spec:
     git: {{ git_url }}
     ref: {{ git_branch }}
     secretRef:
-      name: git-https-credentials
+      name: git-auth-test
     path: {{ charts_dir }}/orderernode
   values:
     metadata:
