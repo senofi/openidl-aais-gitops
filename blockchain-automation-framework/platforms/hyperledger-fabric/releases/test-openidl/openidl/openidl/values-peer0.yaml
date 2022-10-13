@@ -1,0 +1,63 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: openidl-peer0
+  namespace: openidl-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: openidl-peer0
+  chart:
+    git: https://openidl-senofi:ATBBtqXJCAZgbVvt9PuqKmVzxLZf5ABDB1E6@bitbucket.org/senofi/openidl-openidl-aais-gitops.git
+    ref: testnet
+    path: blockchain-automation-framework/platforms/hyperledger-fabric/charts/peernode
+  values:
+    metadata:
+      namespace: openidl-net
+      images:
+        couchdb: couchdb:3.1
+        peer: hyperledger/fabric-peer:2.2.3
+        alpineutils: index.docker.io/hyperledgerlabs/alpine-utils:1.0
+        
+    peer:
+      name: peer0
+      gossippeeraddress: peer0.openidl-net.openidl.test.openidl.testnet.openidl.org:8443
+      gossipexternalendpoint: peer0.openidl-net.openidl.test.openidl.testnet.openidl.org:8443
+      localmspid: openidlMSP
+      loglevel: info
+      tlsstatus: true
+      builder: hyperledger/fabric-ccenv:2.2.3
+      couchdb:
+        username: openidl-user
+
+    storage:
+      peer:
+        storageclassname: openidlsc
+        storagesize: 50Gi
+      couchdb:
+        storageclassname: openidlsc
+        storagesize: 50Gi
+
+    vault:
+      role: vault-role
+      address: http://vault.test.internal.openidl.testnet.openidl.org
+      authpath: testopenidl-net-auth
+      secretprefix: openidl/crypto/peerOrganizations/openidl-net/peers/peer0.openidl-net
+      secretambassador: openidl/crypto/peerOrganizations/openidl-net/ambassador
+      serviceaccountname: vault-auth
+      imagesecretname: regcred
+      secretcouchdbpass: openidl/credentials/openidl-net/couchdb/openidl?user
+
+    service:
+      servicetype: ClusterIP
+      ports:
+        grpc:
+          clusteripport: 7051
+        events:
+          clusteripport: 7053
+        couchdb:
+          clusteripport: 5984
+          
+    proxy:
+      provider: "nginx"
+      external_url_suffix: openidl.test.openidl.testnet.openidl.org
