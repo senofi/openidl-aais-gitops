@@ -2,6 +2,10 @@
 # This role generates the value file for the helm releases 
 #############################################################################################
 
+- name: "Set Flux Git URL"
+  set_fact:
+    git_flux_url: "https://{{ gitops.username }}:{{ gitops.password }}@{{ gitops.git_repo }}"
+
 
 ############################################################################################
 # This task ensures that the directory exists, and creates it, if it does not exist
