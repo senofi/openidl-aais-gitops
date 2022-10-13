@@ -1,0 +1,49 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: anchorpeer-defaultchannel-openidl
+  namespace: openidl-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: anchorpeer-defaultchannel-openidl
+  chart:
+    git: https://openidl-senofi:ATBBtqXJCAZgbVvt9PuqKmVzxLZf5ABDB1E6@bitbucket.org/senofi/openidl-openidl-aais-gitops.git
+    ref: testnet
+    path: blockchain-automation-framework/platforms/hyperledger-fabric/charts/anchorpeer
+  values:
+    metadata:
+      namespace: openidl-net
+      images:
+        fabrictools: hyperledger/fabric-tools:2.2.3
+        alpineutils: index.docker.io/hyperledgerlabs/alpine-utils:1.0
+
+    peer:
+      name: peer0
+      address: peer0.openidl-net.openidl.test.openidl.testnet.openidl.org:8443
+      localmspid: openidlMSP
+      loglevel: debug
+      tlsstatus: true
+
+    vault:
+      role: vault-role
+      address: http://vault.test.internal.openidl.testnet.openidl.org
+      authpath: testopenidl-net-auth
+      adminsecretprefix: openidl/crypto/peerOrganizations/openidl-net/users/admin
+      orderersecretprefix: openidl/crypto/peerOrganizations/openidl-net/orderer
+      serviceaccountname: vault-auth
+      imagesecretname: regcred
+
+    channel:
+      name: defaultchannel      
+    orderer:
+      address: orderer1.ord.test.openidl.testnet.openidl.org:8443
+    anchorstx: |-
+      CukCChwKGggCGgYIoseimgYiDmRlZmF1bHRjaGFubmVsEsgCCsUCCg5kZWZhdWx0Y2hhbm5lbBJj
+      EmEKC0FwcGxpY2F0aW9uElIIARJOCgpvcGVuaWRsTVNQEkAaBwoDTVNQEgAiCgoGQWRtaW5zEgAi
+      DwoLRW5kb3JzZW1lbnQSACILCgdSZWFkZXJzEgAiCwoHV3JpdGVycxIAGs0BEsoBCgtBcHBsaWNh
+      dGlvbhK6AQgBErUBCgpvcGVuaWRsTVNQEqYBCAEaBwoDTVNQEgAaWgoLQW5jaG9yUGVlcnMSSxJB
+      Cj8KOnBlZXIwLm9wZW5pZGwtbmV0Lm9wZW5pZGwudGVzdC5vcGVuaWRsLnRlc3RuZXQub3Blbmlk
+      bC5vcmcQ+0EaBkFkbWlucyIKCgZBZG1pbnMSACIPCgtFbmRvcnNlbWVudBIAIgsKB1JlYWRlcnMS
+      ACILCgdXcml0ZXJzEgAqBkFkbWlucw==
+
