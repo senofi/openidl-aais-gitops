@@ -1,0 +1,18 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: prometheus-community/prometheus
+  namespace: monitoring
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  url: https://prometheus-community.github.io/helm-charts
+  interval: 60m
+  values:
+    server:
+      extraSecretMounts: []
+         - name: prometheus-config
+           mountPath: /etc/config/prometheus.yml
+           subPath: ""
+           secretName: prom-config
+           readOnly: true

@@ -66,6 +66,12 @@ spec:
           value: {{ $.Values.vault.role }}
         - name: MOUNT_PATH
           value: /secret
+        - name: FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS
+          value: :9096
+        - name: FABRIC_CA_SERVER_OPERATIONS_TLS_ENABLED
+          value: false
+        - name: FABRIC_CA_SERVER_METRICS_PROVIDER
+          value: prometheus
         command: ["sh", "-c"]
         args:
         - |-
