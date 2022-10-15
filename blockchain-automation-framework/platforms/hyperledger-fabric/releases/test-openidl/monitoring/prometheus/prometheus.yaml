@@ -26,11 +26,7 @@ spec:
     nodeExporter:
       enabled: false
     server:
-      extraSecretMounts:
-         - name: prometheus-config
-           mountPath: /etc/config/prometheus.yml
-           subPath: ""
-           secretName: prom-config
-           readOnly: true
+      configFromSecret: "prom-conf"
+#      configPath: /etc/config/prometheus.yml
       persistentVolume:
         enabled: false
