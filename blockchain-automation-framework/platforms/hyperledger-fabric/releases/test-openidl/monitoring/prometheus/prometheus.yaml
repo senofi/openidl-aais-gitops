@@ -26,7 +26,7 @@ spec:
     nodeExporter:
       enabled: false
     server:
-      configFromSecret: "prom-conf"
+      configFromSecret: "prom-config"
 #      configPath: /etc/config/prometheus.yml
       persistentVolume:
         enabled: false
