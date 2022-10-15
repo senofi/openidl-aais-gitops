@@ -12,6 +12,19 @@ spec:
     ref: prometheus-15.16.0
     path: charts/prometheus
   values:
+    serviceAccounts:
+      alertmanager:
+        create: false
+      nodeExporter:
+        create: false
+      pushgateway:
+        create: false
+    alertmanager:
+      enabled: false
+    pushgateway:
+      enabled: false
+    nodeExporter:
+      enabled: false
     server:
       extraSecretMounts:
          - name: prometheus-config
