@@ -2,7 +2,7 @@ apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   name: prometheus-community/prometheus
-  namespace: monitoring
+  namespace: openidl-metrics
   annotations:
     fluxcd.io/automated: "false"
 spec:
