@@ -27,7 +27,7 @@ spec:
       enabled: false
     server:
       extraArgs: { log.level: debug }
-      remote_write:
+      remoteWrite:
         - url: https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push
           basic_auth:
             username: 610199
