@@ -43,6 +43,8 @@ spec:
       ports:
         tcp:
           port: 7054
+        ops:
+          port: 9096
     proxy:
       provider: nginx
       type: peer

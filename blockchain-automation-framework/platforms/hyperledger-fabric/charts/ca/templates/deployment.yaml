@@ -147,6 +147,7 @@ spec:
         command: ["sh", "-c", "sleep 1 && fabric-ca-server start -b {{ $.Values.server.admin }}:`cat /etc/hyperledger/fabric-ca-server-config/user_cred` -d"]
         ports:
         - containerPort: 7054
+        - containerPort: 9096
         env:
         - name: FABRIC_CA_HOME
           value: /etc/hyperledger/fabric-ca-server
