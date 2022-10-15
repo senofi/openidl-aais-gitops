@@ -51,6 +51,8 @@ spec:
     service:
       servicetype: ClusterIP
       ports:
+        ops:
+          clusteripport: 9096
         grpc:
           clusteripport: 7051
         events:
