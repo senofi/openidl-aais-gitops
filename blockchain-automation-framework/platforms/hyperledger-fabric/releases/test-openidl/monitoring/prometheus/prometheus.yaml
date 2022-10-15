@@ -28,5 +28,6 @@ spec:
     server:
       configFromSecret: "prom-config"
 #      configPath: /etc/config/prometheus.yml
+      extraArgs: { log.level: debug }
       persistentVolume:
         enabled: false
