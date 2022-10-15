@@ -12,7 +12,7 @@ metadata:
     {{- include "labels.custom" . | nindent 2 }}
   annotations:
     {{- if $.Values.annotations }}
-    {{- range $key, $value := $.Values.deployment.annotations }}
+    {{- range $key, $value := $.Values.annotations.deployment }}
     {{- range $k, $v := $value }}
       {{ $k }}: {{ $v | quote }}
     {{- end }}

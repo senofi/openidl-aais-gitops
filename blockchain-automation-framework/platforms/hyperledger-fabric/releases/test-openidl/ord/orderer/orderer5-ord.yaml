@@ -14,8 +14,8 @@ spec:
   values:
     annotations:
       deployment:
-        prometheus.io/scrape: true
-        prometheus.io/port: 9096
+        - prometheus.io/scrape: true
+        - prometheus.io/port: 9096
     metadata:
       namespace: ord-net
       images:
