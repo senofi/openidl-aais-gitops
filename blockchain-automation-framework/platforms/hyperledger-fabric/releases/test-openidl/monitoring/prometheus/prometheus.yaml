@@ -25,7 +25,6 @@ spec:
       enabled: false
     nodeExporter:
       enabled: false
-
     server:
       configFromSecret: "prom-config"
 #      configPath: /etc/config/prometheus.yml
