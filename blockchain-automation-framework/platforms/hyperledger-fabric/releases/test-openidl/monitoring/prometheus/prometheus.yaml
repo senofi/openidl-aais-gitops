@@ -26,8 +26,12 @@ spec:
     nodeExporter:
       enabled: false
     server:
-      configFromSecret: "prom-config"
-#      configPath: /etc/config/prometheus.yml
       extraArgs: { log.level: debug }
+      remote_write:
+        - url: https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push
+          basic_auth:
+            username: 610199
+            password: eyJrIjoiNjZlMmE4NTA4ZDljNzUwNDY1OGIwZTE0MjEyY2E1MGVlZjlhN2Y5YSIsIm4iOiJzdGFjay00NTQ3MTQtZWFzeXN0YXJ0LXByb20tcHVibGlzaGVyIiwiaWQiOjcyNjU0M30=
       persistentVolume:
-        enabled: false
+        storageClass: gp2
+

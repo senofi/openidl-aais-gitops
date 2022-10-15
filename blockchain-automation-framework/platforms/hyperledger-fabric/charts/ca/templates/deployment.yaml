@@ -66,12 +66,6 @@ spec:
           value: {{ $.Values.vault.role }}
         - name: MOUNT_PATH
           value: /secret
-        - name: FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS
-          value: :9096
-        - name: FABRIC_CA_SERVER_OPERATIONS_TLS_ENABLED
-          value: false
-        - name: FABRIC_CA_SERVER_METRICS_PROVIDER
-          value: prometheus
         command: ["sh", "-c"]
         args:
         - |-
@@ -172,6 +166,12 @@ spec:
           value: /etc/hyperledger/fabric-ca-server-config/server.key
         - name: FABRIC_CA_SERVER_DB_DATASOURCE
           value: /var/hyperledger/fabric-ca-server/db/fabric-ca-server.db
+        - name: FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS
+          value: :9096
+        - name: FABRIC_CA_SERVER_OPERATIONS_TLS_ENABLED
+          value: false
+        - name: FABRIC_CA_SERVER_METRICS_PROVIDER
+          value: prometheus
         volumeMounts:
         - name: certificates
           mountPath: /etc/hyperledger/fabric-ca-server-config
