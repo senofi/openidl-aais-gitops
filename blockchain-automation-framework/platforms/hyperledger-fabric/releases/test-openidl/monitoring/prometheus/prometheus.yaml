@@ -32,5 +32,5 @@ spec:
            subPath: ""
            secretName: prom-config
            readOnly: true
-    persistentVolume:
-      enabled: false
+      persistentVolume:
+        enabled: false
