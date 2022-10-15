@@ -25,6 +25,8 @@ spec:
       enabled: false
     nodeExporter:
       enabled: false
+    kubeStateMetrics:
+      enabled: false
     server:
       extraArgs: { log.level: debug }
       remoteWrite:
