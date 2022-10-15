@@ -1,11 +1,12 @@
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: prometheus-community/prometheus
+  name: prometheus
   namespace: openidl-metrics
   annotations:
     fluxcd.io/automated: "false"
 spec:
+  releaseName: prometheus
   chart:
     git: https://github.com/prometheus-community/helm-charts.git
     ref: prometheus-15.16.0
