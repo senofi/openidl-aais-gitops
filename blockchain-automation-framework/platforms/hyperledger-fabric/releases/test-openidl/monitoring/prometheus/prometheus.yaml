@@ -10,7 +10,7 @@ spec:
   interval: 60m
   values:
     server:
-      extraSecretMounts: []
+      extraSecretMounts:
          - name: prometheus-config
            mountPath: /etc/config/prometheus.yml
            subPath: ""
