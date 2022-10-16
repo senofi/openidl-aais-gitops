@@ -28,10 +28,10 @@ spec:
 
     vault:
       role: vault-role
-      address: 
+      address: http://vault.test.internal.openidl.testnet.openidl.org
       authpath: testopenidl-net-auth
-      adminsecretprefix: /crypto/peerOrganizations/openidl-net/users/admin
-      orderersecretprefix: /crypto/peerOrganizations/openidl-net/orderer 
+      adminsecretprefix: openidl/crypto/peerOrganizations/openidl-net/users/admin
+      orderersecretprefix: openidl/crypto/peerOrganizations/openidl-net/orderer 
       serviceaccountname: vault-auth
       imagesecretname: regcred
 
@@ -40,11 +40,11 @@ spec:
     orderer:
       address: orderer1.ord.test.openidl.testnet.openidl.org:8443
     channeltx: |-
-      Cq0DChwKGggCGgYItsWxmgYiDm9wZW5pZGwtaGVhbHRoEowDCokDCg5vcGVuaWRsLWhlYWx0aBIx
+      Cq0DChwKGggCGgYIsdmxmgYiDm9wZW5pZGwtaGVhbHRoEowDCokDCg5vcGVuaWRsLWhlYWx0aBIx
       Eh8KC0FwcGxpY2F0aW9uEhASDgoKb3BlbmlkbE1TUBIAGg4KCkNvbnNvcnRpdW0SABrDAhKbAgoL
       QXBwbGljYXRpb24SiwIIARIOCgpvcGVuaWRsTVNQEgAaJAoMQ2FwYWJpbGl0aWVzEhQSCgoICgRW
-      Ml8wEgAaBkFkbWlucyIiCgdXcml0ZXJzEhcSDQgDEgkKB1dyaXRlcnMaBkFkbWlucyIgCgZBZG1p
-      bnMSFhIMCAMSCAoGQWRtaW5zGgZBZG1pbnMiKgoLRW5kb3JzZW1lbnQSGxIRCAMSDQoLRW5kb3Jz
-      ZW1lbnQaBkFkbWlucyIzChRMaWZlY3ljbGVFbmRvcnNlbWVudBIbEhEIAxINCgtFbmRvcnNlbWVu
-      dBoGQWRtaW5zIiIKB1JlYWRlcnMSFxINCAMSCQoHUmVhZGVycxoGQWRtaW5zKgZBZG1pbnMaIwoK
+      Ml8wEgAaBkFkbWlucyIqCgtFbmRvcnNlbWVudBIbEhEIAxINCgtFbmRvcnNlbWVudBoGQWRtaW5z
+      IjMKFExpZmVjeWNsZUVuZG9yc2VtZW50EhsSEQgDEg0KC0VuZG9yc2VtZW50GgZBZG1pbnMiIgoH
+      UmVhZGVycxIXEg0IAxIJCgdSZWFkZXJzGgZBZG1pbnMiIgoHV3JpdGVycxIXEg0IAxIJCgdXcml0
+      ZXJzGgZBZG1pbnMiIAoGQWRtaW5zEhYSDAgDEggKBkFkbWlucxoGQWRtaW5zKgZBZG1pbnMaIwoK
       Q29uc29ydGl1bRIVEhMKEU9wZW5JRExDb25zb3J0aXVt
