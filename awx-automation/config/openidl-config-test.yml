@@ -35,4 +35,12 @@ network:
         - name: "anal_cnd_pdc"
           policy: "OR('analyticsMSP.member', 'cndMSP.member')"
   - name: openidl-health
+    chaincode:
+      name: openidl-cc-aais-carriers
+      repo_url: bitbucket.org/senofi/openidl-openidl-main.git
+      repo_branch: testnet
+      repo_path: openidl-chaincode/chaincode/openidl
+      collectionconfig:
+        - name: "anal_cnd_pdc"
+          policy: "OR('analyticsMSP.member', 'cndMSP.member')"
 
