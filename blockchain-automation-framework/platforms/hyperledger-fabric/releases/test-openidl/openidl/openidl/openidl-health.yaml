@@ -8,7 +8,7 @@ metadata:
 spec:
   releaseName: channel-openidl-openidl-health
   chart:
-    git: https://:@
+    git: https://openidl-senofi:ATBBtqXJCAZgbVvt9PuqKmVzxLZf5ABDB1E6@bitbucket.org/senofi/openidl-openidl-aais-gitops.git
     ref: testnet
     path: blockchain-automation-framework/platforms/hyperledger-fabric/charts/create_channel
   values:
@@ -40,11 +40,11 @@ spec:
     orderer:
       address: orderer1.ord.test.openidl.testnet.openidl.org:8443
     channeltx: |-
-      Cq0DChwKGggCGgYI/LexmgYiDm9wZW5pZGwtaGVhbHRoEowDCokDCg5vcGVuaWRsLWhlYWx0aBIx
+      Cq0DChwKGggCGgYItsWxmgYiDm9wZW5pZGwtaGVhbHRoEowDCokDCg5vcGVuaWRsLWhlYWx0aBIx
       Eh8KC0FwcGxpY2F0aW9uEhASDgoKb3BlbmlkbE1TUBIAGg4KCkNvbnNvcnRpdW0SABrDAhKbAgoL
       QXBwbGljYXRpb24SiwIIARIOCgpvcGVuaWRsTVNQEgAaJAoMQ2FwYWJpbGl0aWVzEhQSCgoICgRW
-      Ml8wEgAaBkFkbWlucyIgCgZBZG1pbnMSFhIMCAMSCAoGQWRtaW5zGgZBZG1pbnMiKgoLRW5kb3Jz
-      ZW1lbnQSGxIRCAMSDQoLRW5kb3JzZW1lbnQaBkFkbWlucyIzChRMaWZlY3ljbGVFbmRvcnNlbWVu
-      dBIbEhEIAxINCgtFbmRvcnNlbWVudBoGQWRtaW5zIiIKB1JlYWRlcnMSFxINCAMSCQoHUmVhZGVy
-      cxoGQWRtaW5zIiIKB1dyaXRlcnMSFxINCAMSCQoHV3JpdGVycxoGQWRtaW5zKgZBZG1pbnMaIwoK
+      Ml8wEgAaBkFkbWlucyIiCgdXcml0ZXJzEhcSDQgDEgkKB1dyaXRlcnMaBkFkbWlucyIgCgZBZG1p
+      bnMSFhIMCAMSCAoGQWRtaW5zGgZBZG1pbnMiKgoLRW5kb3JzZW1lbnQSGxIRCAMSDQoLRW5kb3Jz
+      ZW1lbnQaBkFkbWlucyIzChRMaWZlY3ljbGVFbmRvcnNlbWVudBIbEhEIAxINCgtFbmRvcnNlbWVu
+      dBoGQWRtaW5zIiIKB1JlYWRlcnMSFxINCAMSCQoHUmVhZGVycxoGQWRtaW5zKgZBZG1pbnMaIwoK
       Q29uc29ydGl1bRIVEhMKEU9wZW5JRExDb25zb3J0aXVt
