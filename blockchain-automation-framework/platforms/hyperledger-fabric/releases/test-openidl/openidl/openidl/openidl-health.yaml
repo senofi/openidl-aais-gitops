@@ -1,0 +1,50 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: channel-openidl-openidl-health
+  namespace: openidl-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: channel-openidl-openidl-health
+  chart:
+    git: https://openidl-senofi:ATBBtqXJCAZgbVvt9PuqKmVzxLZf5ABDB1E6@bitbucket.org/senofi/openidl-openidl-aais-gitops.git
+    ref: testnet
+    path: blockchain-automation-framework/platforms/hyperledger-fabric/charts/create_channel
+  values:
+    metadata:
+      namespace: openidl-net
+      network:
+        version 2.2.3
+      images:
+        fabrictools: hyperledger/fabric-tools:2.2.3
+        alpineutils: index.docker.io/hyperledgerlabs/alpine-utils:1.0
+    peer:
+      name: peer0
+      address: peer0.openidl-net:7051
+      localmspid: openidlMSP
+      loglevel: debug
+      tlsstatus: true
+
+    vault:
+      role: vault-role
+      address: http://vault.test.internal.openidl.testnet.openidl.org
+      authpath: testopenidl-net-auth
+      adminsecretprefix: openidl/crypto/peerOrganizations/openidl-net/users/admin
+      orderersecretprefix: openidl/crypto/peerOrganizations/openidl-net/orderer 
+      serviceaccountname: vault-auth
+      imagesecretname: regcred
+
+    channel:
+      name: openidl-health
+    orderer:
+      address: orderer1.ord.test.openidl.testnet.openidl.org:8443
+    channeltx: |-
+      Cq0DChwKGggCGgYIsdmxmgYiDm9wZW5pZGwtaGVhbHRoEowDCokDCg5vcGVuaWRsLWhlYWx0aBIx
+      Eh8KC0FwcGxpY2F0aW9uEhASDgoKb3BlbmlkbE1TUBIAGg4KCkNvbnNvcnRpdW0SABrDAhKbAgoL
+      QXBwbGljYXRpb24SiwIIARIOCgpvcGVuaWRsTVNQEgAaJAoMQ2FwYWJpbGl0aWVzEhQSCgoICgRW
+      Ml8wEgAaBkFkbWlucyIqCgtFbmRvcnNlbWVudBIbEhEIAxINCgtFbmRvcnNlbWVudBoGQWRtaW5z
+      IjMKFExpZmVjeWNsZUVuZG9yc2VtZW50EhsSEQgDEg0KC0VuZG9yc2VtZW50GgZBZG1pbnMiIgoH
+      UmVhZGVycxIXEg0IAxIJCgdSZWFkZXJzGgZBZG1pbnMiIgoHV3JpdGVycxIXEg0IAxIJCgdXcml0
+      ZXJzGgZBZG1pbnMiIAoGQWRtaW5zEhYSDAgDEggKBkFkbWlucxoGQWRtaW5zKgZBZG1pbnMaIwoK
+      Q29uc29ydGl1bRIVEhMKEU9wZW5JRExDb25zb3J0aXVt
