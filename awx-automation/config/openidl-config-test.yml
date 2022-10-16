@@ -49,4 +49,4 @@ network:
       name: openidl-test-fabcar
       repo_url: github.com/hyperledger/fabric-samples.git
       repo_branch: release-2.2
-      repo_path: fabric-samples/chaincode/fabcar/go
+      repo_path: asset-transfer-basic/chaincode-go
