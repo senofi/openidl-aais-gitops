@@ -40,11 +40,11 @@ spec:
     orderer:
       address: orderer1.ord.test.openidl.testnet.openidl.org:8443
     channeltx: |-
-      Cq0DChwKGggCGgYIsdmxmgYiDm9wZW5pZGwtaGVhbHRoEowDCokDCg5vcGVuaWRsLWhlYWx0aBIx
+      Cq0DChwKGggCGgYIheOxmgYiDm9wZW5pZGwtaGVhbHRoEowDCokDCg5vcGVuaWRsLWhlYWx0aBIx
       Eh8KC0FwcGxpY2F0aW9uEhASDgoKb3BlbmlkbE1TUBIAGg4KCkNvbnNvcnRpdW0SABrDAhKbAgoL
       QXBwbGljYXRpb24SiwIIARIOCgpvcGVuaWRsTVNQEgAaJAoMQ2FwYWJpbGl0aWVzEhQSCgoICgRW
-      Ml8wEgAaBkFkbWlucyIqCgtFbmRvcnNlbWVudBIbEhEIAxINCgtFbmRvcnNlbWVudBoGQWRtaW5z
-      IjMKFExpZmVjeWNsZUVuZG9yc2VtZW50EhsSEQgDEg0KC0VuZG9yc2VtZW50GgZBZG1pbnMiIgoH
-      UmVhZGVycxIXEg0IAxIJCgdSZWFkZXJzGgZBZG1pbnMiIgoHV3JpdGVycxIXEg0IAxIJCgdXcml0
-      ZXJzGgZBZG1pbnMiIAoGQWRtaW5zEhYSDAgDEggKBkFkbWlucxoGQWRtaW5zKgZBZG1pbnMaIwoK
+      Ml8wEgAaBkFkbWlucyIzChRMaWZlY3ljbGVFbmRvcnNlbWVudBIbEhEIAxINCgtFbmRvcnNlbWVu
+      dBoGQWRtaW5zIiIKB1JlYWRlcnMSFxINCAMSCQoHUmVhZGVycxoGQWRtaW5zIiIKB1dyaXRlcnMS
+      FxINCAMSCQoHV3JpdGVycxoGQWRtaW5zIiAKBkFkbWlucxIWEgwIAxIICgZBZG1pbnMaBkFkbWlu
+      cyIqCgtFbmRvcnNlbWVudBIbEhEIAxINCgtFbmRvcnNlbWVudBoGQWRtaW5zKgZBZG1pbnMaIwoK
       Q29uc29ydGl1bRIVEhMKEU9wZW5JRExDb25zb3J0aXVt
