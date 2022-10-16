@@ -7,6 +7,11 @@
     git_flux_url: "https://{{ gitops.username }}:{{ gitops.password }}@{{ gitops.git_repo }}"
   when: gitops.username is defined and gitops.password is defined and gitops.git_repo is defined
 
+- name: "Set Flux Git URL with no credentials"
+  set_fact:
+    git_flux_url: "{{ git_url }}"
+  when: git_flux_url is not defined and git_url is defined
+
 ############################################################################################
 # This task ensures that the directory exists, and creates it, if it does not exist
 - name: "Ensures {{ values_dir }}/{{ name }} dir exists"
