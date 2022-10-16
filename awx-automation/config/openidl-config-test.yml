@@ -34,3 +34,5 @@ network:
       collectionconfig:
         - name: "anal_cnd_pdc"
           policy: "OR('analyticsMSP.member', 'cndMSP.member')"
+  - name: openidl-health
+
