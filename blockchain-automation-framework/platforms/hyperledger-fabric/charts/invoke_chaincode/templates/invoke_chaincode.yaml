@@ -186,7 +186,7 @@ spec:
         args:
         - |-
           #!/bin/bash sh
-          export ARGS='{"Args":'"'["${INVOKE_ARGUMENTS}"]'"'}'
+          export ARGS='${INVOKE_ARGUMENTS}'
           export qARGS="'${ARGS}'"
 
           touch ./invokeChaincode.sh	
@@ -197,7 +197,7 @@ spec:
             chmod 755 ./invokeChaincode.sh
             sh ./invokeChaincode.sh
           else
-            INVOKE_CMD="peer chaincode invoke -o ${ORDERER_URL} --tls ${CORE_PEER_TLS_ENABLED} --cafile $ORDERER_CA --channelID ${CHANNEL_NAME} --name ${CHAINCODE_NAME} --isInit -c $qARGS"
+            INVOKE_CMD="peer chaincode invoke -o ${ORDERER_URL} --tls ${CORE_PEER_TLS_ENABLED} --cafile $ORDERER_CA --channelID ${CHANNEL_NAME} --name ${CHAINCODE_NAME} -c $qARGS"
             
             for item in $ENDORSERS_CORE_PEER_ADDR
             do
