@@ -186,7 +186,7 @@ spec:
         args:
         - |-
           #!/bin/bash sh
-          export ARGS='${INVOKE_ARGUMENTS}'
+          export ARGS="${INVOKE_ARGUMENTS}"
           export qARGS="'${ARGS}'"
 
           touch ./invokeChaincode.sh	
