@@ -1,6 +1,6 @@
 ordererorg_domain: "openidl.testnet.openidl.org"
 domain: "openidl.testnet.openidl.org"
-internal_domain: "internal.openidl.testnet.openidl.org"
+internal_domain: "internal.carr1.testnet.openidl.org"
 node_type: "carrier"
 network:
   org_name: "carr1"
