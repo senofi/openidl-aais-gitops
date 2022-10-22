@@ -25,7 +25,7 @@ network:
       collectionconfig:
         - name: "analytics_aais_pdc"
           policy: "OR('analyticsMSP.member', 'aaisMSP.member')"
-  - name: analytics-carrier01
+  - name: analytics-carr1
     chaincode:
       name: openidl-cc-aais-carriers
       repo_url: bitbucket.org/senofi/openidl-openidl-main.git
