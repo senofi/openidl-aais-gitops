@@ -42,4 +42,4 @@ spec:
     proxy:
       provider: nginx
       type: peer
-      external_url_suffix: carr1.test.openidl.testnet.openidl.org
+      external_url_suffix: carr1.test.carr1.testnet.openidl.org
