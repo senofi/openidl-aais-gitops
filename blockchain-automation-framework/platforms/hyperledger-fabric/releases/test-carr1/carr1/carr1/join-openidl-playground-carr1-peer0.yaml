@@ -1,0 +1,40 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: join-openidl-playground-carr1-peer0
+  namespace: carr1-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: join-openidl-playground-carr1-peer0
+  chart:
+    git: https://openidl-senofi:ATBBtqXJCAZgbVvt9PuqKmVzxLZf5ABDB1E6@bitbucket.org/senofi/carrier01-openidl-aais-gitops.git
+    ref: testnet
+    path: blockchain-automation-framework/platforms/hyperledger-fabric/charts/join_channel
+  values:
+    metadata:
+      namespace: carr1-net
+      images:
+        fabrictools: hyperledger/fabric-tools:2.2.3
+        alpineutils: index.docker.io/hyperledgerlabs/alpine-utils:1.0
+
+    peer:
+      name: peer0
+      address: peer0.carr1-net.carr1.test.carr1.testnet.openidl.org:8443
+      localmspid: carr1MSP
+      loglevel: debug
+      tlsstatus: true
+
+    vault:
+      role: vault-role
+      address: http://vault.test.internal.carr1.testnet.openidl.org
+      authpath: testcarr1-net-auth
+      adminsecretprefix: carr1/crypto/peerOrganizations/carr1-net/users/admin
+      orderersecretprefix: carr1/crypto/peerOrganizations/carr1-net/orderer
+      serviceaccountname: vault-auth
+      imagesecretname: regcred
+
+    channel:
+      name: openidl-playground      
+    orderer:
+      address: orderer1.ord.test.openidl.testnet.openidl.org:8443
