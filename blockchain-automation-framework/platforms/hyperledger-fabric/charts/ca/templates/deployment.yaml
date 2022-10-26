@@ -168,11 +168,11 @@ spec:
         - name: FABRIC_CA_SERVER_DB_DATASOURCE
           value: /var/hyperledger/fabric-ca-server/db/fabric-ca-server.db
         - name: FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS
-          value: :9096
+          value: ":9096"
         - name: FABRIC_CA_SERVER_OPERATIONS_TLS_ENABLED
-          value: false
+          value: "false"
         - name: FABRIC_CA_SERVER_METRICS_PROVIDER
-          value: prometheus
+          value: "prometheus"
         volumeMounts:
         - name: certificates
           mountPath: /etc/hyperledger/fabric-ca-server-config
