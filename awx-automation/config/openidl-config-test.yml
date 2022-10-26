@@ -9,6 +9,9 @@ network:
   organizations:
     - name: "openidl"
       domain: "openidl.testnet.openidl.org"
+  organizations:
+    - name: "carr1"
+      domain: "carr1.testnet.openidl.org"
   channels:
   - name: defaultchannel
     chaincode:
