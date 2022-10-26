@@ -34,3 +34,10 @@ network:
       collectionconfig:
         - name: "anal_cnd_pdc"
           policy: "OR('analyticsMSP.member', 'cndMSP.member')"
+  - name: openidl-playground
+    chaincode:
+      name: openidl-test-fabcar
+      repo_url: github.com/hyperledger/fabric-samples.git
+      repo_branch: release-2.2
+      repo_path: asset-transfer-basic/chaincode-go
+      arguments: '{"function":"CreateAsset","Args":["asset1","blue","10","Org1User1","120"]}'
