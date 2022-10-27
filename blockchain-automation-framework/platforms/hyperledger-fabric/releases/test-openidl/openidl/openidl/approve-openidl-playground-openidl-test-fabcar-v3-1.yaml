@@ -1,0 +1,46 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: approve-openidl-playground-openidl-test-fabcar-v3-1
+  namespace: openidl-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: approve-openidl-playground-openidl-test-fabcar-v3-1
+  chart:
+    git: https://openidl-senofi:ATBBtqXJCAZgbVvt9PuqKmVzxLZf5ABDB1E6@bitbucket.org/senofi/openidl-openidl-aais-gitops.git
+    ref: testnet
+    path: blockchain-automation-framework/platforms/hyperledger-fabric/charts/approve_chaincode
+  values:
+    metadata:
+      namespace: openidl-net
+      images:
+        fabrictools: hyperledger/fabric-tools:2.2.3
+        alpineutils: index.docker.io/hyperledgerlabs/alpine-utils:1.0
+    peer:
+      name: peer0
+      address: peer0.openidl-net:7051
+      localmspid: openidlMSP
+      loglevel: debug
+      tlsstatus: true
+    vault:
+      role: vault-role
+      address: http://vault.test.internal.openidl.testnet.openidl.org
+      authpath: testopenidl-net-auth
+      adminsecretprefix: openidl/crypto/peerOrganizations/openidl-net/users/admin 
+      orderersecretprefix: openidl/crypto/peerOrganizations/openidl-net/orderer
+      serviceaccountname: vault-auth
+      imagesecretname: regcred
+      tls: false
+    orderer:
+      address: orderer1.ord.test.openidl.testnet.openidl.org:8443
+    chaincode:
+      builder: hyperledger/fabric-ccenv:2.2.3
+      name: openidl-test-fabcar
+      version: v3
+      sequence: 1
+      commitarguments: '{"function":"CreateAsset","Args":["asset2","blue","12","Org1User1","120"]}'
+      endorsementpolicies:  ''
+      usecollectionconfig: false
+    channel:
+      name: openidl-playground
