@@ -42,7 +42,7 @@ spec:
       builder: hyperledger/fabric-ccenv:2.2.3
       name: openidl-test-fabcar
       version: v3
-      invokearguments: '{"function":"CreateAsset","Args":["asset1","100","Org1User1"]}'
+      invokearguments: '{"function":"CreateAsset","Args":["asset2","blue","12","Org1User1","120"]}'
       endorsementpolicies:  ''
     channel:
       name: openidl-playground
