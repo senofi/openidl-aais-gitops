@@ -28,7 +28,6 @@
     gitops: "{{ org.gitops }}"
     git_branch: "{{ org.gitops.branch }}"
     charts_dir: "{{ org.gitops.chart_source }}"
-    gitops: "{{ org.gitops }}"
     fabrictools_image: "hyperledger/fabric-tools:{{ network.version }}"
     alpine_image: "{{ docker_url }}/alpine-utils:1.0"
     vault: "{{ org.vault }}"
