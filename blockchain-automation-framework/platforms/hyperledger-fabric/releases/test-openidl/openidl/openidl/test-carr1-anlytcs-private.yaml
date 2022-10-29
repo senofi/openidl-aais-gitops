@@ -1,0 +1,50 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: channel-openidl-test-carr1-anlytcs-private
+  namespace: openidl-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: channel-openidl-test-carr1-anlytcs-private
+  chart:
+    git: https://openidl-senofi:ATBBtqXJCAZgbVvt9PuqKmVzxLZf5ABDB1E6@bitbucket.org/senofi/openidl-openidl-aais-gitops.git
+    ref: testnet
+    path: blockchain-automation-framework/platforms/hyperledger-fabric/charts/create_channel
+  values:
+    metadata:
+      namespace: openidl-net
+      network:
+        version 2.2.3
+      images:
+        fabrictools: hyperledger/fabric-tools:2.2.3
+        alpineutils: index.docker.io/hyperledgerlabs/alpine-utils:1.0
+    peer:
+      name: peer0
+      address: peer0.openidl-net:7051
+      localmspid: openidlMSP
+      loglevel: debug
+      tlsstatus: true
+
+    vault:
+      role: vault-role
+      address: http://vault.test.internal.openidl.testnet.openidl.org
+      authpath: testopenidl-net-auth
+      adminsecretprefix: openidl/crypto/peerOrganizations/openidl-net/users/admin
+      orderersecretprefix: openidl/crypto/peerOrganizations/openidl-net/orderer 
+      serviceaccountname: vault-auth
+      imagesecretname: regcred
+
+    channel:
+      name: test-carr1-anlytcs-private
+    orderer:
+      address: orderer1.ord.test.openidl.testnet.openidl.org:8443
+    channeltx: |-
+      CsUDCigKJggCGgYIsbL2mgYiGnRlc3QtY2FycjEtYW5seXRjcy1wcml2YXRlEpgDCpUDChp0ZXN0
+      LWNhcnIxLWFubHl0Y3MtcHJpdmF0ZRIxEh8KC0FwcGxpY2F0aW9uEhASDgoKb3BlbmlkbE1TUBIA
+      Gg4KCkNvbnNvcnRpdW0SABrDAhKbAgoLQXBwbGljYXRpb24SiwIIARIOCgpvcGVuaWRsTVNQEgAa
+      JAoMQ2FwYWJpbGl0aWVzEhQSCgoICgRWMl8wEgAaBkFkbWlucyIzChRMaWZlY3ljbGVFbmRvcnNl
+      bWVudBIbEhEIAxINCgtFbmRvcnNlbWVudBoGQWRtaW5zIiIKB1JlYWRlcnMSFxINCAMSCQoHUmVh
+      ZGVycxoGQWRtaW5zIiIKB1dyaXRlcnMSFxINCAMSCQoHV3JpdGVycxoGQWRtaW5zIiAKBkFkbWlu
+      cxIWEgwIAxIICgZBZG1pbnMaBkFkbWlucyIqCgtFbmRvcnNlbWVudBIbEhEIAxINCgtFbmRvcnNl
+      bWVudBoGQWRtaW5zKgZBZG1pbnMaIwoKQ29uc29ydGl1bRIVEhMKEU9wZW5JRExDb25zb3J0aXVt
