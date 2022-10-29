@@ -13,6 +13,8 @@ network:
       domain: "carr1.testnet.openidl.org"
     - name: "anlytcs"
       domain: "anlytcs.testnet.openidl.org"
+    - name: "aais"
+      domain: "aais.testnet.openidl.org"
   channels:
   - name: defaultchannel
     chaincode:
