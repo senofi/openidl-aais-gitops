@@ -57,3 +57,11 @@ network:
       repo_branch: release-2.2
       repo_path: asset-transfer-basic/chaincode-go
       arguments: '{"function":"CreateAsset","Args":["asset2","blue","12","Org1User1","120"]}'
+      
+  - name: test-carr1-anlytcs-private
+    chaincode:
+      name: openidl-test-fabcar
+      repo_url: github.com/hyperledger/fabric-samples.git
+      repo_branch: release-2.2
+      repo_path: asset-transfer-basic/chaincode-go
+      arguments: '{"function":"CreateAsset","Args":["asset2","blue","12","Org1User1","120"]}'
