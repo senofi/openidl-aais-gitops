@@ -42,6 +42,7 @@ spec:
       builder: hyperledger/fabric-ccenv:{{ network.version }}
       name: {{ component_chaincode.name | lower | e }}
       version: {{ component_chaincode.version }}
+      cc_init: {{ cc_init }}
       invokearguments: {{ component_chaincode.arguments | quote}}
       endorsementpolicies:  {{ component_chaincode.endorsements | quote }}
     channel:
