@@ -21,7 +21,7 @@ network:
       name: openidl-cc-default
       repo_url: bitbucket.org/senofi/openidl-openidl-main.git
       repo_branch: testnet
-      arguments: '{"function":"CreateAsset","Args":["asset2","blue","12","Org1User1","120"]}'
+      arguments: ''
       repo_path: openidl-chaincode/chaincode/openidl
   - name: anlytcs-aais
     chaincode:
@@ -29,7 +29,7 @@ network:
       repo_url: bitbucket.org/senofi/openidl-openidl-main.git
       repo_branch: testnet
       repo_path: openidl-chaincode/chaincode/openidl
-      arguments: '{"function":"CreateAsset","Args":["asset2","blue","12","Org1User1","120"]}'
+      arguments: ''
       collectionconfig:
         - name: "anlytcs_aais_pdc"
           policy: "OR('anlytcsMSP.member', 'aaisMSP.member')"
@@ -39,7 +39,7 @@ network:
       repo_url: bitbucket.org/senofi/openidl-openidl-main.git
       repo_branch: testnet
       repo_path: openidl-chaincode/chaincode/openidl
-      arguments: '{"function":"CreateAsset","Args":["asset2","blue","12","Org1User1","120"]}'
+      arguments: ''
       collectionconfig:
         - name: "anlytcs_carr1_pdc"
           policy: "OR('anlytcsMSP.member', 'carr1MSP.member')"
@@ -49,7 +49,7 @@ network:
       repo_url: bitbucket.org/senofi/openidl-openidl-main.git
       repo_branch: testnet
       repo_path: openidl-chaincode/chaincode/openidl
-      arguments: '{"function":"CreateAsset","Args":["asset2","blue","12","Org1User1","120"]}'
+      arguments: ''
       collectionconfig:
         - name: "anal_cnd_pdc"
           policy: "OR('analyticsMSP.member', 'cndMSP.member')"
