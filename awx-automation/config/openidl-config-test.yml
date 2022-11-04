@@ -19,15 +19,15 @@ network:
   - name: defaultchannel
     chaincode:
       name: openidl-cc-default
-      repo_url: bitbucket.org/senofi/openidl-openidl-main.git
-      repo_branch: testnet
+      repo_url: github.com/senofi/openidl-main.git
+      repo_branch: develop
       arguments: ''
       repo_path: openidl-chaincode/chaincode/openidl
   - name: anlytcs-aais
     chaincode:
       name: openidl-cc-aais-carriers
-      repo_url: bitbucket.org/senofi/openidl-openidl-main.git
-      repo_branch: testnet
+      repo_url: github.com/senofi/openidl-main.git
+      repo_branch: develop
       repo_path: openidl-chaincode/chaincode/openidl
       arguments: ''
       collectionconfig:
@@ -36,8 +36,8 @@ network:
   - name: anlytcs-carr1
     chaincode:
       name: openidl-cc-aais-carriers
-      repo_url: bitbucket.org/senofi/openidl-openidl-main.git
-      repo_branch: testnet
+      repo_url: github.com/senofi/openidl-main.git
+      repo_branch: develop
       repo_path: openidl-chaincode/chaincode/openidl
       arguments: ''
       collectionconfig:
