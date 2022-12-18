@@ -64,7 +64,9 @@ spec:
     nodePort: {{ $.Values.service.ports.grpc.nodeport }}
     {{- end }}
     name: grpc
-  #{{- if (eq $.Values.service.servicetype "ClusterIP") }}
+  - protocol: TCP
+      targetPort: 7443
+    #{{- if (eq $.Values.service.servicetype "ClusterIP") }}
   #clusterIP: None
   #{{- end }}
   
