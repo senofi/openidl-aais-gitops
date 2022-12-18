@@ -243,37 +243,19 @@ spec:
           mountPath: /var/hyperledger/orderer/genesis
           readOnly: true
         - name: certificates
-          mountPath: /var/hyperledger/orderer/crypto
+          mountPath: /certs
           readOnly: true
-        volumeMounts:
-        - mountPath: /ordererdata
-          name: orderer-data
-          subPath: data
-        - mountPath: /var/hyperledger/orderer/crypto/msp/cacerts
-          name: ecert-cacerts
-        - mountPath: /var/hyperledger/orderer/crypto/msp/signcerts
-          name: ecert-signcert
-        - mountPath: /var/hyperledger/orderer/crypto/msp/tlscacerts
-          name: tls-cacerts
-        - mountPath: /var/hyperledger/orderer/crypto/tls/keystore
-          name: tls-keystore
-        - mountPath: /var/hyperledger/orderer/crypto/tls/signcerts
-          name: tls-signcert
-        - mountPath: /var/hyperledger/orderer/crypto
-          name: orderer-config
-        - mountPath: /var/hyperledger/orderer/crypto/msp
-          name: orderer-config
         env:
         - name: LICENSE
           value: accept
         - name: BACKEND_ADDRESS
           value: 127.0.0.1:7050
         - name: SERVER_TLS_CERT_FILE
-          value: /var/hyperledger/orderer/crypto/tls/signcerts/cert.pem
+          value: /certs/tls/signcerts/cert.pem
         - name: SERVER_TLS_KEY_FILE
-          value: /var/hyperledger/orderer/crypto/tls/keystore/key.pem
+          value: /certs/tls/keystore/key.pem
         - name: SERVER_TLS_CLIENT_CA_FILES
-          value: /var/hyperledger/orderer/crypto/msp/tlscacerts/cacert-0.pem
+          value: /certs/msp/tlscacerts/cacert-0.pem
         - name: SERVER_BIND_ADDRESS
           value: 0.0.0.0
         - name: SERVER_HTTP_DEBUG_PORT

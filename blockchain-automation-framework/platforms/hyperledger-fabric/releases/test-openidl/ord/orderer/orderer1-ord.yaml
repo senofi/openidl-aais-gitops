@@ -19,7 +19,7 @@ spec:
     metadata:
       namespace: ord-net
       images:
-        orderer: hyperledger/fabric-orderer:2.2.3
+        orderer: hyperledger/fabric-orderer:2.2.7
         alpineutils: index.docker.io/hyperledgerlabs/alpine-utils:1.0
     orderer:
       name: orderer1
