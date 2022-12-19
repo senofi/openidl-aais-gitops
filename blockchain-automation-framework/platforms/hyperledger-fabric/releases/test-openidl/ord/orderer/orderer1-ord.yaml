@@ -40,6 +40,7 @@ spec:
       ports:
         grpc:
           clusteripport: 7050
+          web: 7443
 
     vault:
       address: http://vault.test.internal.openidl.testnet.openidl.org
