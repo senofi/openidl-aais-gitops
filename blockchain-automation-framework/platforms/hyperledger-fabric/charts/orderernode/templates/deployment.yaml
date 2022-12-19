@@ -266,7 +266,7 @@ spec:
         - name: USE_WEBSOCKETS
           value: "true"
         - name: EXTERNAL_ADDRESS
-          value: "orderer1.ord.test.openidl.testnet.openidl.org:8443"
+          value: {{ $.Values.orderer.name }}.{{ $.Values.metadata.namespace }}:8443
         readinessProbe:
           tcpSocket:
             port: 8080
