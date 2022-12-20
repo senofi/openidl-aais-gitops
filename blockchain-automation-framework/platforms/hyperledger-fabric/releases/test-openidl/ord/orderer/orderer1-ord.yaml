@@ -30,7 +30,7 @@ spec:
     
     consensus:
       name: raft
-
+ 
     storage:
       storageclassname: ordsc
       storagesize: 50Gi 
