@@ -21,11 +21,11 @@ spec:
         create: false
     alertmanager:
       enabled: false
+    kube-state-metrics:
+      enabled: false
+    prometheus-node-exporter:
+      enabled: false
     pushgateway:
-      enabled: false
-    nodeExporter:
-      enabled: false
-    kubeStateMetrics:
       enabled: false
     server:
       extraArgs: { log.level: debug }
@@ -34,6 +34,10 @@ spec:
           basic_auth:
             username: 610199
             password: eyJrIjoiNjZlMmE4NTA4ZDljNzUwNDY1OGIwZTE0MjEyY2E1MGVlZjlhN2Y5YSIsIm4iOiJzdGFjay00NTQ3MTQtZWFzeXN0YXJ0LXByb20tcHVibGlzaGVyIiwiaWQiOjcyNjU0M30=
+          write_relabel_configs:
+            - source_labels: [__name__]
+              regex: "channel|host|topic|broker_id|version|service|method|code|level|chaincode|success|type|function_name|database|filtered|data_type|chaincodeerror|transaction_type|validation_code"
+              action: keep
       persistentVolume:
         storageClass: gp2
 
