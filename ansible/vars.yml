@@ -8,6 +8,8 @@ arch: amd64
 
 fabric_operator_image: ghcr.io/hyperledger-labs/fabric-operator:latest
 
+webhook: fabric-operator
+
 # k8s namespace for the operator and console
 namespace: fabricinfra
 

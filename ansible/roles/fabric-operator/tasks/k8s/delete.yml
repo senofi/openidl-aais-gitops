@@ -64,29 +64,13 @@
     - webhook-tls-key
   when: namespace_info.resources
 
-- name: Delete role binding
+- name: Delete Role Based Access Control
   k8s:
     state: absent
     namespace: "{{ namespace }}"
-    api_version: rbac.authorization.k8s.io/v1
-    kind: RoleBinding
-    name: "{{ role_binding }}"
-  when: namespace_info.resources
-
-- name: Delete role
-  k8s:
-    state: absent
-    namespace: "{{ namespace }}"
-    api_version: rbac.authorization.k8s.io/v1
-    kind: Role
-    name: "{{ role }}"
-  when: namespace_info.resources
-
-- name: Delete image secret
-  k8s:
-    state: absent
-    namespace: "{{ namespace }}"
-    api_version: v1
-    kind: Secret
-    name: "{{ image_pull_secret }}"
-  when: namespace_info.resources
+    resource_definition: "{{ lookup('template', 'templates/'+target+'/rbac/'+item) }}"
+    apply: yes
+  loop:
+    - hlf-operator-clusterrole.yaml
+    - hlf-operator-clusterrolebinding.yaml.j2
+    - hlf-operator-serviceaccount.yaml
