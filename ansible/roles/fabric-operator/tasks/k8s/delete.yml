@@ -74,3 +74,12 @@
     - hlf-operator-clusterrole.yaml
     - hlf-operator-clusterrolebinding.yaml.j2
     - hlf-operator-serviceaccount.yaml
+
+- name: Expose Operator as service
+  k8s:
+    state: absent
+    namespace: "{{ namespace }}"
+    resource_definition: "{{ lookup('template', 'templates/'+target+'/service/'+item) }}"
+    apply: yes
+  loop:
+    - hlf-operator-service.yaml

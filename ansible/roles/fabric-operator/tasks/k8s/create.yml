@@ -59,3 +59,12 @@
   shell: |
     kubectl -n {{ namespace }} rollout status deploy fabric-operator
   changed_when: false
+
+- name: Expose Operator as service
+  k8s:
+    state: present
+    namespace: "{{ namespace }}"
+    resource_definition: "{{ lookup('template', 'templates/'+target+'/service/'+item) }}"
+    apply: yes
+  loop:
+    - hlf-operator-service.yaml
