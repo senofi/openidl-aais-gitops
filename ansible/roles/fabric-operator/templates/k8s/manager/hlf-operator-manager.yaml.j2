@@ -68,7 +68,7 @@ spec:
       #   fsGroup: 2000
       containers:
         - name: fabric-operator
-          image: {{ fabric_operator_image }}-{{ arch }}
+          image: {{ fabric_operator_image }}:{{ tag_version }}
           imagePullPolicy: IfNotPresent
 
           command:

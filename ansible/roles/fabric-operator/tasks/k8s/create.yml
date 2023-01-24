@@ -4,8 +4,7 @@
 ---
 - name: Creating CRDs
   k8s:
-    # make this configurable
-    definition: "{{ lookup('kubernetes.core.kustomize',dir='https://github.com/hyperledger-labs/fabric-operator.git/config/crd') }}"
+    definition: "{{ lookup('kubernetes.core.kustomize',dir=crd_url+'/?ref=v'+tag_version) }}"
   register: resultcrds
 
 # Create the namespace for the operator

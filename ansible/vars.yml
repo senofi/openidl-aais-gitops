@@ -6,9 +6,18 @@
 target: k8s
 arch: amd64
 
-fabric_operator_image: ghcr.io/hyperledger-labs/fabric-operator:latest
+# The image and crd URLs
+fabric_operator_image: ghcr.io/hyperledger-labs/fabric-operator
+crd_url: https://github.com/hyperledger-labs/fabric-operator.git/config/crd
 
+# tag version for crd and fabric operator
+tag_version: 1.0.4
+
+# name of the operator (it is used by delete function)
 webhook: fabric-operator
+
+# URL and TAG from which to pull the CRDs
+
 
 # k8s namespace for the operator and console
 namespace: fabricinfra
