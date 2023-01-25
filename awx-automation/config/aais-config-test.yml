@@ -1,6 +1,6 @@
-ordererorg_domain: "testnet.openidl.org"
-domain: "testnet.openidl.org"
-internal_domain: "internal.testnet.openidl.org"
+ordererorg_domain: "thetech.digital"
+domain: "thetech.digital"
+internal_domain: "internal.thetech.digital"
 node_type: "aais"
 network:
   org_name: "aais"
@@ -8,9 +8,11 @@ network:
   ordererorg_name: "ordererorg"
   organizations:
     - name: "analytics"
-      domain: "analytics.testnet.openidl.org"
+      domain: "analytics.thetech.digital"
     - name: "cnd"
-      domain: "cnd.testnet.openidl.org"
+      domain: "cnd.thetech.digital"
+    - name: "ca01"
+      domain: "ca01.thetech.digital"
   channels:
   - name: defaultchannel
     chaincode:
@@ -36,3 +38,12 @@ network:
       collectionconfig:
         - name: "anal_cnd_pdc"
           policy: "OR('analyticsMSP.member', 'cndMSP.member')"
+  - name: anal-ca01
+    chaincode:
+      name: openidl-cc-aais-carriers
+      repo_url: github.com/openidl-org/openidl-main.git
+      repo_branch: openidl-nd-poc-main
+      repo_path: openidl-chaincode/chaincode/openidl
+      collectionconfig:
+        - name: "anal_ca01_pdc"
+          policy: "OR('analyticsMSP.member', 'ca01MSP.member')"

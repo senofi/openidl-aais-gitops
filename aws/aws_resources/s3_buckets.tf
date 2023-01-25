@@ -36,7 +36,7 @@ resource "aws_kms_key" "s3_kms_key" {
             "Sid": "Allow use of the key",
             "Effect": "Allow",
             "Principal": {
-                "AWS": ["${aws_iam_role.openidl_apps_iam_role.arn}", "${var.aws_role_arn}", "${aws_iam_role.etl_lambda.arn}"]
+                "AWS": local.org_name == "anal" ? ["${aws_iam_role.openidl_apps_iam_role.arn}", "${var.aws_role_arn}", "${aws_iam_role.etl_lambda.arn}", "${aws_iam_role.upload.arn}", "${aws_iam_role.reporting_lambda[0].arn}"] :  ["${aws_iam_role.openidl_apps_iam_role.arn}", "${var.aws_role_arn}", "${aws_iam_role.etl_lambda.arn}", "${aws_iam_role.upload.arn}"]
             },
             "Action": [
                 "kms:Encrypt",
@@ -76,13 +76,10 @@ resource "aws_kms_alias" "s3_kms_key_alais" {
 }
 #Creating an s3 bucket for HDS data extract for analytics node
 resource "aws_s3_bucket" "s3_bucket_hds" {
-  count = var.org_name == "aais" ? 1 : 1 #update to 0 : 1
+  #count = var.org_name == "aais" ? 1 : 1 #update to 0 : 1
   bucket = "${local.std_name}-${var.s3_bucket_name_hds_analytics}"
   acl    = "private"
   force_destroy = true
-  versioning {
-    enabled = true
-  }
   tags = merge(
     local.tags,
     {
@@ -115,27 +112,34 @@ resource "aws_s3_bucket" "s3_bucket_hds" {
       days = "365" 
     }
     noncurrent_version_transition {
-      days = "90"
+      days = "0"
       storage_class = "GLACIER"
     }
     noncurrent_version_expiration {
-      days = "180"
+      days = "1"
     }
   }  
 }
+resource "aws_s3_bucket_versioning" "s3_bucket_hds" {
+  bucket = aws_s3_bucket.s3_bucket_hds.id
+  versioning_configuration {
+    status = "Suspended"
+  }
+  depends_on = [aws_s3_bucket.s3_bucket_hds]
+}
 #Blocking public access to s3 bucket used for HDS data extract for analytics node
 resource "aws_s3_bucket_public_access_block" "s3_bucket_public_access_block_hds" {
-  count = var.org_name == "aais" ? 0 : 1
+  #count = var.org_name == "aais" ? 0 : 1
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
-  bucket                  = aws_s3_bucket.s3_bucket_hds[0].id
+  bucket                  = aws_s3_bucket.s3_bucket_hds.id
   depends_on              = [aws_s3_bucket.s3_bucket_hds, aws_s3_bucket_policy.s3_bucket_policy_hds]
 }
 #Setting up a bucket policy to restrict access to s3 bucket used for HDS data extract for analytics node
 resource "aws_s3_bucket_policy" "s3_bucket_policy_hds" {
-  count = var.org_name == "aais" ? 0 : 1 #update to 0:1
+  #count = var.org_name == "aais" ? 0 : 1 #update to 0:1
   bucket     = "${local.std_name}-${var.s3_bucket_name_hds_analytics}"
   depends_on = [aws_s3_bucket.s3_bucket_hds]
   policy = jsonencode({
@@ -145,7 +149,7 @@ resource "aws_s3_bucket_policy" "s3_bucket_policy_hds" {
             "Sid": "AllowGetAndPutObjects",
             "Effect": "Allow",
             "Principal": {
-                "AWS": ["${aws_iam_role.openidl_apps_iam_role.arn}", "${aws_iam_user.openidl_apps_user.arn}"]
+                "AWS": local.org_name == "anal" ? ["${aws_iam_role.openidl_apps_iam_role.arn}", "${aws_iam_user.openidl_apps_user.arn}", "${aws_iam_role.reporting_lambda[0].arn}"] : ["${aws_iam_role.openidl_apps_iam_role.arn}", "${aws_iam_user.openidl_apps_user.arn}"]
             },
             "Action": [
                 "s3:GetObject",
@@ -184,30 +188,29 @@ resource "aws_s3_bucket_policy" "s3_bucket_policy_hds" {
                     "aws:SecureTransport" = "false"
                 }
             }
-        },
-        {
-			"Sid": "DenyOthers",
-			"Effect": "Deny",
-			"Principal": "*",
-            "Action": "*",
-			"Resource": [
-                "arn:aws:s3:::${local.std_name}-${var.s3_bucket_name_hds_analytics}",
-                "arn:aws:s3:::${local.std_name}-${var.s3_bucket_name_hds_analytics}/*"
-            ],
-			"Condition": {
-				"StringNotLike": {
-					"aws:userid": [
-                        "${aws_iam_role.openidl_apps_iam_role.unique_id}:*",
-                        "${aws_iam_user.openidl_apps_user.unique_id}",
-                        "${data.aws_iam_role.terraform_role.unique_id}:*",
-						"${var.aws_account_number}",
-                        "arn:aws:sts:::${var.aws_account_number}:assumed-role/${local.terraform_role_name[1]}/terraform",
-                        "arn:aws:sts:::${var.aws_account_number}:assumed-role/${aws_iam_role.openidl_apps_iam_role.name}/openidl"
-
-					]
-				}
-			}
-		}
+#        },
+#        {
+#			      "Sid": "DenyOthers",
+#			      "Effect": "Deny",
+#			      "Principal": "*",
+#           "Action": "*",
+#			      "Resource": [
+#                "arn:aws:s3:::${local.std_name}-${var.s3_bucket_name_hds_analytics}",
+#                "arn:aws:s3:::${local.std_name}-${var.s3_bucket_name_hds_analytics}/*"
+#            ],
+#			      "Condition": {
+#				      "StringNotLike": {
+#					      "aws:userid": [
+#                        "${aws_iam_role.openidl_apps_iam_role.unique_id}:*",
+#                        "${aws_iam_user.openidl_apps_user.unique_id}",
+#                        "${data.aws_iam_role.terraform_role.unique_id}:*",
+#						            "${var.aws_account_number}",
+#                        "arn:aws:sts:::${var.aws_account_number}:assumed-role/${local.terraform_role_name[1]}/terraform",
+#                        "arn:aws:sts:::${var.aws_account_number}:assumed-role/${aws_iam_role.openidl_apps_iam_role.name}/openidl"
+#					      ]
+#				      }
+#			      }
+		    }
     ]
 })
 }

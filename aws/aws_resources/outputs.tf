@@ -66,7 +66,7 @@ output "cloudtrail_s3_bucket_name" {
   value = var.create_cloudtrail ? aws_s3_bucket.ct_cw_s3_bucket[0].bucket : "cloudtrail not opted"
 }
 output "hds_data_s3_bucket_name" {
-  value = var.org_name == "aais" ? "s3 bucket for hds data analytics not applicable for AAIS node" : aws_s3_bucket.s3_bucket_hds[0].bucket
+  value = aws_s3_bucket.s3_bucket_hds.bucket
 }
 output "s3_public_bucket_logos_name" {
   value = var.create_s3_bucket_public ? aws_s3_bucket.s3_bucket_logos_public[0].bucket : "s3 public bucket not opted"
@@ -138,3 +138,16 @@ output "lambda-idm-loader" {
 output "lambda-intake-processor" {
   value = aws_lambda_function.etl_intake_processor.arn
 }
+output "upload_ui_s3_website_endpoint" {
+  value = aws_s3_bucket.upload_ui.website_endpoint
+}
+output "s3_static_website_bucket" {
+  value = aws_s3_bucket.upload_ui.arn
+}
+output "api_gateway_endpoint" {
+  value = aws_api_gateway_deployment.upload_v1.invoke_url
+}
+
+
+
+
