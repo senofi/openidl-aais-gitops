@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "labels.custom" . | nindent 2 }}
 data:
-  CORE_VM_ENDPOINT: localhost:2375
+  CORE_VM_ENDPOINT: tcp://localhost:2375
   CORE_PEER_ID: {{ $.Values.peer.name }}.{{ $.Values.metadata.namespace }}
   FABRIC_LOGGING_SPEC: grpc=debug:{{ $.Values.peer.loglevel }}
   CORE_LEDGER_STATE_STATEDATABASE: CouchDB
@@ -36,6 +36,9 @@ data:
   CORE_PEER_GOSSIP_SKIPHANDSHAKE: "true"
   CORE_CHAINCODE_BUILDER: "{{ $.Values.peer.builder }}"
   CORE_VM_DOCKER_ATTACHSTDOUT: "true"
+  CORE_METRICS_PROVIDER: "prometheus"
+  CORE_OPERATIONS_LISTENADDRESS: ":9096"
+  CORE_OPERATIONS_TLS_ENABLED: "false"
 ---
 apiVersion: v1
 kind: ConfigMap
