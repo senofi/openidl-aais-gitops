@@ -50,11 +50,11 @@ resource "aws_route53_record" "certificate_validation_record" {
   zone_id         = aws_route53_zone.public_zones[0].id
   ttl             = "300"
 }
-resource "aws_acm_certificate_validation" "cert" {
-  provider                = aws.acm
-  certificate_arn         = aws_acm_certificate.upload_ui.arn
-  validation_record_fqdns = [ aws_route53_record.certificate_validation_record.fqdn ]
-}
+#resource "aws_acm_certificate_validation" "cert" {
+#  provider                = aws.acm
+#  certificate_arn         = aws_acm_certificate.upload_ui.arn
+#  validation_record_fqdns = [ aws_route53_record.certificate_validation_record.fqdn ]
+#}
 resource "aws_route53_record" "upload_ui" {
   depends_on = [aws_cloudfront_distribution.upload_ui]
   zone_id = aws_route53_zone.public_zones[0].id

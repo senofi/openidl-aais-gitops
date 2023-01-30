@@ -613,7 +613,7 @@ resource "aws_api_gateway_stage" "stage" {
   stage_name    = "${var.aws_env}"
 }
 resource "aws_cloudfront_distribution" "upload_ui" {
-  depends_on = [aws_s3_bucket.upload_ui,aws_acm_certificate.upload_ui,aws_cloudfront_origin_access_identity.origin_access_identity]
+  depends_on = [aws_s3_bucket.upload_ui,aws_cloudfront_origin_access_identity.origin_access_identity]
   origin {
     domain_name = "${aws_s3_bucket.upload_ui.bucket_regional_domain_name}"
     origin_id   = "${local.std_name}-${var.s3_bucket_name_upload_ui}.${var.aws_env}.${local.public_domain}"
@@ -648,11 +648,14 @@ resource "aws_cloudfront_distribution" "upload_ui" {
     default_ttl            = 3600
     max_ttl                = 86400
   }
+#  viewer_certificate {
+#    cloudfront_default_certificate = false
+#    acm_certificate_arn = aws_acm_certificate.upload_ui.arn
+#    ssl_support_method       = "sni-only"
+#    minimum_protocol_version = "TLSv1.2_2021"
+#  }
   viewer_certificate {
-    cloudfront_default_certificate = false
-    acm_certificate_arn = aws_acm_certificate.upload_ui.arn
-    ssl_support_method       = "sni-only"
-    minimum_protocol_version = "TLSv1.2_2021"
+    cloudfront_default_certificate = true
   }
 }
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
