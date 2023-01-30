@@ -84,21 +84,3 @@
       secretlist: "{{fluxcd.notification.secretlist}}"
       providerlist: "{{fluxcd.notification.providerlist}}"
       alertlist: "{{fluxcd.notification.alertlist}}"
-
-
-- name: List custom objects created using CRD
-  kubernetes.core.k8s_info:
-    kind: CustomResourceDefinition
-    name: gitrepositories.source.toolkit.fluxcd.io
-  register: gitrepositories_crd
-
-- name: List custom objects created using CRD
-  kubernetes.core.k8s_info:
-    kind: CustomResourceDefinition
-    name: kustomizations.kustomize.toolkit.fluxcd.io
-  register: kustomization_crd
-
-- debug:
-    var: gitrepositories_crd.resources
-  when: gitrepositories_crd.resources is none
-
