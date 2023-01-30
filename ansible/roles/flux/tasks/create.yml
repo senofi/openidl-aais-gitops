@@ -1,7 +1,7 @@
 ---
-- name: "Creating Flux namespace '{{ flux_namespace_name }}' if missing"
+- name: "Creating Flux namespace '{{ fluxcd.flux_namespace }}' if missing"
   k8s:
-    name: "{{ flux_namespace_name }}"
+    name: "{{ fluxcd.flux_namespace }}"
     kind: Namespace
     state: present
     wait: true
@@ -16,70 +16,89 @@
       type: Opaque
       metadata:
         name: git-auth
-        namespace: "{{ flux_namespace_name }}"
+        namespace: "{{ fluxcd.flux_namespace }}"
         label: flux
       stringData:
-        GIT_AUTHUSER: "{{ git_username }}" 
-        GIT_AUTHKEY: "{{ git_password }}"
-
-- name: "Adding Flux Helm repo"
-  kubernetes.core.helm_repository:
-    name: "fluxcd"
-    repo_url: "https://charts.fluxcd.io"
-
-- name: "Installing helm-operator crds version '{{ helm_operator_version }}'"
-  k8s:
-    definition: '{{ lookup("url", "https://raw.githubusercontent.com/fluxcd/helm-operator/{{ helm_operator_version }}/deploy/crds.yaml", split_lines=False) }}'
-    wait: true
-    apply: true
+        GIT_AUTHUSER: "{{ fluxcd.git_username }}" 
+        GIT_AUTHKEY: "{{ fluxcd.git_password }}"
 
 - name: "Deploy Flux CD"
   kubernetes.core.helm:
-    chart_ref: fluxcd/flux
-    release_name: flux
+    chart_ref: https://github.com/fluxcd-community/helm-charts/releases/download/flux2-{{fluxcd.versions.flux2}}/flux2-{{fluxcd.versions.flux2}}.tgz
+    release_name: flux2
     release_state: present
-    release_namespace: "{{ flux_namespace_name }}"
+    release_namespace: "{{ fluxcd.flux_namespace }}"
     force: True
     wait: True
     wait_timeout: "300s"
     update_repo_cache: True
     disable_hook: True
     release_values:
-      git:
-        secretName: "git-auth"
-        timeout: "200s"
-        pollInterval: "2m"
-        url: "https://{{ git_username }}:{{ git_password }}@{{ git_repo }}"
-        branch: "{{ git_branch }}"
-        label: 'sync' 
-        path: "{{ git_path }}"  
+      installCRDs: "{{fluxcd.flux2.installCRDs}}"
+      clusterDomain: "{{fluxcd.flux2.clusterDomain}}"
+      logLevel: "{{fluxcd.flux2.logLevel}}"
+      watchAllNamespaces: "{{fluxcd.flux2.watchAllNamespaces}}"
       rbac:
-        create: true 
-        pspEnabled: false 
-      registry:
-       insecureHosts: "{{ network_docker_url }}" 
+        create: "{{fluxcd.flux2.rbac.create}}"
 
-- name: "Deploy Helm Operator"
+- name: "Deploy Flux CD Sync"
   kubernetes.core.helm:
-    atomic: yes
-    chart_ref: fluxcd/helm-operator
-    release_name: flux-helm-operator
+    chart_ref: https://github.com/fluxcd-community/helm-charts/releases/download/flux2-sync-{{fluxcd.versions.sync}}/flux2-sync-{{fluxcd.versions.sync}}.tgz
+    release_name: flux2-sync
     release_state: present
-    release_namespace: "{{ flux_namespace_name }}"
+    release_namespace: "{{ fluxcd.flux_namespace }}"
+    force: True
     wait: True
     wait_timeout: "300s"
-    force: True
     update_repo_cache: True
     disable_hook: True
     release_values:
-      git:
-        secretName: "git-auth"
-        timeout: "200s"
-        pollInterval: "2m"
-        url: "https://{{ git_username }}:{{ git_password }}@{{ git_repo }}"
-      rbac:
-        create: true 
-        pspEnabled: false 
-      helm:
-        versions: "v3"
-...
+      gitRepository:
+        spec:
+          secretRef:
+            name: "{{fluxcd.sync.gitRepository.spec.secretRef.name}}"
+          timeout: "{{fluxcd.sync.gitRepository.spec.timeout}}"
+          interval: "{{fluxcd.sync.gitRepository.spec.interval}}"
+          url: "https://{{ fluxcd.git_username }}:{{ fluxcd.git_password }}@{{ fluxcd.git_repo }}"
+          ref:
+            branch: "{{ fluxcd.git_branch }}"
+      secret:
+        create: "{{fluxcd.sync.secret.create}}"
+        data: "{{fluxcd.sync.secret.data}}"
+        generate:
+          sshKeyAlgorithm: "{{fluxcd.sync.secret.generate.sshKeyAlgorithm}}"
+          sshEcdsaCurve: "{{fluxcd.sync.secret.generate.sshEcdsaCurve}}"
+
+- name: "Deploy Flux CD Notifications"
+  kubernetes.core.helm:
+    chart_ref: https://github.com/fluxcd-community/helm-charts/releases/download/flux2-notification-{{fluxcd.versions.notification}}/flux2-notification-{{fluxcd.versions.notification}}.tgz
+    release_name: flux2-notification
+    release_state: present
+    release_namespace: "{{ fluxcd.flux_namespace }}"
+    force: True
+    wait: True
+    wait_timeout: "300s"
+    update_repo_cache: True
+    disable_hook: True
+    release_values:
+      secretlist: "{{fluxcd.notification.secretlist}}"
+      providerlist: "{{fluxcd.notification.providerlist}}"
+      alertlist: "{{fluxcd.notification.alertlist}}"
+
+
+- name: List custom objects created using CRD
+  kubernetes.core.k8s_info:
+    kind: CustomResourceDefinition
+    name: gitrepositories.source.toolkit.fluxcd.io
+  register: gitrepositories_crd
+
+- name: List custom objects created using CRD
+  kubernetes.core.k8s_info:
+    kind: CustomResourceDefinition
+    name: kustomizations.kustomize.toolkit.fluxcd.io
+  register: kustomization_crd
+
+- debug:
+    var: gitrepositories_crd.resources
+  when: gitrepositories_crd.resources is none
+

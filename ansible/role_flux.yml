@@ -3,12 +3,13 @@
   hosts: localhost
   connection: local
   gather_facts: no
+  vars_files:
+    - vars.yml
+  vars:
+    do: create
+    wait_timeout: 3600
   roles:
-      - manage_fluxcd
+      - role: flux
 
-# ansible-playbook -i inventory  manage_fluxcd.yaml -e do=install
-
-# Workaround if password file is missing 
-# ansible-playbook -i inventory/  manage_fluxcd.yaml -e do=install -e git_password="pass"
-
-# ansible-playbook -i inventory  manage_fluxcd.yaml -e do=uninstall
+# ansible-playbook -i inventory  role_flux.yml -e do=create
+# ansible-playbook -i inventory  role_flux.yml -e do=delete
