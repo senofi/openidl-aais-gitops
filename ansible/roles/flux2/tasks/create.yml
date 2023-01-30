@@ -1,5 +1,5 @@
 ---
-- name: "Creating Flux namespace '{{ fluxcd.flux_namespace }}' if missing"
+- name: "Creating Flux2 namespace '{{ fluxcd.flux_namespace }}' if missing"
   k8s:
     name: "{{ fluxcd.flux_namespace }}"
     kind: Namespace
@@ -22,7 +22,7 @@
         GIT_AUTHUSER: "{{ fluxcd.git_username }}" 
         GIT_AUTHKEY: "{{ fluxcd.git_password }}"
 
-- name: "Deploy Flux CD"
+- name: "Deploy Flux2 CD"
   kubernetes.core.helm:
     chart_ref: https://github.com/fluxcd-community/helm-charts/releases/download/flux2-{{fluxcd.versions.flux2}}/flux2-{{fluxcd.versions.flux2}}.tgz
     release_name: flux2
@@ -41,7 +41,7 @@
       rbac:
         create: "{{fluxcd.flux2.rbac.create}}"
 
-- name: "Deploy Flux CD Sync"
+- name: "Deploy Flux2 CD Sync"
   kubernetes.core.helm:
     chart_ref: https://github.com/fluxcd-community/helm-charts/releases/download/flux2-sync-{{fluxcd.versions.sync}}/flux2-sync-{{fluxcd.versions.sync}}.tgz
     release_name: flux2-sync
@@ -69,7 +69,7 @@
           sshKeyAlgorithm: "{{fluxcd.sync.secret.generate.sshKeyAlgorithm}}"
           sshEcdsaCurve: "{{fluxcd.sync.secret.generate.sshEcdsaCurve}}"
 
-- name: "Deploy Flux CD Notifications"
+- name: "Deploy Flux2 CD Notifications"
   kubernetes.core.helm:
     chart_ref: https://github.com/fluxcd-community/helm-charts/releases/download/flux2-notification-{{fluxcd.versions.notification}}/flux2-notification-{{fluxcd.versions.notification}}.tgz
     release_name: flux2-notification

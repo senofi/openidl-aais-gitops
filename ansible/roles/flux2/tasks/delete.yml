@@ -1,5 +1,5 @@
 ---
-- name: "Delete Flux CD"
+- name: "Delete Flux2 CD"
   kubernetes.core.helm:
     chart_ref: https://github.com/fluxcd-community/helm-charts/releases/download/flux2-{{fluxcd.versions.flux2}}/flux2-{{fluxcd.versions.flux2}}.tgz
     release_name: flux2
@@ -11,7 +11,7 @@
     update_repo_cache: True
     disable_hook: True
 
-- name: "Delete Flux CD Sync"
+- name: "Delete Flux2 CD Sync"
   kubernetes.core.helm:
     chart_ref: https://github.com/fluxcd-community/helm-charts/releases/download/flux2-sync-{{fluxcd.versions.sync}}/flux2-sync-{{fluxcd.versions.sync}}.tgz
     release_name: flux2-sync
@@ -23,7 +23,7 @@
     update_repo_cache: True
     disable_hook: True
 
-- name: "Delete Flux CD Notifications"
+- name: "Delete Flux2 CD Notifications"
   kubernetes.core.helm:
     chart_ref: https://github.com/fluxcd-community/helm-charts/releases/download/flux2-notification-{{fluxcd.versions.notification}}/flux2-notification-{{fluxcd.versions.notification}}.tgz
     release_name: flux2-notification
@@ -73,7 +73,7 @@
 
 - include_tasks: crd_info.yml
 
-- name: "Deleting Flux namespace '{{ fluxcd.flux_namespace }}'"
+- name: "Deleting Flux2 namespace '{{ fluxcd.flux_namespace }}'"
   k8s:
     name: "{{ fluxcd.flux_namespace }}"
     kind: Namespace

@@ -1,5 +1,5 @@
 
 ---
-- name: "Do action '{{ do }}'' role"
+- name: "Do action '{{ do }}' role"
   include_tasks: "{{ do | lower }}.yml"
 ...
