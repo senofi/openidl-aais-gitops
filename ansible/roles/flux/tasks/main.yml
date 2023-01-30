@@ -1,0 +1,5 @@
+
+---
+- name: "Do action '{{ do }}'' role"
+  include: "{{ do | lower }}.yml"
+...

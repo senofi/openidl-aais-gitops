@@ -1,0 +1,43 @@
+---
+- name: "Deploy Flux CD"
+  kubernetes.core.helm:
+    chart_ref: fluxcd/flux
+    release_name: flux
+    release_state: absent
+    release_namespace: "{{ flux_namespace_name }}"
+    force: True
+    wait: True
+    wait_timeout: "300s"
+
+- name: "Deploy Helm Operator"
+  kubernetes.core.helm:
+    chart_ref: fluxcd/helm-operator
+    release_name: flux-helm-operator
+    release_state: absent
+    release_namespace: "{{ flux_namespace_name }}"
+    force: True
+    wait: True
+    wait_timeout: "300s"
+
+- name: "Removing Flux helm repo"
+  kubernetes.core.helm_repository:
+    name: "fluxcd"
+    state: absent
+    repo_url: "https://charts.fluxcd.io"
+  ignore_errors: true
+
+- name: "Removing helm-operator crds version '{{ helm_operator_version }}'"
+  k8s:
+    wait: true
+    apply: true
+    state: absent
+    definition: '{{ lookup("url", "https://raw.githubusercontent.com/fluxcd/helm-operator/{{ helm_operator_version }}/deploy/crds.yaml", split_lines=False) }}'
+  ignore_errors: true
+
+- name: "Deleting Flux namespace '{{ flux_namespace_name }}'"
+  k8s:
+    name: "{{ flux_namespace_name }}"
+    kind: Namespace
+    state: absent
+    wait: true
+...
