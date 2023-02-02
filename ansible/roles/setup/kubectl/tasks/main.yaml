@@ -64,12 +64,20 @@
       - { pkg_name: "ansible==2.9.11", exec: "pip3", args: "" }
       - { pkg_name: "docker", exec: "pip3", args: "" }
 
+  - name: Check kustomize
+    stat:
+      path: "{{ kubectl.bin_directory | default(default.bin_directory) }}/kustomize"
+    register: kustomize_stat_result
+    tags:
+      - kubectl
+
   - name: Install kustomize
     become: true
     shell: |
       cd {{ kubectl.bin_directory | default(default.bin_directory) }}
       curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
     changed_when: false
+    when: not kustomize_stat_result.stat.exists
     tags:
       - notest
 
