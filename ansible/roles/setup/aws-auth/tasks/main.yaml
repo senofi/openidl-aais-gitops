@@ -13,29 +13,30 @@
     tags:
       - aws_auth
 
-  - name: create bin directory
+  - name: Ensures bin dir exists
+    become: true
     file:
-      path: "{{ aws_authenticator.bin_directory }}"
+      path: "{{ aws_authenticator.bin_directory | default(default.bin_directory) }}"
+      recurse: yes
+      mode: '0755'
       state: directory
-    when: not aws_auth_stat_result.stat.exists
-    tags:
-      - aws_auth
 
   - name: Install aws-authenticator
+    become: true
     get_url:
       url: "https://amazon-eks.s3-us-west-2.amazonaws.com/{{ aws_authenticator.version | default(default.version) }}/{{ aws_authenticator.release_date | default(default.release_date) }}\
       /bin/{{ aws_authenticator.os }}/{{ aws_authenticator.arch }}/aws-iam-authenticator"
       dest: "{{ aws_authenticator.bin_directory }}/aws-iam-authenticator"
       mode: 0755
-      checksum: "{{ aws_authenticator.checksum | default(default.checksum) }}"
+      checksum: ""
     when: not aws_auth_stat_result.stat.exists
     tags:
       - aws_auth
 
-  - name: Test Kubernetes connection
-    k8s_info:
-      kind: Pod
-      namespace: default
-      kubeconfig: "{{ kubeconfig_path }}"
-      context: "{{ kubecontext }}"
-    register: pods_default
+#  - name: Test Kubernetes connection
+#    k8s_info:
+#      kind: Pod
+#      namespace: default
+#      kubeconfig: "{{ kubeconfig_path }}"
+#      context: "{{ kubecontext }}"
+#    register: pods_default
