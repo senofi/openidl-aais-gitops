@@ -62,7 +62,7 @@ aws:
   access_key:
   region: us-east-2
   external_id: baf-user
-  assume_role_arn: 
+  assume_role_arn:
 
 k8s:
   cluster_name: ""
