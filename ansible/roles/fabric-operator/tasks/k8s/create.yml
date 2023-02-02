@@ -2,6 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 ---
+- name: configuring aws
+  shell: |
+    export AWS_PROFILE=baf-role
+  changed_when: false
+  tags:
+    - notest
+
 - name: Creating CRDs
   k8s:
     definition: "{{ lookup('kubernetes.core.kustomize',dir=crd_url+'/?ref=v'+tag_version) }}"

@@ -50,3 +50,16 @@
     when: item is defined and item.k8s is defined
     tags:
       - molecule-idempotence-notest
+
+  - name: Install pip dependencies
+    become: true
+    pip:
+      name: "{{ item.pkg_name }}"
+      executable: "{{ item.exec }}"
+      extra_args: "{{ item.args }}"
+    loop:
+      - { pkg_name: "pyyaml", exec: "pip3", args: "" }
+      - { pkg_name: "kubernetes", exec: "pip3", args: "" }
+      - { pkg_name: "requests-oauthlib", exec: "pip3", args: "" }
+      - { pkg_name: "ansible==2.9.11", exec: "pip3", args: "" }
+      - { pkg_name: "docker", exec: "pip3", args: "" }
