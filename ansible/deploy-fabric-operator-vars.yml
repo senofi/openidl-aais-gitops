@@ -65,7 +65,7 @@ aws:
   assume_role_arn: arn:aws:iam::449821306380:role/d1-test-baf-automation
 
 k8s:
-  cluster_name: d1-
+  cluster_name: ""
 
 ############
 # Flux2 vars

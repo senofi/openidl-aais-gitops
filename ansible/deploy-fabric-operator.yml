@@ -16,13 +16,13 @@
     state: present
     wait_timeout: 3600
     k8s:
-      cluster_name: d1-test-blk-cluster
+      cluster_name: "d1-test-blk-cluster"
     aws:
-      access_id: {{aws_access_key}}
-      access_key: {{aws_secret_key}}
-      region: us-east-2
-      external_id: {{aws_external_id}}
-      assume_role_arn: {{aws_assume_role_arn}}
+      access_id: "{{aws_access_key}}"
+      access_key: "{{aws_secret_key}}"
+      region: "us-east-2"
+      external_id: "{{aws_external_id}}"
+      assume_role_arn: "{{aws_assume_role_arn}}"
 
   roles:
     - fabric-operator
