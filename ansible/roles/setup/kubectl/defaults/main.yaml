@@ -6,4 +6,4 @@ default:
   os: "linux"    # use "darwin" for MacOS X, "windows" for Windows
   arch: "amd64"  # other possible values: "386","arm64","arm","ppc64le","s390x"
   bin_directory: "~/bin"  
-  checksum: "sha256:ba876aef0e9d7e2e8fedac036ec194de5ec9b6d2953e30ff82a2758c6ba32174"
+  checksum: "sha256:3e65d979f90ce488ae43826b06ac75c346a397b2fe0b90a21dbd1a34c5f33de0"
