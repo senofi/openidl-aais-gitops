@@ -59,5 +59,3 @@
       install_os: "linux"                 #Default to linux OS
       install_arch:  "amd64"              #Default to amd64 architecture
       bin_install_dir:  "/usr/local/bin"           #Default to ~/bin install directory for binaries
-      eks_cluster: d1-test-blk-cluster
-      region: us-east-2
