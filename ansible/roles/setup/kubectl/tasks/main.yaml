@@ -82,6 +82,7 @@
       - notest
 
   - name: Install Git
+    become: true
     yum:
       name: git
       state: latest
