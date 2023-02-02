@@ -58,8 +58,8 @@
       aws configure set source_profile baf-user --profile baf-role
       aws configure set role_arn {{ aws_assume_role_arn }} --profile baf-role
       export AWS_PROFILE=baf-role
-      # currently no permissions has been granted to the account
-      #aws sts get-caller-identity
+      aws sts get-caller-identity
+      aws eks update-kubeconfig --name {{ eks_cluster }}
     changed_when: false
     tags:
       - notest

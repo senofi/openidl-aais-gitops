@@ -39,7 +39,8 @@
         aws_secret_key: "{{ aws.secret_key }}"
         aws_external_id: "{{ aws_external_id }}"
         aws_assume_role_arn: "{{ aws_assume_role_arn }}"
-        region: us-east-2
+        eks_cluster: "{{ eks_cluster }}"
+        region: "{{ region }}"
       with_items: "{{ network.organizations }}"
       when: "item.cloud_provider == 'aws' or item.cloud_provider == 'aws-baremetal'"
     - include_role:
