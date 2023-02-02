@@ -11,7 +11,7 @@
 
 - name: Creating CRDs
   k8s:
-    definition: "{{ lookup('kubernetes.core.kustomize',dir=crd_url+'/?ref=v'+tag_version) }}"
+    definition: "{{ lookup('kubernetes.core.kustomize',binary_path='/usr/local/bin/kubectl',dir=crd_url+'/?ref=v'+tag_version) }}"
   register: resultcrds
 
 # Create the namespace for the operator
