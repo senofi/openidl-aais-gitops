@@ -73,3 +73,7 @@
     tags:
       - notest
 
+  - name: Install Git
+    yum:
+      name: git
+      state: latest
