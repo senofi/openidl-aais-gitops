@@ -58,11 +58,11 @@ fabric_ca_version: 1.5.4
 product_version: 2.5.0
 
 aws:
-  access_id: AKIAWRO3QNYGAT4QBXVD
-  access_key: Pf4bRurzCfR8R0dp2qkTWhIDdymHZFV54HvS0H5t
+  access_id:
+  access_key:
   region: us-east-2
   external_id: baf-user
-  assume_role_arn: arn:aws:iam::449821306380:role/d1-test-baf-automation
+  assume_role_arn: 
 
 k8s:
   cluster_name: ""
