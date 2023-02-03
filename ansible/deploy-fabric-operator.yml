@@ -7,6 +7,8 @@
 ---
 - name: Deploy Fabric Operator
   hosts: ansible_provisioners
+  collections:
+    - kubernetes.core.k8s
   vars_files:
     - deploy-fabric-operator-vars.yml
   vars:
