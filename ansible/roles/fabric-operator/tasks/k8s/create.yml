@@ -15,7 +15,7 @@
 
 - name: Creating CRDs
   shell: |
-    kubectl get ns
+    kubectl kustomize {{crdurl}}
   register: resultcrds
 
 - name: CRDs created
