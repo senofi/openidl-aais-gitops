@@ -10,7 +10,6 @@
   collections:
     - kubernetes.core.k8s
     - kubernetes.core.k8s_info
-    -
   vars_files:
     - deploy-fabric-operator-vars.yml
   vars:
