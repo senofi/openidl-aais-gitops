@@ -18,6 +18,10 @@
     kubectl kustomize {{crdurl}}
   register: resultcrds
 
+- name: CRDs created
+  shell: |
+    echo "CRDs created"
+
 # Create the namespace for the operator
 - name: Fail if namespace not specified
   fail:
