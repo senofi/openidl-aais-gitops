@@ -85,6 +85,7 @@
       data:
         identity: "{{ fluxcd.git_sshkey }}"
         known_hosts: "{{ fluxcd.git_ssh_known_hosts }}"
+  when: fluxcd.git_protocol == 'ssh'
 
 - name: "Deploy Flux2 CD Notifications"
   kubernetes.core.helm:
