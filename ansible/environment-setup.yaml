@@ -9,6 +9,12 @@
     no_log: "{{ no_ansible_log | default(false) }}"
     tasks:
     - include_role:
+        name: setup/common-packages
+      vars:
+        common_packages:
+          - git
+          - jq
+    - include_role:
         name:  setup/kubectl
       vars:
         kubectl:
