@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 ---
+- name: "Include vars from git"
+  include_vars:
+    file: "./roles_configs/ansible_roles_vars.yml"
+
 - name: configuring aws
   shell: |
     export AWS_PROFILE=baf-role
@@ -58,6 +62,22 @@
     wait: yes
     wait_timeout: "{{ wait_timeout }}"
   changed_when: False
+
+- name: "Patch ingress"
+  k8s:
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: "{{ console_name }}"
+        namespace: "{{ namespace }}"
+        annotations:
+          kubernetes.io/ingress.class: "{{console_ingress_class}}"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: 60s
+          nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      spec:
+        ingressClassName: "{{console_ingress_class}}"
+    merge_type: merge
 
 - name: Print console URL
   debug:

@@ -8,3 +8,4 @@
   roles:
     - role: git-config
     - role: fabric-operator
+    - role: fabric-console
