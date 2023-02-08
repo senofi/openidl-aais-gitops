@@ -1,6 +1,6 @@
 {
     "channels": [
-{% for channel in network.channels if (channel.name == "defaultchannel") or (org_name in channel.name) %}
+{% for channel in network.channels %}
     {
       "chaincodeName": "{{ channel.chaincode.name }}",
       "channelName": "{{ channel.name }}"
@@ -8,7 +8,7 @@
 {% endfor %}
     ],
     "crossChannelQueryParam": [
-{% for channel in network.channels if org_name in channel.name %}
+{% for channel in network.channels if not channel.common %}
     {
       "chaincodeName": "{{ channel.chaincode.name }}",
       "channelName": "{{ channel.name }}"
@@ -17,7 +17,7 @@
     ],
     "users": [
         {
-            "mspId": "{{ network.org_name }}MSP",
+            "mspId": "{{ network.msp_id }}",
             "org": "{{ network.org_name }}",
             "user": "openidl-{{ network.org_name }}-data-call-app-ibp-2.0"
         }

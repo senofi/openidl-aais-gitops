@@ -5,7 +5,7 @@
         "wallet": "&wallet"
     },
     "listenerChannels": [
-{% for channel in network.channels if org_name in channel.name %}
+{% for channel in network.channels if not channel.common %}
         {
             "channelName": "{{ channel.name }}",
             "events": [
@@ -15,13 +15,15 @@
             ]
         },
 {% endfor %}
+{% for channel in network.channels if channel.common %}
         {
-            "channelName": "defaultchannel",
+            "channelName": "{{ channel.name }}",
             "events": [
                 {
                     "ExtractionPatternSpecified": "ExtractionPatternSpecified"
                 }
             ]
-        }
+        }{% if loop.last %}{% else %},{% endif %}
+{% endfor %}
     ]
 }

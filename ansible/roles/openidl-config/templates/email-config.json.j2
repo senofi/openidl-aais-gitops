@@ -2,82 +2,102 @@
     "Config": [
         {
             "emailsubject": "Blockchain API is Down",
-            "fromemailaddress": "support@openidl.org",
+            "fromemailaddress": "{{ support.fromAddress }}",
             "service": "APIDOWN",
             "toemailaddress": [
-                "support@aaisonline.com"
+                {% for toAddress in support.toAddresses -%}
+                "{{ toAddress }}"{% if loop.last %}{% else %},{% endif %}
+                {%- endfor %}
             ]
         },
         {
             "emailsubject": "Mongo Service is Down",
-            "fromemailaddress": "support@openidl.org",
+            "fromemailaddress": "{{ support.fromAddress }}",
             "service": "DBDOWN",
             "toemailaddress": [
-                "support@aaisonline.com"
+                {% for toAddress in support.toAddresses -%}
+                "{{ toAddress }}"{% if loop.last %}{% else %},{% endif %}
+                {%- endfor %}
             ]
         },
         {
             "emailsubject": "Data Load for <<BATCHID>> - Mongo Database Error",
-            "fromemailaddress": "support@openidl.org",
+            "fromemailaddress": "{{ support.fromAddress }}",
             "service": "DBEXECERROR",
             "toemailaddress": [
-                "support@aaisonline.com"
+                {% for toAddress in support.toAddresses -%}
+                "{{ toAddress }}"{% if loop.last %}{% else %},{% endif %}
+                {%- endfor %}
             ]
         },
         {
             "emailsubject": "Blockchain Hash failed",
-            "fromemailaddress": "support@openidl.org",
+            "fromemailaddress": "{{ support.fromAddress }}",
             "service": "BCERROR",
             "toemailaddress": [
-                "support@aaisonline.com"
+                {% for toAddress in support.toAddresses -%}
+                "{{ toAddress }}"{% if loop.last %}{% else %},{% endif %}
+                {%- endfor %}
             ]
         },
         {
             "emailsubject": "Data Load for <<BATCHID>> Failure ",
-            "fromemailaddress": "support@openidl.org",
+            "fromemailaddress": "{{ support.fromAddress }}",
             "service": "DATALOADFAILURE",
             "toemailaddress": [
-                "support@aaisonline.com"
+                {% for toAddress in support.toAddresses -%}
+                "{{ toAddress }}"{% if loop.last %}{% else %},{% endif %}
+                {%- endfor %}
             ]
         },
         {
             "emailsubject": "Data Load - Input file format is incorrect",
-            "fromemailaddress": "support@openidl.org",
+            "fromemailaddress": "{{ support.fromAddress }}",
             "service": "INPUTFILEFORMAT",
             "toemailaddress": [
-                "support@aaisonline.com"
+                {% for toAddress in support.toAddresses -%}
+                "{{ toAddress }}"{% if loop.last %}{% else %},{% endif %}
+                {%- endfor %}
             ]
         },
         {
             "emailsubject": "Data Load Log Failure - <<BATCHID>>",
-            "fromemailaddress": "support@openidl.org",
+            "fromemailaddress": "{{ support.fromAddress }}",
             "service": "DBLOGFAILURE",
             "toemailaddress": [
-                "support@aaisonline.com"
+                {% for toAddress in support.toAddresses -%}
+                "{{ toAddress }}"{% if loop.last %}{% else %},{% endif %}
+                {%- endfor %}
             ]
         },
         {
             "emailsubject": "Data Loaded Successfully",
-            "fromemailaddress": "support@openidl.org",
+            "fromemailaddress": "{{ support.fromAddress }}",
             "service": "DATALOADSUCCESS",
             "toemailaddress": [
-                "support@aaisonline.com"
+                {% for toAddress in support.toAddresses -%}
+                "{{ toAddress }}"{% if loop.last %}{% else %},{% endif %}
+                {%- endfor %}
             ]
         },
         {
             "emailsubject": "Generate Token Failure",
-            "fromemailaddress": "support@openidl.org",
+            "fromemailaddress": "{{ support.fromAddress }}",
             "service": "GENERATETOKENFAILURE",
             "toemailaddress": [
-                "support@aaisonline.com"
+                {% for toAddress in support.toAddresses -%}
+                "{{ toAddress }}"{% if loop.last %}{% else %},{% endif %}
+                {%- endfor %}
             ]
         },
         {
             "emailsubject": "Generate Token Success",
-            "fromemailaddress": "support@openidl.org",
+            "fromemailaddress": "{{ support.fromAddress }}",
             "service": "GENERATETOKENSUCCESS",
             "toemailaddress": [
-                "support@aaisonline.com"
+                {% for toAddress in support.toAddresses -%}
+                "{{ toAddress }}"{% if loop.last %}{% else %},{% endif %}
+                {%- endfor %}
             ]
         }
     ]
