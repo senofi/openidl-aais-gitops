@@ -100,13 +100,12 @@
     aws secretsmanager get-secret-value --secret-id {{ org_name }}-{{ env }}-organization-ids --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString | jq -r .organizations
   register: organizations
 
-- name: Create openidl k8s namespace
+- name: Create a openidl k8s namespace
   k8s:
+    name: openidl
+    api_version: v1
+    kind: Namespace
     state: present
-    definition:
-      name: openidl
-      api_version: v1
-      kind: Namespace
 
 - name: Launch a temporary pod in cluster
   no_log: true
