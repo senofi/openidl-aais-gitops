@@ -1,4 +1,1 @@
 ---
-- name: "Include vars from git"
-  include_vars:
-    file: "./roles_configs/ansible_roles_vars.yml"
