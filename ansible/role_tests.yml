@@ -1,0 +1,8 @@
+---
+- name: "Get configs repo"
+  hosts: all
+  gather_facts: no
+
+  roles:
+    - role: git-config
+    - role: test-vars

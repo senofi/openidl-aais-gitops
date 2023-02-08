@@ -1,0 +1,22 @@
+---
+- name: "Setup git configuration provisioning"
+  copy:
+    src: "ssh_config"
+    dest: "~/.ssh/config"
+    mode: 0644
+
+- name: "Create ssh key"
+  copy:
+    dest: "~/.ssh/openidl-d1-config"
+    mode: 0600
+    content: |
+      {{ ssh_key | b64decode }}
+
+- name: "Pull configs"
+  git:
+    repo: "git@github_roles_configs:senofi/openidl-d1-config.git"
+    dest: "./roles_configs"
+    clone: yes
+    update: yes
+    version: main
+  register: pull_result
