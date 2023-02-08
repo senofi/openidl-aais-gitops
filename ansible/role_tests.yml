@@ -2,7 +2,9 @@
 - name: "Get configs repo"
   hosts: all
   gather_facts: no
-
+  vars:
+    state: present
+    wait_timeout: 3600
   roles:
     - role: git-config
-    - role: test-vars
+    - role: fabric-operator
