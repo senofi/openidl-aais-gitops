@@ -3,6 +3,7 @@
   become: true
   shell: |
     apt-get update
+  when: ansible_distribution == "Ubuntu"
 
 - name: Install package dependencies - ubuntu
   become: true
