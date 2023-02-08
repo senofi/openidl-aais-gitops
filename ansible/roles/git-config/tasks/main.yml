@@ -29,4 +29,5 @@
     clone: yes
     update: yes
     version: main
+    accept_hostkey: true
   register: pull_result
