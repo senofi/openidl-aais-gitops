@@ -2,10 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 ---
-- name: "Include vars from git"
-  include_vars:
-    file: "./roles_configs/ansible_roles_vars.yml"
-
 - name: configuring aws
   shell: |
     export AWS_PROFILE=baf-role
