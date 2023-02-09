@@ -214,3 +214,4 @@ vault:
   aws_account_number: XXXXXXXXXXXX
   registry: ghcr.io/openidl-org/openidl-aais-gitops
   registry_version: latest
+  aws_profile: git-actions-role
