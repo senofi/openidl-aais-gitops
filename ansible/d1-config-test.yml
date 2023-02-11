@@ -1,3 +1,15 @@
+aws_access_key: "AKIAWRO3QNYGMQIZRBJ4"
+aws_secret_key: "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"
+aws_external_id: "git-actions"
+aws_assume_role_arn: "arn:aws:iam::449821306380:role/d1-test-gitactions-admin"
+aws_iam_role: "arn:aws:iam::449821306380:role/d1-test-gitactions-admin"
+aws_account_number: 449821306380
+
+gitrepo_username:
+gitrepo_password:
+gitrepo_name: github.com/senofi/openidl-aais-gitops.git
+gitrepo_branch: feature/IDL-6
+
 org_name: "d1"
 aws_region: "us-east-2"
 env: "test"
@@ -9,15 +21,40 @@ internal_domain: "d1.internal.test.senofi.net"
 node_type: "aais"
 network:
   org_name: "an1"
+  ca_name: "an1CA"
+  msp_id: "an1"
   ordererorg: "true"
   ordererorg_name: "ordererorg"
   organizations:
     - name: "an1"
       domain: "caan1.test.senofi.net"
   channels:
-  - name: defaultchannel
+  - name: openidl-default
+    common: true
     chaincode:
-      name: openidl-cc-default
-      repo_url: github.com/senofi/openidl-main.git
-      repo_branch: senofi-develop
-      repo_path: openidl-chaincode/chaincode/openidl
+      name: openidl-chaincode-common
+#      repo_url: github.com/senofi/openidl-main.git
+#      repo_branch: senofi-develop
+#      repo_path: openidl-chaincode/chaincode/openidl
+  - name: openidl-an1-carr1
+    chaincode:
+      name: openidl-chaincode
+
+console:
+  username: admin
+  password: password
+  api_endpoint: https://hlf-operator-console.d1.test.senofi.net/
+  api_authtype: basic
+  peer: "peer1"
+
+support:
+  fromAddress: support@openidl.org
+  toAddresses:
+    - openidl@senofi.ca
+
+hds:
+  host:
+  port:
+  username:
+  password:
+  database:
