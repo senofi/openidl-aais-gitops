@@ -13,12 +13,18 @@
   shell: |
     git clone https://{{ gitrepo_name }} -b {{ gitrepo_branch }} /tmp/openidl-code/helm
 
+- name: Copy config files
+  copy:
+   src: /tmp/openidl-code/{{ org_name }}-{{ env }}-config/
+   dest: /tmp/openidl-code/helm/openidl-k8s/charts/openidl-secrets/{{ org_name }}-{{ env }}-config/
+
 - name: Deploy secrets
   shell: |
+    cd /tmp/openidl-code/helm/
     helm upgrade --install \
-              {{ env }}-{{ org_name }}-secrets /tmp/openidl-code/helm/openidl-k8s \
-              -f /tmp/openidl-code/helm/openidl-k8s/global-values-secrets.yaml -n openidl \
-            --set global.configpath=/tmp/openidl-code/{{ org_name }}-{{ env }}-config
+              {{ env }}-{{ org_name }}-secrets openidl-k8s \
+              -f openidl-k8s/global-values-secrets.yaml -n openidl \
+            --set global.configpath={{ org_name }}-{{ env }}-config
   register: deploy_secrets
 
 #- name: Dispose of temporary git repository content
