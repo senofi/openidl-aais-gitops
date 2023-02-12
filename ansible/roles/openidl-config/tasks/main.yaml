@@ -123,6 +123,15 @@
       description: "Ansible-generated openIDL token"
   register: key_secret_body
 
+- name: To Remove console API create key response
+  debug:
+    msg: "api response: {{ key_secret_body }}"
+
+
+- name: To Remove console API keys
+  debug:
+    msg: "api_key: {{ key_secret_body.json.api_key }} , api_secret: {{ key_secret_body.json.api_secret | default(omit) }}"
+
 - name: Create a connection profile
   ibm.blockchain_platform.connection_profile:
     api_endpoint: "{{ console.api_endpoint }}"
