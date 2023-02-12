@@ -1,7 +1,6 @@
 ---
 
 - name: Install required Ansible collections
-  delegate_to: localhost
   shell: |
     ansible-galaxy collection install ibm.blockchain_platform
     ansible-galaxy collection install kubernetes.core
