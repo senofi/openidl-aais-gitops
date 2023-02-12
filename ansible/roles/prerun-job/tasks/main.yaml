@@ -58,3 +58,27 @@
     - { pkg_name: "python-pkcs11", exec: "pip3", args: "" }
     - { pkg_name: "semantic_version", exec: "pip3", args: "" }
     - { pkg_name: "fabric-sdk-py", exec: "pip3", args: "" }
+- name: Create HLF home folder to extract the tools
+  file:
+    path: "{{ fabric.tools.home_folder }}"
+    state: directory
+    mode: "u=rwx,g=rx,o=rwx"
+  become: true
+
+- name: Download Fabric Tools archive (configtx, crypto etc)
+  get_url:
+    url: "{{ fabric.tools.url }}"
+    dest: "{{ fabric.tools.home_folder }}/{{ fabric.tools.archive }}"
+    mode: 0755
+
+- name: Extract HLF tools archive
+  unarchive:
+    src: "{{ fabric.tools.home_folder }}/{{ fabric.tools.archive }}"
+    dest: "{{ fabric.tools.home_folder }}"
+    remote_src: yes
+
+- name: Create symlink to HLF folder
+  file:
+    src: "{{ fabric.tools.home_folder }}/bin"
+    dest: "/usr/local/bin"
+    state: link
