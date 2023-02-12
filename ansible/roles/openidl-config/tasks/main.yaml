@@ -109,9 +109,9 @@
 
 - name: Get Console API key and secret
   ansible.builtin.uri:
-    url: https://{{ console.api_endpoint }}/ak/api/v3/permissions/keys
-    user: {{ console.username }}
-    password: {{ console.password }}
+    url: "https://{{ console.api_endpoint }}/ak/api/v3/permissions/keys"
+    user: "{{ console.username }}"
+    password: "{{ console.password }}"
     method: POST
     body: "{{ lookup('ansible.builtin.file','console-token-request-body.json.j2') }}"
     force_basic_auth: yes
