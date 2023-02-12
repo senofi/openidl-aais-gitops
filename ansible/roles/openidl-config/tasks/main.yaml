@@ -168,7 +168,7 @@
     s3_hds_bucket: "{{ org_name }}-{{ env }}-openidl-hdsdatastore"
   with_items:
     - channel-config.json
-    - connection-profile.json
+#    - connection-profile.json
     - data-call-app-default-config.json
     - data-call-app-mappings-config.json
     - default-config.json
