@@ -1,14 +1,10 @@
 ---
 
-- name: Install collection ibm.blockchain_platform
-  community.general.ansible_galaxy_install:
-    type: collection
-    name: ibm.blockchain_platform
-
-- name: Install collection kubernetes.core
-  community.general.ansible_galaxy_install:
-    type: collection
-    name: kubernetes.core
+- name: Install required Ansible collections
+  delegate_to: localhost
+  shell: |
+    ansible-galaxy collection install ibm.blockchain_platform
+    ansible-galaxy collection install kubernetes.core
 
 - name: register temporary directory
   tempfile:
