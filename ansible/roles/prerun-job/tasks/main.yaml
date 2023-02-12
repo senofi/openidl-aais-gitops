@@ -45,10 +45,6 @@
   retries: 5
   loop:
     - python38-devel
-  when:
-    - ansible_distribution == "Amazon" or
-      ansible_distribution == "CentOS" or
-      ansible_distribution == "RedHat"
   until: result is success
   register: result
   tags:
