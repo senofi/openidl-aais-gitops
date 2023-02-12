@@ -109,7 +109,7 @@
 
 - name: Get Console API key and secret
   ansible.builtin.uri:
-    url: "https://{{ console.api_endpoint }}/ak/api/v3/permissions/keys"
+    url: "{{ console.api_endpoint }}/ak/api/v3/permissions/keys"
     user: "{{ console.username }}"
     password: "{{ console.password }}"
     method: POST
