@@ -36,19 +36,16 @@
   shell: export AWS_PROFILE=cicd-role; /usr/local/bin/aws sts get-caller-identity
   register: aws_caller_identity
 
-- name: "Install package dependencies - yum"
-  become: true
-  yum:
-    name: "{{ item }}"
-    state: present
-    update_cache: yes
-  retries: 5
-  loop:
-    - python38-devel
-  until: result is success
-  register: result
-  tags:
-    - packages
+#- name: "Install package dependencies - yum"
+#  become: true
+#  yum:
+#    name: "{{ item }}"
+#    state: present
+#    update_cache: yes
+#  retries: 5
+#  loop:
+#    - python38-devel
+#  until: result is success
 
 - name: Install required Python packages
   become: true
