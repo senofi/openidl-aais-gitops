@@ -3,17 +3,6 @@
   shell: |
     export AWS_PROFILE=cicd-role; aws eks update-kubeconfig --region {{ aws_region }} --name {{ app_cluster_name }}
 
-- name: temporary git repository content
-  file:
-    path: /tmp/openidl-code/
-    state: absent
-  become: yes
-
-- name: Download git repository content
-  no_log: false
-  shell: |
-    git clone https://{{ gitrepo_name }} -b {{ gitrepo_branch }} /tmp/openidl-code
-
 - name: Deploy secrets
   shell: |
     helm upgrade --install \
@@ -22,7 +11,7 @@
             --set global.configpath=/tmp/openidl-code/{{ org_name }}-{{ env }}-config
   register: deploy_secrets
 
-- name: Dispose of temporary git repository content
-  file:
-   path: /tmp/openidl-code/
-   state: absent
+#- name: Dispose of temporary git repository content
+#  file:
+#   path: /tmp/openidl-code/
+#   state: absent
