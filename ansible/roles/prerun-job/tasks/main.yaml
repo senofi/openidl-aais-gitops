@@ -35,3 +35,14 @@
 - name: Test AWS CLI is functioning
   shell: export AWS_PROFILE=cicd-role; /usr/local/bin/aws sts get-caller-identity
   register: aws_caller_identity
+
+- name: Install required Python packages
+  become: true
+  pip:
+    name: "{{ item.pkg_name }}"
+    executable: "{{ item.exec }}"
+    extra_args: "{{ item.args }}"
+  loop:
+    - { pkg_name: "fabric-sdk-py", exec: "pip3", args: "" }
+    - { pkg_name: "python-pkcs11", exec: "pip3", args: "" }
+    - { pkg_name: "semantic_version", exec: "pip3", args: "" }
