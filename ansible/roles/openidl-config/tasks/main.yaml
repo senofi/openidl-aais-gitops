@@ -127,8 +127,8 @@
   ibm.blockchain_platform.connection_profile:
     api_endpoint: "{{ console.api_endpoint }}"
     api_authtype: "{{ console.api_authtype }}"
-    api_key: "{{ key_secret_body.api_key }}"
-    api_secret: "{{ key_secret_body.api_secret | default(omit) }}"
+    api_key: "{{ key_secret_body.json.api_key }}"
+    api_secret: "{{ key_secret_body.json.api_secret | default(omit) }}"
     name: "{{ network.org_name }} Gateway"
     path: "/tmp/openidl-code/{{ org_name }}-{{ env }}-config/connection-profile.json"
     organization: "{{ network.org_name }}"
