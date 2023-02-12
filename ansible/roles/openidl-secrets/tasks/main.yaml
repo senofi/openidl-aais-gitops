@@ -15,6 +15,7 @@
 
 - name: Copy config files
   copy:
+   remote_src: true
    src: /tmp/openidl-code/{{ org_name }}-{{ env }}-config/
    dest: /tmp/openidl-code/helm/openidl-k8s/charts/openidl-secrets/{{ org_name }}-{{ env }}-config/
 
