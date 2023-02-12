@@ -82,9 +82,11 @@
     src: "{{ fabric.tools.home_folder }}/bin/peer"
     dest: "/usr/local/bin/peer"
     state: link
+  become: true
 
 - name: Create symlink to HLF configtxlator CLI
   file:
     src: "{{ fabric.tools.home_folder }}/bin/configtxlator"
     dest: "/usr/local/bin/configtxlator"
     state: link
+  become: true
