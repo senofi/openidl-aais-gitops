@@ -36,6 +36,24 @@
   shell: export AWS_PROFILE=cicd-role; /usr/local/bin/aws sts get-caller-identity
   register: aws_caller_identity
 
+- name: "Install package dependencies - yum"
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  retries: 5
+  loop:
+    - python38-devel
+  when:
+    - ansible_distribution == "Amazon" or
+      ansible_distribution == "CentOS" or
+      ansible_distribution == "RedHat"
+  until: result is success
+  register: result
+  tags:
+    - packages
+
 - name: Install required Python packages
   become: true
   pip:
