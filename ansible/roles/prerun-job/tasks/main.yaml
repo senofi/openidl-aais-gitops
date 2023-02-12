@@ -78,7 +78,13 @@
     remote_src: yes
 
 - name: Create symlink to HLF folder
+  file:configtxlator
+    src: "{{ fabric.tools.home_folder }}/bin/peer"
+    dest: "/usr/local/bin/peer"
+    state: link
+
+- name: Create symlink to HLF folder
   file:
-    src: "{{ fabric.tools.home_folder }}/bin"
-    dest: "/usr/local/bin"
+    src: "{{ fabric.tools.home_folder }}/bin/configtxlator"
+    dest: "/usr/local/bin/configtxlator"
     state: link
