@@ -24,7 +24,7 @@
     cd /tmp/openidl-code/helm/
     helm upgrade --install \
               {{ env }}-{{ org_name }}-secrets openidl-k8s \
-              -f openidl-k8s/global-values-secrets.yaml -n openidl \
+              -f openidl-k8s/global-values-secrets.yaml -n {{ namespace }} \
             --set global.configpath={{ org_name }}-{{ env }}-config
   register: deploy_secrets
 
