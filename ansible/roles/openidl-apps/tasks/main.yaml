@@ -17,6 +17,22 @@
     wait: true
     wait_sleep: 2
     wait_timeout: 60
+    
+- name: Dispose temporary git config repository content
+  file:
+    path: "/tmp/roles_configs"
+    state: absent
+  become: yes
+    
+- name: "Pull global config of the applictions"
+  git:
+    repo: "git@github_roles_configs:senofi/openidl-d1-config.git"
+    dest: "/tmp/roles_configs"
+    clone: yes
+    update: yes
+    version: main
+    accept_hostkey: true
+  register: pull_result
 
 - name: Download git repository content
   no_log: false
@@ -32,7 +48,7 @@
 - name: Deploy openIDL app on Analytics node using helm
   shell: |
     helm upgrade --recreate-pods --install {{ env }}-{{ org_name }} /tmp/openidl-code/openidl-k8s \
-    -f ./roles_configs/{{ org_name }}/apps/app-global-values.yml -n {{ namespace }} \
+    -f /tmp/roles_configs/{{ org_name }}/apps/app-global-values.yml -n {{ namespace }} \
     --set global.datacallapp.ingressenabled=true \
     --set global.utilities.ingressenabled=true \
     --set global.ui.ingressenabled=true \
