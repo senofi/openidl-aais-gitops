@@ -32,7 +32,7 @@
 - name: Deploy openIDL app on Analytics node using helm
   shell: |
     helm upgrade --recreate-pods --install {{ env }}-{{ org_name }} /tmp/openidl-code/openidl-k8s \
-    -f roles_configs/{{ org_name }}/apps/app-global-values.yml -n {{ namespace }} \
+    -f ./roles_configs/{{ org_name }}/apps/app-global-values.yml -n {{ namespace }} \
     --set global.datacallapp.ingressenabled=true \
     --set global.utilities.ingressenabled=true \
     --set global.ui.ingressenabled=true \
