@@ -9,12 +9,14 @@
     state: absent
   become: yes
 
-- name: Create a openidl k8s namespace
-  community.kubernetes.k8s:
+- name: Create Kubernetes namespace
+  k8s:
     name: "{{ namespace }}"
-    api_version: v1
     kind: Namespace
     state: present
+    wait: true
+    wait_sleep: 2
+    wait_timeout: 60
 
 - name: Download git repository content
   no_log: false
