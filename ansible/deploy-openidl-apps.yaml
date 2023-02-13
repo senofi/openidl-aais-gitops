@@ -8,11 +8,11 @@
 
     - name: "Include vars from git"
       include_vars:
-        file: "./roles_configs/d1-config-test.yml"
+        file: "./roles_configs/an1/config.yml"
 
     - name: "Include vars from git"
       include_vars:
-        file: "./roles_configs/{{ org_name }}/apps/app-global-values.yml"
+        file: "./roles_configs/an1/apps/app-global-values.yml"
 
     - name: Configure environment
       include_role:
