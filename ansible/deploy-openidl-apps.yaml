@@ -20,5 +20,3 @@
 
     - include_role:
         name: "openidl-apps"
-      vars:
-        app_cluster_name: "{{ app_cluster_name }}"
