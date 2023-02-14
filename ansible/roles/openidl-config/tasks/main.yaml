@@ -107,30 +107,18 @@
 #    kind: Namespace
 #    state: present
 
-- name: Get Console API key and secret
-  ansible.builtin.uri:
-    url: "{{ console.api_endpoint }}/ak/api/v3/permissions/keys"
-    user: "{{ console.username }}"
-    password: "{{ console.password }}"
-    method: POST
-    force_basic_auth: yes
-    status_code: 200
-    body_format: json
-    validate_certs: false
-    body:
-      roles:
-      - reader
-      description: "Ansible-generated openIDL token"
-  register: key_secret_body
-
-- name: To Remove console API create key response
+- name: To Remove - cognito cognito_app_client_id
   debug:
-    msg: "api response: {{ key_secret_body }}"
+    msg: "cognito cognito_app_client_id: {{ cognito_app_client_id.stdout }}"
 
-
-- name: To Remove console API keys
+- name: To Remove - cognito cognito_user_pool_id
   debug:
-    msg: "api_key: {{ key_secret_body.json.api_key }} , api_secret: {{ key_secret_body.json.api_secret | default(omit) }}"
+    msg: "cognito cognito_user_pool_id: {{ cognito_user_pool_id.stdout }}"
+
+- name: To Remove - aws apps user apps_user_access_id
+  debug:
+    msg: "aws apps user apps_user_access_id: {{ apps_user_access_id.stdout }}"
+    
 
 - name: Create a connection profile
   ibm.blockchain_platform.connection_profile:
