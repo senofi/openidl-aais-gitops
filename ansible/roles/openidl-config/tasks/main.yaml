@@ -3,6 +3,11 @@
   shell: |
     export AWS_PROFILE=cicd-role; /usr/local/bin/aws eks update-kubeconfig --region {{ aws_region }} --name {{ app_cluster_name }}
 
+- name: Delete the config directory
+  file:
+    path: /tmp/openidl-code/{{ env_id }}-config
+    state: absent
+
 - name: Create org config directory
   file:
     path: /tmp/openidl-code/{{ env_id }}-config
