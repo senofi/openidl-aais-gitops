@@ -52,21 +52,63 @@
     - mongodb
     - mongodb-helm-repo
 
-- name: upload mongodb user to aws secrets manager
+- name: Check mongodb-user secret exists
+  shell : |
+    export AWS_PROFILE=cicd-role
+    aws secretsmanager list-secrets --filter Key="name",Values="{{ network.org_name }}-{{ env }}-mongodb-user" | jq .SecretList[0].Name
+  register: mongodb_user_secret
+
+- name: Create mongodb user in AWS secrets manager
   no_log: false
   shell: |
-    export AWS_PROFILE=cicd-role; aws secretsmanager create-secret --name {{ network.org_name }}-{{ env }}-mongodb-user --description "Mongodb User Name" --secret-string {{ mongodb_user }}
+    export AWS_PROFILE=cicd-role
+    aws secretsmanager create-secret --name {{ network.org_name }}-{{ env }}-mongodb-user --description "Mongodb User Name" --secret-string {{ mongodb_user }}
+  when: mongodb_user_secret.stdout == "null"
 
-- name: upload mongodb user token to aws secrets manager
+- name: Update mongodb user in AWS secrets manager
+  no_log: false
+  shell: |
+    export AWS_PROFILE=cicd-role
+    aws secretsmanager update-secret --name {{ network.org_name }}-{{ env }}-mongodb-user --secret-string {{ mongodb_user }}
+  when: mongodb_user_secret.stdout != "null"
+
+- name: Check mongodb-user-token secret exists
+  shell : |
+    export AWS_PROFILE=cicd-role
+    aws secretsmanager list-secrets --filter Key="name",Values="{{ network.org_name }}-{{ env }}-mongodb-user-token" | jq .SecretList[0].Name
+  register: mongodb_user_token_secret
+
+- name: Create mongodb user token in AWS secrets manager
   no_log: false
   shell: |
     export AWS_PROFILE=cicd-role; aws secretsmanager create-secret --name {{ network.org_name }}-{{ env }}-mongodb-user-token --description "Mongodb User Token" --secret-string {{ mongodb_user_token }}
+  when: mongodb_user_token_secret.stdout == "null"
 
-
-- name: upload mongodb root token to aws secrets manager
+- name: Update mongodb user token in AWS secrets manager
   no_log: false
   shell: |
-    export AWS_PROFILE=cicd-role; aws secretsmanager create-secret --name {{ network.org_name }}-{{ env }}-mongodb-root-token --description "Mongodb root token" --secret-string {{ mongodb_root_token }}
+    export AWS_PROFILE=cicd-role; aws secretsmanager update-secret --name {{ network.org_name }}-{{ env }}-mongodb-user-token --secret-string {{ mongodb_user_token }}
+  when: mongodb_user_token_secret.stdout != "null"
+
+- name: Check mongodb-root-token secret exists
+  shell : |
+    export AWS_PROFILE=cicd-role
+    aws secretsmanager list-secrets --filter Key="name",Values="{{ network.org_name }}-{{ env }}-mongodb-root-token" | jq .SecretList[0].Name
+  register: mongodb_root_token_secret
+
+- name: Create mongodb root token in AWS secrets manager
+  no_log: false
+  shell: |
+    export AWS_PROFILE=cicd-role
+    aws secretsmanager create-secret --name {{ network.org_name }}-{{ env }}-mongodb-root-token --description "Mongodb root token" --secret-string {{ mongodb_root_token }}
+  when: mongodb_root_token_secret.stdout == "null"
+
+- name: Update mongodb root token in AWS secrets manager
+  no_log: false
+  shell: |
+    export AWS_PROFILE=cicd-role
+    aws secretsmanager update-secret --name {{ network.org_name }}-{{ env }}-mongodb-root-token --secret-string {{ mongodb_root_token }}
+  when: mongodb_root_token_secret.stdout != "null"
 
 - name: Add resource policy to the secret created {{ item }}
   shell: |
