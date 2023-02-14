@@ -109,11 +109,11 @@
 
 - name: To Remove - cognito cognito_app_client_id
   debug:
-    msg: "cognito cognito_app_client_id: {{ cognito_app_client_id.stdout }}"
+    msg: "cognito cognito_app_client_id: {{ cognito_app_client_id }}"
 
 - name: To Remove - cognito cognito_user_pool_id
   debug:
-    msg: "cognito cognito_user_pool_id: {{ cognito_user_pool_id.stdout }}"
+    msg: "cognito cognito_user_pool_id: {{ cognito_user_pool_id }}"
 
 - name: To Remove - aws apps user apps_user_access_id
   debug:
