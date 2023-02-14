@@ -69,7 +69,7 @@
   no_log: false
   shell: |
     export AWS_PROFILE=cicd-role
-    aws secretsmanager update-secret --name {{ network.org_name }}-{{ env }}-mongodb-user --secret-string {{ mongodb_user }}
+    aws secretsmanager update-secret --secret-id {{ network.org_name }}-{{ env }}-mongodb-user --secret-string {{ mongodb_user }}
   when: mongodb_user_secret.stdout != "null"
 
 - name: Check mongodb-user-token secret exists
@@ -87,7 +87,7 @@
 - name: Update mongodb user token in AWS secrets manager
   no_log: false
   shell: |
-    export AWS_PROFILE=cicd-role; aws secretsmanager update-secret --name {{ network.org_name }}-{{ env }}-mongodb-user-token --secret-string {{ mongodb_user_token }}
+    export AWS_PROFILE=cicd-role; aws secretsmanager update-secret --secret-id {{ network.org_name }}-{{ env }}-mongodb-user-token --secret-string {{ mongodb_user_token }}
   when: mongodb_user_token_secret.stdout != "null"
 
 - name: Check mongodb-root-token secret exists
@@ -107,7 +107,7 @@
   no_log: false
   shell: |
     export AWS_PROFILE=cicd-role
-    aws secretsmanager update-secret --name {{ network.org_name }}-{{ env }}-mongodb-root-token --secret-string {{ mongodb_root_token }}
+    aws secretsmanager update-secret --secret-id {{ network.org_name }}-{{ env }}-mongodb-root-token --secret-string {{ mongodb_root_token }}
   when: mongodb_root_token_secret.stdout != "null"
 
 - name: Add resource policy to the secret created {{ item }}
