@@ -5,19 +5,14 @@
     dest: ./aws_resource_policy.json
     mode: 0755
 
-- name: Create a k8s namespace
-  community.kubernetes.k8s:
-    name: database
-    api_version: v1
-    kind: Namespace
+- name: Create namespace
+  k8s:
     state: present
-
-- name: Create a openidl k8s namespace
-  community.kubernetes.k8s:
-    name: openidl
-    api_version: v1
-    kind: Namespace
-    state: present
+    definition:
+      api_version: v1
+      kind: Namespace
+      metadata:
+        name: "{{ namespace }}"
 
 - name: mongodb Helm chart repo
   shell: |
@@ -31,7 +26,7 @@
 - name: Install mongodb helm chart
   no_log: false
   shell: |
-    helm --namespace database install {{ network.org_name }} bitnami/mongodb \
+    helm --namespace {{ namespace }} install {{ network.org_name }} bitnami/mongodb \
     --set architecture=replicaset \
     --set useStatefulSet=true \
     --set auth.enabled=true \
@@ -52,7 +47,7 @@
     --set tls.enabled=false \
     --set readinessProbe.enabled=false \
     --set arbiter.livenessProbe.enabled=false \
-    --set global.namespaceOverride=database
+    --set global.namespaceOverride={{ namespace }}
   tags:
     - mongodb
     - mongodb-helm-repo
