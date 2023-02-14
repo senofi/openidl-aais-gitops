@@ -95,7 +95,7 @@
   no_log: false
   shell: |
     export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws cognito-idp list-user-pool-clients --region {{ aws_region }} --user-pool-id {{ cognito_user_pool_id.stdout }} | jq -r ".UserPoolClients[] | select(.ClientName | contains(\"{{ env_id }}\")) | .ClientId"
+    /usr/local/bin/aws cognito-idp list-user-pool-clients --region {{ aws_region }} --user-pool-id {{ cognito_user_pool_id.stdout }} | jq -r ".UserPoolClients[] | select(.ClientName | contains(\"{{ network.org_name }}-{{ env }}\")) | .ClientId"
   register: cognito_app_client_id
 
 - name: Get Organizations and IDs
