@@ -3,8 +3,8 @@
   no_log: "{{ no_ansible_log | default(false) }}"
 
   tasks:
-    - include_role:
-        name: "prerun-job"
+#    - include_role:
+#        name: "prerun-job"
 
     - name: Update kubeconfig and set context to openidl EKS cluster
       shell: |
