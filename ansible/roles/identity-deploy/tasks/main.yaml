@@ -54,7 +54,7 @@
     certificate_authority: "{{ network.ca_name }}"
     name: "{{ identity_id }}"
     enrollment_id: "{{ identity_id }}"
-    path: ""
+    path: "l.json"
     enrollment_secret: "{{ identity_enrolment_secret }}"
   register: enrolled_identity
 
