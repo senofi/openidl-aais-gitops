@@ -20,7 +20,7 @@
 - set_fact:
     vault_ca_admin_path: "{{ vault_path }}/ca-admin"
    
-- name: Fetch the CA admin identity certs from Vault
+- name: Fetch the CA admin identity certs from Vault {{ vault_config.url }} with path {{ vault_ca_admin_path }}
   community.hashi_vault.vault_read:
     url: "{{ vault_config.url }}"
     path: "{{ vault_ca_admin_path }}"
