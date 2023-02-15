@@ -13,9 +13,6 @@
 
 - set_fact:
     vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | from_json }}"
-    
-- debug: 
-    msg: "{{ vault_config }}"
 
 - set_fact:
     vault_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}"
