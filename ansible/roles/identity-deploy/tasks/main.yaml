@@ -60,7 +60,7 @@
 
 
 - set_fact:
-    vault_user_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}/{{ user_name }}"
+    vault_user_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}/{{ identity_id }}"
 
 - name: Push the enroled identity to Vault with path {{ vault_user_path }}
   community.hashi_vault.vault_write:
@@ -69,7 +69,7 @@
     data:
       data: 
         data: "{{ enrolled_identity|b64encode }}"
-        id: "{{ user_name }}"
+        id: "{{ identity_id }}"
     auth_method: userpass
     username: "{{ vault_config.username }}"
     password: "{{ vault_config.password }}"
