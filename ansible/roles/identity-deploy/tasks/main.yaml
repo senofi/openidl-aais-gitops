@@ -16,8 +16,7 @@
 
 - name: Fetch Vault Password 
   shell: >
-    export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString | jq -r .password
+    echo "{{ vault_config }}" | jq -r .SecretString | jq -r .password
   register: vault_password_out
 - set_fact:
     vault_password: "{{ vault_password_out.stdout }}"
@@ -45,14 +44,18 @@
 
 - set_fact:
     vault_ca_admin_path: "kvs/{{ network.org_name }}/ca-admin"
+    
+- name: Print debug
+  debug:
+    msg: " url: {{ vault_url }} ,  username: {{ vault_user }} "
    
 - name: Fetch the CA admin identity certs from Vault
   community.hashi_vault.vault_read:
     url: "{{ vault_url }}"
     path: "{{ vault_ca_admin_path }}"
     auth_method: userpass
-    username: '{{ vault_user }}'
-    password: '{{ vault_password }}'
+    username: "{{ vault_user }}"
+    password: "{{ vault_password }}"
   register: ca_admin_identity
 
 
