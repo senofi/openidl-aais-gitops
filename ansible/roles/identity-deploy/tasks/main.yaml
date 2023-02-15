@@ -8,15 +8,15 @@
   no_log: true
   shell: |
     export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString
+    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }}
   register: vault_config_out
   
 - set_fact:
-    vault_config: "{{ vault_config_out.stdout }}"
+    vault_config: "{{ vault_config_out.stdout | json_query('SecretString') }}"
     
 - name: Debug
   debug:
-    msg: "Vault config {{ vault_config | json_query('url')}}"
+    msg: "Vault config {{ vault_config }}"
 
 - set_fact:
     vault_ca_admin_path: "kvs/{{ network.org_name }}/ca-admin"
