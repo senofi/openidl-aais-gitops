@@ -30,6 +30,14 @@
 
 - name: debug
   debug:
+    msg: "{{ ca_admin_identity }}"
+
+- name: debug
+  debug:
+    msg: "{{ ca_admin_identity.data | b64decode }}"
+
+- name: debug
+  debug:
     msg: "{{ ca_admin_identity.data | b64decode | from_json }}"
 
 - name: Register the idenity
