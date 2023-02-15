@@ -62,7 +62,7 @@
     identity_data:
       credentials:
         certificate: "{{enrolled_identity.enrolled_identity.cert | regex_replace('\n' , '\\n') }}"
-        privateKey: "{{ enrolled_identity.enrolled_identity.private_key regex_replace('\r\n' , '\\r\\n') }}"
+        privateKey: "{{ enrolled_identity.enrolled_identity.private_key | regex_replace('\r\n' , '\\r\\n') }}"
       mspId: "{{network.org_name}}"
       type: "X.509"
 
