@@ -16,28 +16,28 @@
 
 - name: Fetch Vault Password 
   shell: >
-    "echo {{ vault_config }} | jq -r .SecretString | jq -r .password"
+    "echo '{{ vault_config }}' | jq -r .SecretString | jq -r .password"
   register: vault_password_out
 - set_fact:
     vault_password: "{{ vault_password_out.stdout }}"
 
 - name: Fetch Vault url
   shell: >
-    "echo {{ vault_config }} | jq -r .SecretString | jq -r .url"
+    "echo '{{ vault_config }}' | jq -r .SecretString | jq -r .url"
   register: vault_url_out
 - set_fact:
     vault_url: "{{ vault_url_out.stdout }}"
 
 - name: Fetch Vault user
   shell: >
-    "echo {{ vault_config }} | jq -r .SecretString | jq -r .username"
+    "echo '{{ vault_config }}' | jq -r .SecretString | jq -r .username"
   register: vault_user_out
 - set_fact:
     vault_user: "{{ vault_user_out.stdout }}"
 
 - name: Fetch Vault Path
   shell: >
-    "echo {{ vault_config }} | jq -r .SecretString | jq -r .vaultPath"
+    "echo '{{ vault_config }}' | jq -r .SecretString | jq -r .vaultPath"
   register: vault_path_out
 - set_fact:
     vault_path: "{{ vault_path_out.stdout }}"
