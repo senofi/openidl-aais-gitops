@@ -15,6 +15,28 @@
     vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | from_json }}"
 
 - set_fact:
+    vault_user_path: "kvs/data/{{vault_config.vaultPath}}/{{ identity_id }}"
+
+- name: Try to fetch the entry from vault
+  community.hashi_vault.vault_kv2_get:
+    url: "{{ vault_config.url }}"
+    path: "{{ vault_user_path }}"
+    engine_mount_point: "kvs"
+    auth_method: userpass
+    username: "{{ vault_config.username }}"
+    password: "{{ vault_config.password }}"
+    validate_certs: false
+  register: vault_user_entry
+  
+- debug:
+    msg: "Vault user {{ vault_user_entry }}"
+  
+- name: Fail if user is already in vault
+  fail:
+    msg: User already exists in the wallet
+  when: vault_user_entry.data.data is defined
+
+- set_fact:
     vault_ca_admin_path: "{{vault_config.vaultPath}}/{{ network.org_name }}/ca-admin"
    
 - name: Fetch the CA admin identity certs from Vault {{ vault_config.url }} with path {{ vault_ca_admin_path }}
@@ -66,12 +88,6 @@
       mspId: "{{network.org_name}}"
       type: "X.509"
 
-- set_fact:
-    vault_user_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}/{{ identity_id }}"
-
-- debug:
-    msg: "{{ identity_data | to_json | string }}"
-  
 - name: Push the enroled identity to Vault with path {{ vault_user_path }}
   community.hashi_vault.vault_write:
     url: "{{ vault_config.url }}"
