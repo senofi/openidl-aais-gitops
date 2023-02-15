@@ -58,9 +58,20 @@
     enrollment_secret: "{{ identity_enrolment_secret }}"
   register: enrolled_identity
 
+- set_fact:
+    certificate: "{{enrolled_identity.enrolled_identity.cert}}"
+- set_fact:
+    private_key: "{{enrolled_identity.enrolled_identity.private_key}}"
+
+- set_fact:
+    mspId: "{{network.org_name}}"
+    type: "X.509"
 
 - set_fact:
     vault_user_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}/{{ identity_id }}"
+
+- set_fact:
+    identity_data: "{ "credentials": { "certificate": {{ certificate }}, "private_key": {{ private_key }} }, "mspId": {{ mspId }} , "type": {{ type }} }"
 
 - name: Push the enroled identity to Vault with path {{ vault_user_path }}
   community.hashi_vault.vault_write:
@@ -68,7 +79,7 @@
     path: "{{ vault_user_path }}"
     data:
       data: 
-        data: "{{ enrolled_identity|b64encode }}"
+        data: "{{ identity_data | string }}"
         id: "{{ identity_id }}"
     auth_method: userpass
     username: "{{ vault_config.username }}"
