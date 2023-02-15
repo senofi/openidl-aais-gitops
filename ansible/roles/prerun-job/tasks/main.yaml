@@ -58,6 +58,7 @@
     - { pkg_name: "python-pkcs11", exec: "pip3", args: "" }
     - { pkg_name: "semantic_version", exec: "pip3", args: "" }
     - { pkg_name: "fabric-sdk-py", exec: "pip3", args: "" }
+    - { pkg_name: "hvac", exec: "pip3", args: "" }
 - name: Create HLF home folder to extract the tools
   file:
     path: "{{ fabric.tools.home_folder }}"
