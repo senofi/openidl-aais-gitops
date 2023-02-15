@@ -13,6 +13,10 @@
   
 - set_fact:
     vault_config: "{{ vault_config_out.stdout }}"
+    
+- name: Debug
+  debug:
+    msg: "Vault config {{ vault_config | json_query('url')}}"
 
 - set_fact:
     vault_ca_admin_path: "kvs/{{ network.org_name }}/ca-admin"
