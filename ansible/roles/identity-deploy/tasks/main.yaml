@@ -12,7 +12,7 @@
   register: vault_config_out
   
 - set_fact:
-    vault_config: "{{ vault_config_out.stdout }}"
+    vault_config: "{{ vault_config_out.stdout | to_json }}"
 
 - name: Fetch Vault Password 
   shell: >
