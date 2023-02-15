@@ -71,8 +71,11 @@
     vault_user_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}/{{ identity_id }}"
 
 - set_fact:
-    identity_data: "{ "credentials": { "certificate": {{ certificate }}, "private_key": {{ private_key }} }, "mspId": {{ mspId }} , "type": {{ type }} }"
+    identity_data: "{ "credentials": { "certificate": {{ certificate | regex_replace("\n" , "\\n") }}, "private_key": {{ private_key regex_replace("\r\n" , "\\r\\n") }} }, "mspId": {{ mspId }} , "type": {{ type }} }"
 
+- debug:
+    msg: "{{ identity_data }}"
+  
 - name: Push the enroled identity to Vault with path {{ vault_user_path }}
   community.hashi_vault.vault_write:
     url: "{{ vault_config.url }}"
