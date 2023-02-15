@@ -35,7 +35,7 @@
 - name: Fail if user is already in vault
   fail:
     msg: User already exists in the wallet
-  when: 'Invalid or missing path' not in vault_user_entry.err
+  when: '"Invalid or missing path" not in vault_user_entry.err'
 
 - set_fact:
     vault_ca_admin_path: "{{vault_config.vaultPath}}/{{ network.org_name }}/ca-admin"
