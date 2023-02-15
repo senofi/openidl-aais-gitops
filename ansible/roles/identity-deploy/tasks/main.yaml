@@ -10,80 +10,20 @@
     export AWS_PROFILE=cicd-role
     /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString
   register: vault_config_out
-
-- name: Print debug 11
-  debug:
-    msg: " vault_config: {{ vault_config_out }}"
   
 - set_fact:
     vault_config: "{{ vault_config_out.stdout | to_json }}"
 
-- name: Print debug 112
-  debug:
-    msg: " vault_config: {{ vault_config }}"
-
-
-- name: Fetch Vault Password  1
-  shell: >
-    echo "{{ vault_config }}" | jq -r .SecretString
-  register: temp
-- name: Fetch Vault Password  2
-  shell: >
-    echo "{{ temp }}" | jq -r .password
-  register: temp1
-  
-- name: Fetch Vault Password 3
-  shell: >
-    echo "{{ vault_config }}" | jq -r .SecretString.password
-  register: temp2
-
-- name: Print debug
-  debug:
-    msg: " vault_config: {{ vault_config }} , Temp: {{ temp.stdout }}, Temp1 {{ temp1 }}, temp2 {{ temp2 }}"
-
-- name: Fetch Vault Password 
-  shell: >
-    echo "{{ vault_config }}" | jq -r .SecretString | jq -r .password
-  register: vault_password_out
-- set_fact:
-    vault_password: "{{ vault_password_out.stdout }}"
-
-- name: Fetch Vault url
-  shell: >
-    export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString | jq -r .url
-  register: vault_url_out
-- set_fact:
-    vault_url: "{{ vault_url_out.stdout }}"
-
-- name: Fetch Vault user
-  shell: >
-    echo "{{ vault_config }}" | jq -r .SecretString | jq -r .username
-  register: vault_user_out
-- set_fact:
-    vault_user: "{{ vault_user_out.stdout }}"
-
-- name: Fetch Vault Path
-  shell: >
-    echo "{{ vault_config }}" | jq -r .SecretString | jq -r .vaultPath
-  register: vault_path_out
-- set_fact:
-    vault_path: "{{ vault_path_out.stdout }}"
-
 - set_fact:
     vault_ca_admin_path: "kvs/{{ network.org_name }}/ca-admin"
-    
-- name: Print debug
-  debug:
-    msg: " url: {{ vault_url }} ,  username: {{ vault_user }} "
    
 - name: Fetch the CA admin identity certs from Vault
   community.hashi_vault.vault_read:
-    url: "{{ vault_url }}"
+    url: "{{ vault_config.url }}"
     path: "{{ vault_ca_admin_path }}"
     auth_method: userpass
-    username: "{{ vault_user }}"
-    password: "{{ vault_password }}"
+    username: "{{ vault_config.username }}"
+    password: "{{ vault_config.password }}"
   register: ca_admin_identity
 
 
@@ -123,11 +63,11 @@
 
 - name: Push the enroled identity to Vault
   community.hashi_vault.vault_write:
-    url: "{{ vault_url }}"
+    url: "{{ vault_config.url }}"
     path: "{{ vault_user_path }}"
     data:
       data: "{{ enrolled_identity|b64encode }}"
     auth_method: userpass
-    username: '{{ vault_user }}'
-    password: '{{ vault_password }}'
+    username: "{{ vault_config.username }}"
+    password: "{{ vault_config.password }}"
   register: out
