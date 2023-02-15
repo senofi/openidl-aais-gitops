@@ -27,6 +27,7 @@
     password: "{{ vault_config.password }}"
     validate_certs: false
   register: vault_user_entry
+  ignore_errors: yes
   
 - debug:
     msg: "Vault user {{ vault_user_entry }}"
@@ -34,7 +35,7 @@
 - name: Fail if user is already in vault
   fail:
     msg: User already exists in the wallet
-  when: vault_user_entry.data.data is defined
+  when: 'Invalid or missing path' not in vault_user_entry.err
 
 - set_fact:
     vault_ca_admin_path: "{{vault_config.vaultPath}}/{{ network.org_name }}/ca-admin"
