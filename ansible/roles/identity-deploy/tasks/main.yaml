@@ -14,16 +14,16 @@
 - set_fact:
     vault_config: "{{ vault_config_out.stdout | to_json }}"
 
-- name: Fetch Vault Password 
+- name: Fetch Vault Password  1
   shell: >
     echo "{{ vault_config }}" | jq -r .SecretString
   register: temp
-- name: Fetch Vault Password 
+- name: Fetch Vault Password  2
   shell: >
     echo "{{ temp }}" | jq -r .password
   register: temp1
   
-- name: Fetch Vault Password 
+- name: Fetch Vault Password 3
   shell: >
     echo "{{ vault_config }}" | jq -r .SecretString.password
   register: temp2
