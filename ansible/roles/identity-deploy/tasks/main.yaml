@@ -16,6 +16,24 @@
 
 - name: Fetch Vault Password 
   shell: >
+    echo "{{ vault_config }}" | jq -r .SecretString
+  register: temp
+- name: Fetch Vault Password 
+  shell: >
+    echo "{{ temp }}" | jq -r .password
+  register: temp1
+  
+- name: Fetch Vault Password 
+  shell: >
+    echo "{{ vault_config }}" | jq -r .SecretString.password
+  register: temp2
+
+- name: Print debug
+  debug:
+    msg: " vault_config: {{ vault_config }} , Temp: {{ temp.stdout }}, Temp1 {{ temp1 }}, temp2 {{ temp2 }}"
+
+- name: Fetch Vault Password 
+  shell: >
     echo "{{ vault_config }}" | jq -r .SecretString | jq -r .password
   register: vault_password_out
 - set_fact:
