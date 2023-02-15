@@ -15,13 +15,13 @@
     vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | from_json }}"
 
 - set_fact:
-    vault_path: "kvs/{{vault_config.vaultPath}}/{{ network.org_name }}"
+    vault_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}"
 
 - set_fact:
-    vault_ca_admin_path: "/{{ vault_path }}/ca-admin"
+    vault_ca_admin_path: "{{ vault_path }}/ca-admin"
    
 - name: Fetch the CA admin identity certs from Vault {{ vault_config.url }} with path {{ vault_ca_admin_path }}
-  community.hashi_vault.vault_read:
+  community.hashi_vault.vault_kv2_get:
     url: "{{ vault_config.url }}"
     path: "{{ vault_ca_admin_path }}"
     auth_method: userpass
