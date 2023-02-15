@@ -28,6 +28,9 @@
     validate_certs: false
   register: ca_admin_identity
 
+- name: Current channel
+  debug:
+    msg: "CA admin: {{ ca_admin_identity }}"
 
 # - name: Register the idenity
 #   ibm.blockchain_platform.registered_identity:
