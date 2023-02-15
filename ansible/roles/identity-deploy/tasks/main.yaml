@@ -34,7 +34,7 @@
 
 - name: debug
   debug:
-    msg: "{{ ca_admin_identity.data | b64decode }}"
+    msg: "{{ ca_admin_identity.data.data.data | b64decode }}"
 
 - name: debug
   debug:
@@ -49,7 +49,7 @@
     api_secret: "{{ console.password }}"
     api_timeout: "{{ api_timeout | default(omit) }}"
     certificate_authority: "{{ network.ca_name }}"
-    registrar: "{{ ca_admin_identity.data | b64decode | from_json }}"
+    registrar: "{{ ca_admin_identity.data.data.data | b64decode | from_json }}"
     enrollment_id: "{{ identity_id }}"
     enrollment_secret: "{{ identity_enrolment_secret }}"
     max_enrollments: -1
