@@ -12,7 +12,7 @@
   register: vault_config_out
   
 - set_fact:
-    vault_config: "{{ vault_config_out.stdout | to_json }}"
+    vault_config: "{{ vault_config_out.stdout }}"
 
 - set_fact:
     vault_ca_admin_path: "kvs/{{ network.org_name }}/ca-admin"
