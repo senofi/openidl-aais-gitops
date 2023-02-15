@@ -12,7 +12,7 @@
   register: vault_config_out
   
 - set_fact:
-    vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') }}"
+    vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | from_json }}"
     
 - name: Debug
   debug:
