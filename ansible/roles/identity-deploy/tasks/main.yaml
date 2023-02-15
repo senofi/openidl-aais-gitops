@@ -12,17 +12,7 @@
   register: vault_config_out
 
 - set_fact:
-    vault_secret: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | to_json }}"
-
-- debug: 
-    msg: "{{ vault_config_out.stdout | from_json | json_query('SecretString.url')  }}"
-    
-- set_fact:
-    vault_config: 
-      url: "{{ vault_secret | json_query('url') }}"
-      vaultPath: "{{ vault_secret | json_query('vaultPath') }}"
-      username: "{{ vault_secret | json_query('username') }}"
-      password: "{{ vault_secret | json_query('password') }}"
+    vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | from_json }}"
     
 - debug: 
     msg: "{{ vault_config }}"
