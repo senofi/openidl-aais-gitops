@@ -27,6 +27,10 @@
   command: "echo vault_config | jq -r .SecretString | jq -r .vaultPath"
   register: vault_path
 
+
+- set_fact:
+    vault_ca_admin_path: "kvs/{{ network.org_name }}/ca-admin"
+   
 - name: Fetch the CA admin identity certs from Vault
   community.hashi_vault.vault_read:
     url: "{{ vault_url }}"
@@ -67,6 +71,9 @@
 #   register: enrolled_identity
 - set_fact:
     enrolled_identity: "TEST"
+
+- set_fact:
+    vault_user_path: "kvs/{{ network.org_name}}/{{ user_name }}"
 
 - name: Push the enroled identity to Vault
   community.hashi_vault.vault_write:
