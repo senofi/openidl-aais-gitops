@@ -11,8 +11,12 @@
     /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-kvs-vault --version-stage AWSCURRENT --region {{ aws_region }}
   register: vault_config_out
   
-- debug: 
+- debug: 1
     msg: "{{ vault_config_out.stdout | from_json  }}"
+    
+    
+- debug:  2
+    msg: "{{ vault_config_out.stdout | from_json | json_query('SecretString') }}"
   
 - set_fact:
     vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | from_json }}"
