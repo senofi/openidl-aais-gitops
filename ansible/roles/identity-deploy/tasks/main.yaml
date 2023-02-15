@@ -27,41 +27,36 @@
     password: "{{ vault_config.password }}"
     validate_certs: false
   register: ca_admin_identity
+    
+- name: Register the idenity
+  ibm.blockchain_platform.registered_identity:
+    state: "present"
+    api_endpoint: "{{ console.api_endpoint }}"
+    api_authtype: "{{ console.api_authtype }}"
+    api_key: "{{ console.username }}"
+    api_secret: "{{ console.password }}"
+    api_timeout: "{{ api_timeout | default(omit) }}"
+    certificate_authority: "{{ network.ca_name }}"
+    registrar: "{{ ca_admin_identity.data | b64decode }}"
+    enrollment_id: "{{ identity_id }}"
+    enrollment_secret: "{{ identity_enrolment_secret }}"
+    max_enrollments: -1
+    type: "{{ identity_type }}"
 
-- name: Current channel
-  debug:
-    msg: "CA admin: {{ ca_admin_identity }}"
+- name: Enroll the identity
+  ibm.blockchain_platform.enrolled_identity:
+    state: "present"
+    api_endpoint: "{{ console.api_endpoint }}"
+    api_authtype: "{{ console.api_authtype }}"
+    api_key: "{{ console.username }}"
+    api_secret: "{{ console.password }}"
+    api_timeout: "{{ api_timeout | default(omit) }}"
+    certificate_authority: "{{ network.ca_name }}"
+    name: "{{ identity_id }}"
+    enrollment_id: "{{ identity_id }}"
+    enrollment_secret: "{{ identity_enrolment_secret }}"
+  register: enrolled_identity
 
-# - name: Register the idenity
-#   ibm.blockchain_platform.registered_identity:
-#     state: "present"
-#     api_endpoint: "{{ console.api_endpoint }}"
-#     api_authtype: "{{ console.api_authtype }}"
-#     api_key: "{{ console.username }}"
-#     api_secret: "{{ console.password }}"
-#     api_timeout: "{{ api_timeout | default(omit) }}"
-#     certificate_authority: "{{ ca_name }}"
-#     registrar: "{{ ca_admin_identity }}"
-#     enrollment_id: "{{ identity_id }}"
-#     enrollment_secret: "{{ identity_enrolment_secret }}"
-#     max_enrollments: -1
-#     type: "{{ identity_type }}"
-
-# - name: Enroll the identity
-#   ibm.blockchain_platform.enrolled_identity:
-#     state: "present"
-#     api_endpoint: "{{ console.api_endpoint }}"
-#     api_authtype: "{{ console.api_authtype }}"
-#     api_key: "{{ console.username }}"
-#     api_secret: "{{ console.password }}"
-#     api_timeout: "{{ api_timeout | default(omit) }}"
-#     certificate_authority: "{{ ca_name }}"
-#     name: "{{ organization_name }} Admin"
-#     enrollment_id: "{{ identity_id }}"
-#     enrollment_secret: "{{ identity_enrolment_secret }}"
-#   register: enrolled_identity
-- set_fact:
-    enrolled_identity: "TEST"
 
 - set_fact:
     vault_user_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}/{{ user_name }}"
