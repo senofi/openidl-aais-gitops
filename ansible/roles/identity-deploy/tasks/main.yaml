@@ -8,11 +8,20 @@
   no_log: true
   shell: |
     export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }}
+    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString
   register: vault_config_out
+
+- name: Print debug 11
+  debug:
+    msg: " vault_config: {{ vault_config_out }}"
   
 - set_fact:
     vault_config: "{{ vault_config_out.stdout | to_json }}"
+
+- name: Print debug 112
+  debug:
+    msg: " vault_config: {{ vault_config }}"
+
 
 - name: Fetch Vault Password  1
   shell: >
