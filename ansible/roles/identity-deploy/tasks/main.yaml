@@ -59,22 +59,18 @@
   register: enrolled_identity
 
 - set_fact:
-    certificate: "{{enrolled_identity.enrolled_identity.cert}}"
-- set_fact:
-    private_key: "{{enrolled_identity.enrolled_identity.private_key}}"
-
-- set_fact:
-    mspId: "{{network.org_name}}"
-    type: "X.509"
+    identity_data:
+      credentials:
+        certificate: "{{enrolled_identity.enrolled_identity.cert | regex_replace('\n' , '\\n') }}"
+        privateKey: "{{ enrolled_identity.enrolled_identity.private_key regex_replace('\r\n' , '\\r\\n') }}"
+      mspId: "{{network.org_name}}"
+      type: "X.509"
 
 - set_fact:
     vault_user_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}/{{ identity_id }}"
 
-- set_fact:
-    identity_data: "{ "credentials": { "certificate": {{ certificate | regex_replace("\n" , "\\n") }}, "private_key": {{ private_key regex_replace("\r\n" , "\\r\\n") }} }, "mspId": {{ mspId }} , "type": {{ type }} }"
-
 - debug:
-    msg: "{{ identity_data }}"
+    msg: "{{ identity_data | to_json | string }}"
   
 - name: Push the enroled identity to Vault with path {{ vault_user_path }}
   community.hashi_vault.vault_write:
@@ -82,7 +78,7 @@
     path: "{{ vault_user_path }}"
     data:
       data: 
-        data: "{{ identity_data | string }}"
+        data: "{{ identity_data | to_json | string }}"
         id: "{{ identity_id }}"
     auth_method: userpass
     username: "{{ vault_config.username }}"
