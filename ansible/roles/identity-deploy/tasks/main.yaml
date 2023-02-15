@@ -13,13 +13,9 @@
   
 - set_fact:
     vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | from_json }}"
-    
-- name: Debug
-  debug:
-    msg: "Vault config {{ vault_config }}"
 
 - set_fact:
-    vault_ca_admin_path: "kvs/{{ network.org_name }}/ca-admin"
+    vault_ca_admin_path: "kvs/data/{{ network.org_name }}/ca-admin"
    
 - name: Fetch the CA admin identity certs from Vault
   community.hashi_vault.vault_read:
