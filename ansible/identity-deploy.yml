@@ -1,0 +1,20 @@
+- hosts: ansible_provisioners
+  gather_facts: false
+  no_log: "{{ no_ansible_log | default(false) }}"
+  tasks:
+    - name: Checkout configuration
+      include_role:
+        name: "git-config"
+
+    - name: "Include vars from git"
+      include_vars:
+        file: "./roles_configs/an1/config.yml"
+
+    - name: Configure environment
+      include_role:
+        name: "prerun-job"
+
+    - include_role:
+        name: "identity-deploy"
+      vars:
+        user_name: "test_user"
