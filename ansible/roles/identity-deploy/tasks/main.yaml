@@ -21,7 +21,7 @@
     vault_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}"
 
 - set_fact:
-    vault_ca_admin_path: "{{ valut_path }}/ca-admin"
+    vault_ca_admin_path: "{{ vault_path }}/ca-admin"
    
 - name: Fetch the CA admin identity certs from Vault
   community.hashi_vault.vault_read:
