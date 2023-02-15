@@ -15,9 +15,6 @@
     vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | from_json }}"
 
 - set_fact:
-    vault_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}"
-
-- set_fact:
     vault_ca_admin_path: "{{vault_config.vaultPath}}/{{ network.org_name }}/ca-admin"
    
 - name: Fetch the CA admin identity certs from Vault {{ vault_config.url }} with path {{ vault_ca_admin_path }}
@@ -64,9 +61,9 @@
     enrolled_identity: "TEST"
 
 - set_fact:
-    vault_user_path: "{{ vault_path }}/{{ user_name }}"
+    vault_user_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}/{{ user_name }}"
 
-- name: Push the enroled identity to Vault
+- name: Push the enroled identity to Vault with path {{ vault_user_path }}
   community.hashi_vault.vault_write:
     url: "{{ vault_config.url }}"
     path: "{{ vault_user_path }}"
