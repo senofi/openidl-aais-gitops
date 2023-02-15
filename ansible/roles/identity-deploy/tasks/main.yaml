@@ -8,7 +8,7 @@
   no_log: true
   shell: |
     export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }}
+    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-kvs-vault --version-stage AWSCURRENT --region {{ aws_region }}
   register: vault_config_out
   
 - set_fact:
