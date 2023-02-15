@@ -27,7 +27,11 @@
     password: "{{ vault_config.password }}"
     validate_certs: false
   register: ca_admin_identity
-    
+
+- name: debug
+  debug:
+    msg: "{{ ca_admin_identity.data | b64decode | from_json }}"
+
 - name: Register the idenity
   ibm.blockchain_platform.registered_identity:
     state: "present"
@@ -37,7 +41,7 @@
     api_secret: "{{ console.password }}"
     api_timeout: "{{ api_timeout | default(omit) }}"
     certificate_authority: "{{ network.ca_name }}"
-    registrar: "{{ ca_admin_identity.data | b64decode }}"
+    registrar: "{{ ca_admin_identity.data | b64decode | from_json }}"
     enrollment_id: "{{ identity_id }}"
     enrollment_secret: "{{ identity_enrolment_secret }}"
     max_enrollments: -1
