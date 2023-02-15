@@ -9,7 +9,10 @@
   shell: |
     export AWS_PROFILE=cicd-role
     /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }}
-  register: vault_config
+  register: vault_config_out
+  
+- set_fact:
+    vault_config: "{{ vault_config_out.stdout }}"
 
 - name: Fetch Vault Password 
   shell: >
