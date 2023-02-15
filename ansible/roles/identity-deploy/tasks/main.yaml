@@ -23,7 +23,8 @@
 
 - name: Fetch Vault url
   shell: >
-    echo "{{ vault_config }}" | jq -r .SecretString | jq -r .url
+    export AWS_PROFILE=cicd-role
+    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString | jq -r .url
   register: vault_url_out
 - set_fact:
     vault_url: "{{ vault_url_out.stdout }}"
