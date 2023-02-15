@@ -13,19 +13,28 @@
 
 - name: Fetch Vault Password 
   command: "echo vault_config | jq -r .SecretString | jq -r .password"
-  register: vault_password
+  register: vault_password_out
+- set_fact:
+    vault_password: "{{ vault_password_out.stdout }}"
 
 - name: Fetch Vault url
   command: "echo vault_config | jq -r .SecretString | jq -r .url"
-  register: vault_url
+  register: vault_url_out
+- set_fact:
+    vault_url: "{{ vault_url_out.stdout }}"
 
 - name: Fetch Vault user
   command: "echo vault_config | jq -r .SecretString | jq -r .username"
-  register: vault_user
+  register: vault_user_out
+- set_fact:
+    vault_user: "{{ vault_user_out.stdout }}"
 
 - name: Fetch Vault Path
   command: "echo vault_config | jq -r .SecretString | jq -r .vaultPath"
-  register: vault_path
+  register: vault_path_out
+- set_fact:
+    vault_path: "{{ vault_path_out.stdout }}"
+
 
 
 - set_fact:
