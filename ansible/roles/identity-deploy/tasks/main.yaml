@@ -27,6 +27,7 @@
     auth_method: userpass
     username: "{{ vault_config.username }}"
     password: "{{ vault_config.password }}"
+    validate_certs: false
   register: ca_admin_identity
 
 
@@ -73,4 +74,5 @@
     auth_method: userpass
     username: "{{ vault_config.username }}"
     password: "{{ vault_config.password }}"
+    validate_certs: false
   register: out
