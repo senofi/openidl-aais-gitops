@@ -19,9 +19,11 @@
 
 - set_fact:
     vault_ca_admin_path: "{{ vault_path }}/ca-admin"
-    
-- debug:
-  msg: "{{ vault_config }}"
+
+- name: Current channel
+  debug:
+    msg: "{{ vault_config }}"
+
    
 - name: Fetch the CA admin identity certs from Vault {{ vault_config.url }} with path {{ vault_ca_admin_path }}
   community.hashi_vault.vault_read:
