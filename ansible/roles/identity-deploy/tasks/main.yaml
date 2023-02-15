@@ -71,7 +71,9 @@
     url: "{{ vault_config.url }}"
     path: "{{ vault_user_path }}"
     data:
-      data: "{{ enrolled_identity|b64encode }}"
+      data: 
+        data: "{{ enrolled_identity|b64encode }}"
+        id: "{{ user_name }}"
     auth_method: userpass
     username: "{{ vault_config.username }}"
     password: "{{ vault_config.password }}"
