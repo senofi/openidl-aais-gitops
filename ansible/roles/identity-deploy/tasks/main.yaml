@@ -15,12 +15,12 @@
     vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | from_json }}"
 
 - set_fact:
-    vault_user_path: "kvs/data/{{vault_config.vaultPath}}/{{ identity_id }}"
+    vault_user_read_path: "{{vault_config.vaultPath}}/{{ identity_id }}"
 
 - name: Try to fetch the entry from vault
   community.hashi_vault.vault_kv2_get:
     url: "{{ vault_config.url }}"
-    path: "{{ vault_user_path }}"
+    path: "{{ vault_user_read_path }}"
     engine_mount_point: "kvs"
     auth_method: userpass
     username: "{{ vault_config.username }}"
@@ -88,10 +88,13 @@
       mspId: "{{network.org_name}}"
       type: "X.509"
 
-- name: Push the enroled identity to Vault with path {{ vault_user_path }}
+- set_fact:
+    vault_user_write_path: "kvs/data/{{vault_config.vaultPath}}/{{ identity_id }}"
+    
+- name: Push the enroled identity to Vault with path {{ vault_user_write_path }}
   community.hashi_vault.vault_write:
     url: "{{ vault_config.url }}"
-    path: "{{ vault_user_path }}"
+    path: "{{ vault_user_write_path }}"
     data:
       data: 
         data: "{{ identity_data | to_json | string }}"
