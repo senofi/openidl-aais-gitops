@@ -11,20 +11,18 @@
     /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-kvs-vault --version-stage AWSCURRENT --region {{ aws_region }}
   register: vault_config_out
 
-- name: Debug 1 
-  debug:
-    msg: "{{ vault_config_out.stdout | from_json  }}"
-
-- name: Debug 2
-  debug:
-    msg: "{{ vault_config_out.stdout | from_json | json_query('SecretString') }}"
+- set_fact:
+    vault_secret: "{{ vault_config_out.stdout | from_json | json_query('SecretString') }}"
 
 - set_fact:
-    vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | from_json }}"
+    vault_config: 
+      url: "{{ vault_secret | json_query('url') }}"
+      vaultPath: "{{ vault_secret | json_query('vaultPath') }}"
+      username: "{{ vault_secret | json_query('username') }}"
+      password: "{{ vault_secret | json_query('password') }}"
     
 - debug: 
     msg: "{{ vault_config }}"
-
 
 - set_fact:
     vault_path: "kvs/data/{{vault_config.vaultPath}}/{{ network.org_name }}"
