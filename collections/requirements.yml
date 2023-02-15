@@ -3,3 +3,4 @@ collections:
   - kubernetes.core
   - ibm.blockchain_platform
   - community.hashi_vault
+  - community.general
