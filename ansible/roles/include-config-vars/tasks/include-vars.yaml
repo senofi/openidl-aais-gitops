@@ -40,12 +40,12 @@
   stat:
     path: "{{ conf_org_path }}"
   register: conf_file_stat
+  delegate_to: localhost
 
 - name: Fail if config file is not available
   fail:
     msg: "Config file doesn't exists {{ conf_org_path }}"
   when: not conf_file_stat.stat.exists
-  delegate_to: localhost
 
 - name: "Include vars from file {{ conf_org_path }}"
   include_vars:
