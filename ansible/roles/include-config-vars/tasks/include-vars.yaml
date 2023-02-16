@@ -34,7 +34,7 @@
 - name: Fail if cannot determine config path
   fail:
     msg: "Cannot determine the org config under {{ configs_directory }}"
-  when: conf_org_path = ""
+  when: conf_org_path == ""
 
 - name: Fetach config file stats
   stat:
