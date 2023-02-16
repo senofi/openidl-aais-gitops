@@ -84,6 +84,9 @@
     path: "l.json"
     enrollment_secret: "{{ identity_enrolment_secret }}"
   register: enrolled_identity
+  
+- debug:
+    msg: "{{ enrolled_identity.enrolled_identity.cert  }}"
 
 - set_fact:
     identity_data:
@@ -93,6 +96,8 @@
       mspId: "{{network.org_name}}"
       type: "X.509"
 
+
+    
 - set_fact:
     vault_user_write_path: "kvs/data/{{vault_config.vaultPath}}/{{ identity_id }}"
     
