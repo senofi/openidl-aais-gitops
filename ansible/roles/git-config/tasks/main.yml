@@ -24,7 +24,7 @@
 - name: "Pull configs"
   delegate_to: localhost
   git:
-    repo: "git@github_roles_configs:senofi/openidl-d1-config.git"
+    repo: "git@github_roles_configs:{{ git_configs_repo_url }}"
     dest: "./roles_configs"
     clone: yes
     update: yes
