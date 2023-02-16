@@ -17,22 +17,28 @@
 - set_fact:
     vault_user_read_path: "{{vault_config.vaultPath}}/{{ identity_id }}"
 
-- name: Try to fetch the entry from vault
-  community.hashi_vault.vault_kv2_get:
-    url: "{{ vault_config.url }}"
-    path: "{{ vault_user_read_path }}"
-    engine_mount_point: "kvs"
-    auth_method: userpass
-    username: "{{ vault_config.username }}"
-    password: "{{ vault_config.password }}"
-    validate_certs: false
-  register: vault_user_entry
-  ignore_errors: yes
+# - name: Try to fetch the entry from vault
+#   community.hashi_vault.vault_kv2_get:
+#     url: "{{ vault_config.url }}"
+#     path: "{{ vault_user_read_path }}"
+#     engine_mount_point: "kvs"
+#     auth_method: userpass
+#     username: "{{ vault_config.username }}"
+#     password: "{{ vault_config.password }}"
+#     validate_certs: false
+#   register: vault_user_entry
+#   ignore_errors: yes
   
-- name: Fail if user is already in vault
-  fail:
-    msg: User already exists in the wallet
-  when: vault_user_entry.secret is defined
+# - name: Fail if user is already in vault
+#   fail:
+#     msg: User already exists in the wallet
+#   when: vault_user_entry.secret is defined
+
+- set_fact:
+    identity_cert_attributes: "{{ identity_cert_attrs | from_json }}"
+    
+- debug:
+    msg: "{{ identity_cert_attributes }}"
 
 - set_fact:
     vault_ca_admin_path: "{{vault_config.vaultPath}}/{{ network.org_name }}/ca-admin"
@@ -61,6 +67,7 @@
     enrollment_id: "{{ identity_id }}"
     enrollment_secret: "{{ identity_enrolment_secret }}"
     max_enrollments: -1
+    attributes: "{{ identity_cert_attributes }}"
     type: "{{ identity_type }}"
 
 - name: Enroll the identity
