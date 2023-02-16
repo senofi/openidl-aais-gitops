@@ -6,9 +6,8 @@
       include_role:
         name: "git-config"
 
-    - name: "Include vars from git"
-      include_vars:
-        file: "./roles_configs/an1/config.yml"
+    - include_role:
+        name: "include-config-vars"
 
     - name: Configure environment
       include_role:
