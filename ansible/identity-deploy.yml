@@ -16,5 +16,3 @@
 
     - include_role:
         name: "identity-deploy"
-      vars:
-        user_name: "test_user"
