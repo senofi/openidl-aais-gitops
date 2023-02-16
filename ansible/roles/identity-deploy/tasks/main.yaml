@@ -29,9 +29,6 @@
   register: vault_user_entry
   ignore_errors: yes
   
-- debug:
-    msg: "Vault user {{ vault_user_entry }}"
-  
 - name: Fail if user is already in vault
   fail:
     msg: User already exists in the wallet
