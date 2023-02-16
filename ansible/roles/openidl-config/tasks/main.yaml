@@ -14,48 +14,6 @@
     state: directory
     mode: 0755
 
-- name: Get vault url config
-  no_log: true
-  shell: |
-    export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString | jq -r .url
-  register: vault_url
-
-- name: Get vault username config
-  no_log: true
-  shell: |
-    export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString | jq -r .username
-  register: vault_username
-
-- name: Get vault password config
-  no_log: true
-  shell: |
-    export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString | jq -r .password
-  register: vault_password
-
-- name: Get vault org config
-  no_log: true
-  shell: |
-    export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString | jq -r .orgName
-  register: vault_orgName
-
-- name: Get vault path config
-  no_log: true
-  shell: |
-    export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-config-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString | jq -r .vaultPath
-  register: vault_vaultPath
-
-- name: Get vault root token
-  no_log: true
-  shell: |
-    export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-vault-unseal-key --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString
-  register: vault_root_token
-
 - name: Get Mongodb User
   no_log: true
   shell: |
@@ -124,13 +82,6 @@
     certificate_authority: "{{ network.ca_name }}"
     peers:
       - "{{ console.peer }}"
-
-- name: Get tlscacert from vault
-  shell: |
-    curl --header "X-Vault-Token: {{ vault_token }}" http://vault.{{ env }}.{{ internal_domain }}/v1/{{ network.org_name }}/crypto/peerOrganizations/{{ network.org_name }}-net/peers/peer0.{{ network.org_name }}-net/msp -s | jq -r .data.tlscacerts
-  vars:
-    vault_token: "{{ vault_root_token.stdout }}"
-  register: tlscert
 
 - name: Generate configuration files
   template:

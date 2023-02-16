@@ -19,6 +19,15 @@
    src: /tmp/openidl-code/{{ env_id }}-config/
    dest: /tmp/openidl-code/helm/openidl-k8s/charts/openidl-secrets/{{ org_name }}-{{ env }}-config/
 
+- name: Create Kubernetes namespace {{ namespace }}
+  k8s:
+    name: "{{ namespace }}"
+    kind: Namespace
+    state: present
+    wait: true
+    wait_sleep: 2
+    wait_timeout: 60
+
 - name: Deploy secrets
   shell: |
     cd /tmp/openidl-code/helm/
