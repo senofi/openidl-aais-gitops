@@ -29,7 +29,7 @@
   set_fact:
     conf_org_path: "{{ item.path }}/config.yml"
   loop: "{{ found_directories.files }}"
-  when: ( conf_org_path == "" ) and ( item.isdir == true ) and ( organization_id == ( item.path | dirname ) )
+  when: ( conf_org_path == "" ) and ( item.isdir == true ) and ( organization_id == ( item.path | basename ) )
 
 - name: Fail if cannot determine config path
   fail:
