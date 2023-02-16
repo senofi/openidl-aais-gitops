@@ -6,6 +6,7 @@
     recurse: no
     file_type: directory
   register: found_directories
+  delegate_to: localhost
 
 - name: Fail if config folder is empty
   fail:
