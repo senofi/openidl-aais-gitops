@@ -70,6 +70,11 @@
     attributes: "{{ identity_cert_attributes }}"
     type: "{{ identity_type }}"
 
+- name: Delete the json enrolment file
+  file:
+    path: enrl.json
+    state: absent
+
 - name: Enroll the identity
   ibm.blockchain_platform.enrolled_identity:
     state: "present"
@@ -81,7 +86,7 @@
     certificate_authority: "{{ network.ca_name }}"
     name: "{{ identity_id }}"
     enrollment_id: "{{ identity_id }}"
-    path: "l.json"
+    path: "enrl.json"
     enrollment_secret: "{{ identity_enrolment_secret }}"
   register: enrolled_identity
   
