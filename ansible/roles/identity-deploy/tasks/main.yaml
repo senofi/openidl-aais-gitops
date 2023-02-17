@@ -13,7 +13,7 @@
     vault_user_read_path: "{{ vault_config.vaultPath }}/{{ identity.id }}"
 
 - set_fact:
-    identity_cert_attributes: "{{ identity.cert_attrs | from_json }}"
+    identity_cert_attributes: "{{ identity.cert_attrs }}"
 
 - set_fact:
     vault_ca_admin_path: "{{vault_config.vaultPath}}/{{ network.org_name }}/ca-admin"
