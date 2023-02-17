@@ -19,6 +19,9 @@
       enrolment_secret: "{{en_secret}}"
   when: app_identity.cert_attrs is defined
 
+- debug:
+   msg: "Identity {{identity}}"
+   
 - name: Register and enroll the openIDL application identites, push it to a wallet
   include_role:
     name: identity-deploy

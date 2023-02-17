@@ -6,6 +6,9 @@
 - name: "Read Vault Config"
   include_tasks: "read-vault-config-{{ cloud_deployment }}.yaml"
 
+- debug:
+   msg: "Identity Received {{identity}}"
+
 - set_fact:
     vault_user_read_path: "{{ vault_config.vaultPath }}/{{ identity.id }}"
 
