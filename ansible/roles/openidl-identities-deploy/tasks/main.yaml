@@ -1,4 +1,4 @@
 - name: "Deploy openIDL identity"
-  include_tasks: "deploy_identity.yml"
+  include_tasks: "deploy_identity.yaml"
     app_identity="{{ item }}"
   loop: "{{ network.application_identities }}"
