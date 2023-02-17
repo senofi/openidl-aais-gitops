@@ -3,42 +3,14 @@
 # 2. register and enroll identity
 # 3. save it to vault
 
-# Fetch Vault credentials and location using AWS
-- name: Get vault path config
-  no_log: true
-  shell: |
-    export AWS_PROFILE=cicd-role
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-kvs-vault --version-stage AWSCURRENT --region {{ aws_region }}
-  register: vault_config_out
+- name: "Read Vault Config"
+  include_tasks: "read-vault-config-{{ cloud_deployment }}.yaml"
 
 - set_fact:
-    vault_config: "{{ vault_config_out.stdout | from_json | json_query('SecretString') | from_json }}"
+    vault_user_read_path: "{{ vault_config.vaultPath }}/{{ identity.id }}"
 
 - set_fact:
-    vault_user_read_path: "{{vault_config.vaultPath}}/{{ identity_id }}"
-
-# - name: Try to fetch the entry from vault
-#   community.hashi_vault.vault_kv2_get:
-#     url: "{{ vault_config.url }}"
-#     path: "{{ vault_user_read_path }}"
-#     engine_mount_point: "kvs"
-#     auth_method: userpass
-#     username: "{{ vault_config.username }}"
-#     password: "{{ vault_config.password }}"
-#     validate_certs: false
-#   register: vault_user_entry
-#   ignore_errors: yes
-  
-# - name: Fail if user is already in vault
-#   fail:
-#     msg: User already exists in the wallet
-#   when: vault_user_entry.secret is defined
-
-- set_fact:
-    identity_cert_attributes: "{{ identity_cert_attrs | from_json }}"
-    
-- debug:
-    msg: "{{ identity_cert_attributes }}"
+    identity_cert_attributes: "{{ identity.cert_attrs | from_json }}"
 
 - set_fact:
     vault_ca_admin_path: "{{vault_config.vaultPath}}/{{ network.org_name }}/ca-admin"
@@ -64,15 +36,15 @@
     api_timeout: "{{ api_timeout | default(omit) }}"
     certificate_authority: "{{ network.ca_name }}"
     registrar: "{{ ca_admin_identity.data.data.data | b64decode | from_json }}"
-    enrollment_id: "{{ identity_id }}"
-    enrollment_secret: "{{ identity_enrolment_secret }}"
+    enrollment_id: "{{ identity.id }}"
+    enrollment_secret: "{{ identity.enrolment_secret }}"
     max_enrollments: -1
     attributes: "{{ identity_cert_attributes }}"
-    type: "{{ identity_type }}"
+    type: "{{ identity.type }}"
 
 - name: Delete the json enrolment file
   file:
-    path: enrl.json
+    path: "enrl-{{ identity.id }}.json"
     state: absent
 
 - name: Enroll the identity
@@ -84,14 +56,11 @@
     api_secret: "{{ console.password }}"
     api_timeout: "{{ api_timeout | default(omit) }}"
     certificate_authority: "{{ network.ca_name }}"
-    name: "{{ identity_id }}"
-    enrollment_id: "{{ identity_id }}"
-    path: "enrl.json"
-    enrollment_secret: "{{ identity_enrolment_secret }}"
+    name: "{{ identity.id }}"
+    enrollment_id: "{{ identity.id }}"
+    path: "enrl-{{ identity.id }}.json"
+    enrollment_secret: "{{ identity.enrolment_secret }}"
   register: enrolled_identity
-  
-- debug:
-    msg: "{{ enrolled_identity.enrolled_identity.cert  }}"
 
 - set_fact:
     identity_data:
@@ -101,10 +70,8 @@
       mspId: "{{network.org_name}}"
       type: "X.509"
 
-
-    
 - set_fact:
-    vault_user_write_path: "kvs/data/{{vault_config.vaultPath}}/{{ identity_id }}"
+    vault_user_write_path: "kvs/data/{{vault_config.vaultPath}}/{{ identity.id }}"
     
 - name: Push the enroled identity to Vault with path {{ vault_user_write_path }}
   community.hashi_vault.vault_write:
@@ -113,7 +80,7 @@
     data:
       data: 
         data: "{{ identity_data | to_json | string }}"
-        id: "{{ identity_id }}"
+        id: "{{ identity.id }}"
     auth_method: userpass
     username: "{{ vault_config.username }}"
     password: "{{ vault_config.password }}"

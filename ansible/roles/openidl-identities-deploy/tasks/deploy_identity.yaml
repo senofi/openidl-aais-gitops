@@ -1,0 +1,11 @@
+
+
+
+- name: Register and enroll the openIDL application identites 
+  include_role:
+    name: identity-deploy
+  vars:
+    identity: "{{ app_identity }}"
+  loop: "{{ apps_identities }}"
+  loop_control:
+    loop_var: app_identity
