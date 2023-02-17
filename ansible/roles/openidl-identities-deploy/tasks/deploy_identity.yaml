@@ -21,9 +21,7 @@
 
 - debug:
    msg: "Identity {{identity}}"
-   
+
 - name: Register and enroll the openIDL application identites, push it to a wallet
   include_role:
     name: identity-deploy
-  vars:
-    identity: "{{ identity }}"
