@@ -64,7 +64,7 @@
         livenessProbe:
           enabled: false
       global:
-        namespaceOverride: {{ namespace }}
+        namespaceOverride: "{{ namespace }}"
   tags:
     - mongodb
     - mongodb-helm
