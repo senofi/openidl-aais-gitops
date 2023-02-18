@@ -12,6 +12,10 @@
     name: "{{ network.org_name }}"
     state: absent
     wait: true
+    release_name: "{{ network.org_name }}"
+    release_state: absent
+    release_namespace: "{{ namespace }}"
+
   register: mongodb
 
 - debug:
