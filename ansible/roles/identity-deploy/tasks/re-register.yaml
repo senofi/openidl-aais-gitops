@@ -1,15 +1,14 @@
-
-- name: "Fetch the CA admin user from Wallet"
-  include_role: 
-    name: wallet
-  vars:
-    wallet_ops: "get"
-    wallet_path: "{{ network.org_name }}/ca-admin"
+- set_fact:
+    seed: "{{ lookup('ansible.builtin.password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
 
 - set_fact:
-    identity_cert_attributes: "{{ identity.cert_attrs }}"
+    seed_attr: "{ \"name\": \"seed\", \"value\": \"{{seed}}\" ,  \"ecert\" : \"true\" }"
 
-- name: Register the idenity
+- set_fact:
+    identity_cert_attributes: "{{ identity.cert_attrs }} + [ seed_attr ]"
+
+
+- name: Re register the idenity if already registered
   ibm.blockchain_platform.registered_identity:
     state: "present"
     api_endpoint: "{{ console.api_endpoint }}"
@@ -25,15 +24,3 @@
     attributes: "{{ identity_cert_attributes }}"
     type: "{{ identity.type }}"
   register: registered_identity
-
-- name: "Enroll the identity"
-  include_tasks: "re-register.yaml"
-  when: identity_force_registration == true and registered_identity.changed == false
-
-- set_fact:
-    identity_registered:
-      success: "{{registered_identity.changed}}"
-      identity: "{{registered_identity.registered_identity}}"
-
-- debug:
-    msg: "Registered {{ identity_registered }}"
