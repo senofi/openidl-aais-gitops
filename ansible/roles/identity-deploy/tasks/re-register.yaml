@@ -5,8 +5,10 @@
     seed_attr: "{ \"name\": \"seed\", \"value\": \"{{seed}}\" ,  \"ecert\" : \"true\" }"
 
 - set_fact:
-    identity_cert_attributes: "{{ identity.cert_attrs }} + [ seed_attr ]"
+    identity_cert_attributes: "{{ identity.cert_attrs + [ seed_attr ] }}"
 
+- debug:
+    msg: "{{ identity_cert_attributes }}"
 
 - name: Re register the idenity if already registered
   ibm.blockchain_platform.registered_identity:
