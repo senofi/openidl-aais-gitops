@@ -26,5 +26,10 @@
     type: "{{ identity.type }}"
   register: registered_identity
 
+- set_fact:
+    identity_registered:
+      success: "{{registered_identity.changed}}"
+      identity: "{{registered_identity.registered_identity}}"
+
 - debug:
-    msg: "Registered {{ registered_identity }}"
+    msg: "Registered {{ identity_registered }}"
