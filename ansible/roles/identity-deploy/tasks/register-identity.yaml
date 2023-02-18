@@ -18,7 +18,7 @@
     api_secret: "{{ console.password }}"
     api_timeout: "{{ api_timeout | default(omit) }}"
     certificate_authority: "{{ network.ca_name }}"
-    registrar: "{{ ca_admin_identity.data.data.data | b64decode | from_json }}"
+    registrar: "{{ wallet_fetched_identity.data.data.data | b64decode | from_json }}"
     enrollment_id: "{{ identity.id }}"
     enrollment_secret: "{{ identity.enrolment_secret }}"
     max_enrollments: -1
