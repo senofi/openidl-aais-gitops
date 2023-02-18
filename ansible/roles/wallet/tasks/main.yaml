@@ -5,5 +5,5 @@
 - set_fact:
     wallet_resource_path: "{{vault_config.vaultPath}}/{{wallet_path}}"
 
-- name: "Wallet Operation"
+- name: "Perform Wallet Operation {{wallet_ops}} on wallet {{ wallet_kind }}"
   include_tasks: "{{wallet_ops}}-{{ wallet_kind }}.yaml"
