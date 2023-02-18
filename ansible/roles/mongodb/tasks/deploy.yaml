@@ -12,7 +12,7 @@
       api_version: v1
       kind: Namespace
       metadata:
-        name: "{{ namespace }}"
+        name: "{{ mongodb.namespace }}"
 
 - name: mongodb Helm chart repo
   kubernetes.core.helm_repository:
@@ -27,7 +27,7 @@
     chart_ref: bitnami/mongodb
     release_name: "{{ network.org_name }}"
     release_state: present
-    release_namespace: "{{ namespace }}"
+    release_namespace: "{{ mongodb.namespace }}"
     force: True
     wait: True
     wait_timeout: "300s"
@@ -64,7 +64,7 @@
         livenessProbe:
           enabled: false
       global:
-        namespaceOverride: "{{ namespace }}"
+        namespaceOverride: "{{ mongodb.namespace }}"
   tags:
     - mongodb
     - mongodb-helm
