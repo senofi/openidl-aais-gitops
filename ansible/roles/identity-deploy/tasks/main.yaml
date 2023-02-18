@@ -3,89 +3,10 @@
 # 2. register and enroll identity
 # 3. save it to vault
 
-- name: "Read Vault Config"
-  include_tasks: "read-vault-config-{{ cloud_deployment }}.yaml"
+- name: "Register the identity"
+  include_tasks: "register-identity.yaml"
 
-- debug:
-   msg: "Identity Received {{identity}}"
+- name: "Enroll the identity"
+  include_tasks: "enroll-identity.yaml"
+  when: identity_registered.success == true
 
-- set_fact:
-    vault_user_read_path: "{{ vault_config.vaultPath }}/{{ identity.id }}"
-
-- set_fact:
-    identity_cert_attributes: "{{ identity.cert_attrs }}"
-
-- set_fact:
-    vault_ca_admin_path: "{{vault_config.vaultPath}}/{{ network.org_name }}/ca-admin"
-   
-- name: Fetch the CA admin identity certs from Vault {{ vault_config.url }} with path {{ vault_ca_admin_path }}
-  community.hashi_vault.vault_kv2_get:
-    url: "{{ vault_config.url }}"
-    path: "{{ vault_ca_admin_path }}"
-    engine_mount_point: "kvs"
-    auth_method: userpass
-    username: "{{ vault_config.username }}"
-    password: "{{ vault_config.password }}"
-    validate_certs: false
-  register: ca_admin_identity
-
-- name: Register the idenity
-  ibm.blockchain_platform.registered_identity:
-    state: "present"
-    api_endpoint: "{{ console.api_endpoint }}"
-    api_authtype: "{{ console.api_authtype }}"
-    api_key: "{{ console.username }}"
-    api_secret: "{{ console.password }}"
-    api_timeout: "{{ api_timeout | default(omit) }}"
-    certificate_authority: "{{ network.ca_name }}"
-    registrar: "{{ ca_admin_identity.data.data.data | b64decode | from_json }}"
-    enrollment_id: "{{ identity.id }}"
-    enrollment_secret: "{{ identity.enrolment_secret }}"
-    max_enrollments: -1
-    attributes: "{{ identity_cert_attributes }}"
-    type: "{{ identity.type }}"
-
-- name: Delete the json enrolment file
-  file:
-    path: "enrl-{{ identity.id }}.json"
-    state: absent
-
-- name: Enroll the identity
-  ibm.blockchain_platform.enrolled_identity:
-    state: "present"
-    api_endpoint: "{{ console.api_endpoint }}"
-    api_authtype: "{{ console.api_authtype }}"
-    api_key: "{{ console.username }}"
-    api_secret: "{{ console.password }}"
-    api_timeout: "{{ api_timeout | default(omit) }}"
-    certificate_authority: "{{ network.ca_name }}"
-    name: "{{ identity.id }}"
-    enrollment_id: "{{ identity.id }}"
-    path: "enrl-{{ identity.id }}.json"
-    enrollment_secret: "{{ identity.enrolment_secret }}"
-  register: enrolled_identity
-
-- set_fact:
-    identity_data:
-      credentials:
-        certificate: "{{enrolled_identity.enrolled_identity.cert | b64decode | regex_replace('\n' , '\\n') }}"
-        privateKey: "{{ enrolled_identity.enrolled_identity.private_key | b64decode | regex_replace('\r\n' , '\\r\\n') }}"
-      mspId: "{{network.org_name}}"
-      type: "X.509"
-
-- set_fact:
-    vault_user_write_path: "kvs/data/{{vault_config.vaultPath}}/{{ identity.id }}"
-    
-- name: Push the enroled identity to Vault with path {{ vault_user_write_path }}
-  community.hashi_vault.vault_write:
-    url: "{{ vault_config.url }}"
-    path: "{{ vault_user_write_path }}"
-    data:
-      data: 
-        data: "{{ identity_data | to_json | string }}"
-        id: "{{ identity.id }}"
-    auth_method: userpass
-    username: "{{ vault_config.username }}"
-    password: "{{ vault_config.password }}"
-    validate_certs: false
-  register: out
