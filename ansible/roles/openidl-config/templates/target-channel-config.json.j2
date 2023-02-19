@@ -8,8 +8,8 @@
 {% endfor %}
 {% for channel in network.channels if channel.common %}
         {
-            "chaincodeName": "channel.chaincode.name",
-            "channelName": "channel.name"
+            "chaincodeName": "{{ channel.chaincode.name }}",
+            "channelName": "{{ channel.name }}"
         }{% if loop.last %}{% else %},{% endif %}
 {% endfor %}
     ],
