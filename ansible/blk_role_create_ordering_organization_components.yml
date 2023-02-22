@@ -11,7 +11,7 @@
 
     - name: "Install blockchain platform"
       shell: |
-        ansible-galaxy collection install roles_configs/bin/systemless_ibm-blockchain_platform-2.0.0-beta.tar.gz --force
+        ansible-galaxy collection install roles_configs/bin/ibm-blockchain_platform-2.0.0-beta.tar.gz --force
       when: blockchain_install | default('False') | bool
 
     - name: "Include vars from git"
