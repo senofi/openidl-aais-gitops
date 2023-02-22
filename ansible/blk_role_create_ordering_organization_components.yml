@@ -24,7 +24,7 @@
     - name: "Create Wallet Directory"
       file:
         path: "{{ wallet }}"
-        status: directory
+        state: directory
 
     - include_role:
         name: ibm.blockchain_platform.ordering_organization
