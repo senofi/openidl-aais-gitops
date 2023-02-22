@@ -14,6 +14,12 @@
         ansible-galaxy collection install roles_configs/bin/ibm-blockchain_platform-2.0.0-beta.tar.gz --force
       when: blockchain_install | default('False') | bool
 
+    - name: "Install blockchain platform"
+      shell: |
+        ansible-galaxy collection install roles_configs/bin/ibm-blockchain_platform-2.0.0-beta.tar.gz --force
+      when: blockchain_install | default('False') | bool
+      delegate_to: localhost
+
     - name: "Include vars from git"
       include_vars:
         file: "./roles_configs/blockchain_configs/{{item}}"
