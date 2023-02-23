@@ -56,16 +56,16 @@
       no_log: true
       with_items:
         - key: admin_identity_wallet
-          val: "{ \"data\": \"{{admin_json_result.results[0].content}}\", \"id\": \"org-admin\"}"
+          val: "{ \"data\": \"{{admin_json_result.results[0].content}}\", \"id\": \"{{ network.org_name }}-org-admin\"}"
         - key: admin_ca_identity_wallet
-          val: "{ \"data\": \"{{admin_json_result.results[1].content}}\", \"id\": \"ca-admin\"}"
+          val: "{ \"data\": \"{{admin_json_result.results[1].content}}\", \"id\": \"{{ network.org_name }}-ca-admin\"}"
 
     - name: "Put the enrolled identity to Wallet"
       include_role:
         name: wallet
       vars:
         wallet_ops: "put"
-        wallet_path: "{{ network.org_name }}/{{ item.id }}"
+        wallet_path: "{{ item.id }}"
         wallet_identity: "{{ item.identity_wallet }}"
       with_items:
         - { id: "{{ admin_identity_wallet.id }}", identity_wallet: "{{ admin_identity_wallet }}" }
