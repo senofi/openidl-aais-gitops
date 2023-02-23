@@ -1,0 +1,3 @@
+---
+blockchain_collection_install: false
+collection_file: roles_configs/bin/ibm-blockchain_platform-2.0.0-beta.tar.gz
