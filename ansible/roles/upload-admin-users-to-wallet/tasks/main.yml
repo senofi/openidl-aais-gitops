@@ -6,24 +6,21 @@
     - "{{ network.ca_name }}admin.json"
   register: admin_json_result
 
-- set_fact: {"{{ item.key }}":"{{ item.val }}"}
-  no_log: true
-  with_items:
-    - key: admin_identity_wallet
-      val: "{ \"data\": \"{{admin_json_result.results[0].content}}\", \"id\": \"{{ network.org_name }}-org-admin\"}"
-    - key: admin_ca_identity_wallet
-      val: "{ \"data\": \"{{admin_json_result.results[1].content}}\", \"id\": \"{{ network.org_name }}-ca-admin\"}"
+- set_fact:
+    admin_identity_json: 
+      data: "{{admin_json_result.results[0].content | b64decode | from_json }}"
+      id: "{{ network.org_name }}-org-admin"
 
-- name: "Put the enrolled identity to Wallet"
-  include_role:
-    name: wallet
-  vars:
-    wallet_ops: "put"
-    wallet_path: "{{ item.id }}"
-    wallet_identity: "{{ item.identity_wallet }}"
-  with_items:
-    - { id: "{{ admin_identity_wallet.id }}", identity_wallet: "{{ admin_identity_wallet }}" }
-    - { id: "{{ admin_ca_identity_wallet.id }}", identity_wallet: "{{ admin_ca_identity_wallet }}" }
+- name: "Store org admin identity"
+  include_tasks: "store-admin-identity.yaml"
+
+- set_fact:
+    admin_identity_json: 
+      data: "{{admin_json_result.results[1].content | b64decode | from_json }}"
+      id: "{{ network.org_name }}-ca-admin"
+
+- name: "Store ca admin identity"
+  include_tasks: "store-admin-identity.yaml"
 
 # cleanup
 - name: "Cleanup files"
