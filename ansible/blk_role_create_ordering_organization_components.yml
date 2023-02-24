@@ -17,11 +17,6 @@
       include_role:
         name: include-config-vars
 
-    - name: "Create Wallet Directory"
-      file:
-        path: "{{ wallet }}"
-        state: directory
-
     - include_role:
         name: ibm.blockchain_platform.ordering_organization
       vars:
@@ -47,38 +42,6 @@
         organization_admin_identity: "{{ network.org_name }}admin.json"
       when: network.ordererorg | bool
 
-    - name: "Read json files identities"
-      slurp:
-        src: "{{ item }}"
-      loop:
-        - "{{ network.org_name }}admin.json"
-        - "{{ network.ca_name }}admin.json"
-      register: admin_json_result
-
-    - set_fact: {"{{ item.key }}":"{{ item.val }}"}
-      no_log: true
-      with_items:
-        - key: admin_identity_wallet
-          val: "{ \"data\": \"{{admin_json_result.results[0].content}}\", \"id\": \"{{ network.org_name }}-org-admin\"}"
-        - key: admin_ca_identity_wallet
-          val: "{ \"data\": \"{{admin_json_result.results[1].content}}\", \"id\": \"{{ network.org_name }}-ca-admin\"}"
-
-    - name: "Put the enrolled identity to Wallet"
-      include_role:
-        name: wallet
-      vars:
-        wallet_ops: "put"
-        wallet_path: "{{ item.id }}"
-        wallet_identity: "{{ item.identity_wallet }}"
-      with_items:
-        - { id: "{{ admin_identity_wallet.id }}", identity_wallet: "{{ admin_identity_wallet }}" }
-        - { id: "{{ admin_ca_identity_wallet.id }}", identity_wallet: "{{ admin_ca_identity_wallet }}" }
-
-    # cleanup
-    - name: "Cleanup files"
-      file:
-        state: absent
-        path: "./{{item}}"
-      with_items:
-        - "{{network.org_name}}admin.json"
-        - "{{network.ca_name}}admin.json"
+    - include_role:
+        name: upload-admin-users-to-wallet
+      when: state == "present"
