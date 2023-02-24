@@ -12,7 +12,7 @@
       id: "{{ network.org_name }}-org-admin"
 
 - name: "Store org admin identity"
-  include_tasks: "store-admin-identity.yaml"
+  include_tasks: "store-admin-identity.yml"
 
 - set_fact:
     admin_identity_json: 
@@ -20,7 +20,7 @@
       id: "{{ network.org_name }}-ca-admin"
 
 - name: "Store ca admin identity"
-  include_tasks: "store-admin-identity.yaml"
+  include_tasks: "store-admin-identity.yml"
 
 # cleanup
 - name: "Cleanup files"
