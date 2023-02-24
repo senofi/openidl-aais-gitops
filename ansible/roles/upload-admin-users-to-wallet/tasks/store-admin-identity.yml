@@ -14,4 +14,4 @@
   vars:
     wallet_ops: "put"
     wallet_path: "{{ admin_identity_wallet.id }}"
-    wallet_identity: "{{ admin_identity_wallet.identity_wallet }}"
+    wallet_identity: "{{ admin_identity_wallet }}"
