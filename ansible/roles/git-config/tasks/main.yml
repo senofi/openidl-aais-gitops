@@ -29,6 +29,7 @@
   git:
     repo: "git@github_roles_configs:{{ git_configs_repo_url }}"
     dest: "./roles_configs"
+    version: "{{ git_configs_repo_branch }}"
     clone: yes
     update: yes
     version: main
