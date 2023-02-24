@@ -9,8 +9,3 @@
   shell: |
     ansible-galaxy collection install {{ collection_file }} --force
   when: blockchain_collection_install | bool
-
-- name: "Create Wallet Directory"
-  file:
-    path: "{{ wallet }}"
-    state: directory

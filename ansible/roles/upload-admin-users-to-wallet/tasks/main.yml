@@ -29,7 +29,7 @@
 - name: "Cleanup files"
   file:
     state: absent
-    path: "./{{item}}"
+    path: "{{item}}"
   with_items:
     - "{{network.org_name}}admin.json"
     - "{{network.ca_name}}admin.json"
