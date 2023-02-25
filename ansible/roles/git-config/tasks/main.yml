@@ -24,9 +24,6 @@
       {{ ssh_key | b64decode }}
   with_items: "{{delegate_to}}"
 
-- debug:
-    msg: "{{git_configs_repo_branch}}"
-
 - name: "Pull configs"
   delegate_to: "{{ item }}"
   git:
@@ -35,7 +32,6 @@
     version: "{{ git_configs_repo_branch }}"
     clone: yes
     update: yes
-    version: main
     accept_hostkey: true
   register: pull_result
   with_items: "{{delegate_to}}"
