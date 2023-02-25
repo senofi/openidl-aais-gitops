@@ -57,7 +57,7 @@
   k8s:
     state: present
     namespace: "{{ operator_namespace }}"
-    resource_definition: "{{ lookup('template', 'templates/'+target+'/rbac/'+item) }}"
+    resource_definition: "{{ lookup('template', 'templates/'+operator_target+'/rbac/'+item) }}"
     apply: yes
   loop:
     - hlf-operator-clusterrole.yaml
@@ -69,7 +69,7 @@
   k8s:
     state: present
     namespace: "{{ operator_namespace }}"
-    resource_definition: "{{ lookup('template', 'templates/'+target+'/manager/'+item) }}"
+    resource_definition: "{{ lookup('template', 'templates/'+operator_target+'/manager/'+item) }}"
     apply: yes
   loop:
     - hlf-operator-manager.yaml.j2
@@ -83,7 +83,7 @@
   k8s:
     state: present
     namespace: "{{ operator_namespace }}"
-    resource_definition: "{{ lookup('template', 'templates/'+target+'/service/'+item) }}"
+    resource_definition: "{{ lookup('template', 'templates/'+operator_target+'/service/'+item) }}"
     apply: yes
   loop:
     - hlf-operator-service.yaml
