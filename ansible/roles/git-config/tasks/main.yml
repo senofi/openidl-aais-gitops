@@ -24,6 +24,9 @@
       {{ ssh_key | b64decode }}
   with_items: "{{delegate_to}}"
 
+- debug:
+    msg: "{{git_configs_repo_branch}}"
+
 - name: "Pull configs"
   delegate_to: "{{ item }}"
   git:
