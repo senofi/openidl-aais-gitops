@@ -83,7 +83,7 @@
           app.kubernetes.io/instance: "nginx-{{type}}"
           app.kubernetes.io/name: ingress-nginx
           app.kubernetes.io/part-of: ingress-nginx
-          cluster: "{{cluster}}-cluster"
+          cluster: "{{nginx_cluster}}-cluster"
           component: nginx-ingress-controller
         name: nginx
       spec:
