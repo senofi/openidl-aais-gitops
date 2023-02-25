@@ -10,24 +10,14 @@
   collections:
     - kubernetes.core.k8s
     - kubernetes.core.k8s_info
-  vars:
-    state: present
-    wait_timeout: 3600
-    k8s:
-      cluster_name: "d1-test-blk-cluster"
-    aws:
-      access_id: "{{aws_access_key}}"
-      access_key: "{{aws_secret_key}}"
-      region: "us-east-2"
-      external_id: "{{aws_external_id}}"
-      assume_role_arn: "{{aws_assume_role_arn}}"
-    privilege_escalate: false           #Default to NOT escalate to root privledges
-    install_os: "linux"                 #Default to linux OS
-    install_arch:  "amd64"              #Default to amd64 architecture
-    bin_install_dir:  "~/bin"           #Default to ~/bin install directory for binaries
 
-  roles:
-    - fabric-operator
-    - fabric-console
-    - flux2
-    - kubectl-config
+  tasks:
+    - include_role:
+      name: "git-config"
+    - include_role:
+      name: "include-config-vars"
+    - include_role:
+      name: "fabric-operator"
+    - include_role:
+      name: "fabric-console"
+

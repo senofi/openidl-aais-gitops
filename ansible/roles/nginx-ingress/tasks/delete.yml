@@ -3,16 +3,16 @@
   kubernetes.core.helm:
     chart_ref: nginx/ingress-nginx
     chart_version: "{{nginx.nginx_chart_version}}"
-    release_name: "nginx-{{type}}"
+    release_name: "nginx-{{nginx_type}}"
     release_state: absent
-    release_namespace: "nginx-{{type}}"
+    release_namespace: "nginx-{{nginx_type}}"
     force: True
     wait: True
     wait_timeout: "300s"
     update_repo_cache: True
     disable_hook: True
     values_files:
-      - roles_configs/nginx-{{cluster}}-cluster/values-{{type}}.yaml
+      - roles_configs/nginx-{{nginx_cluster}}-cluster/values-{{nginx_type}}.yaml
 
 - name: "Uninstall Jetstack certificate manager"
   kubernetes.core.helm:
@@ -29,7 +29,7 @@
 
 - name: "Deleting Nginx ingress controller namespace"
   k8s:
-    name: "nginx-{{ type }}"
+    name: "nginx-{{ nginx_type }}"
     kind: Namespace
     state: absent
     wait: true
