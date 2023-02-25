@@ -40,7 +40,7 @@
     update_repo_cache: True
     disable_hook: True
     values_files:
-      - "./roles_configs/nginx-{{nginx_cluster}}-cluster/values-{{nginx_type}}.yaml"
+      - "{{git_config_path}}/nginx-{{nginx_cluster}}-cluster/values-{{nginx_type}}.yaml"
 
 - name: "Create nginx IngressClass"
   kubernetes.core.k8s:

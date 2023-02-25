@@ -28,7 +28,7 @@
   delegate_to: "{{ item }}"
   git:
     repo: "git@github_roles_configs:{{ git_configs_repo_url }}"
-    dest: "./roles_configs"
+    dest: "{{git_config_path}}"
     version: "{{ git_configs_repo_branch }}"
     clone: yes
     update: yes
