@@ -18,7 +18,7 @@
 - name: "Create ssh key"
   delegate_to: "{{ item }}"
   copy:
-    dest: "~/.ssh/openidl-d1-config"
+    dest: "~/.ssh/openidl-git-config"
     mode: 0600
     content: |
       {{ ssh_key | b64decode }}
