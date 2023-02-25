@@ -13,11 +13,11 @@
 
   tasks:
     - include_role:
-      name: "git-config"
+        name: "git-config"
     - include_role:
-      name: "include-config-vars"
+        name: "include-config-vars"
     - include_role:
-      name: "fabric-operator"
+        name: "fabric-operator"
     - include_role:
-      name: "fabric-console"
+        name: "fabric-console"
 
