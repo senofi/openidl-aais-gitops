@@ -76,21 +76,21 @@
       metadata:
         annotations:
           ingressclass.kubernetes.io/is-default-class: "false"
-          meta.helm.sh/release-name: "nginx-{{type}}"
-          meta.helm.sh/release-namespace: "nginx-{{type}}"
+          meta.helm.sh/release-name: "nginx-{{nginx_type}}"
+          meta.helm.sh/release-namespace: "nginx-{{nginx_type}}"
         labels:
           app.kubernetes.io/component: controller
-          app.kubernetes.io/instance: "nginx-{{type}}"
+          app.kubernetes.io/instance: "nginx-{{nginx_type}}"
           app.kubernetes.io/name: ingress-nginx
           app.kubernetes.io/part-of: ingress-nginx
           cluster: "{{nginx_cluster}}-cluster"
           component: nginx-ingress-controller
         name: nginx
       spec:
-        controller: "k8s.io/ingress-nginx-{{type}}"
+        controller: "k8s.io/ingress-nginx-{{nginx_type}}"
   when:
-    - cluster == "blk"
-    - type == "internal" or type == "external"
+    - nginx_cluster == "blk"
+    - nginx_type == "internal" or nginx_type == "external"
 
 - name: "Install Jetstack certificate manager"
   kubernetes.core.helm:
