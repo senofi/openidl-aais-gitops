@@ -1,5 +1,5 @@
 ---
-- name: "Creating Nginx namespace '{{ nginx.nginx_namespace }}' if missing"
+- name: "Creating Nginx namespace '{{ nginx_nginx_namespace }}' if missing"
   k8s:
     name: "nginx-{{ nginx_type }}"
     kind: Namespace
@@ -27,10 +27,10 @@
     name: cert-manager
     repo_url: "https://charts.jetstack.io"
 
-- name: "Install Nginx Ingress Controller"
+- name: "Install Nginx Ingress Controller "
   kubernetes.core.helm:
     chart_ref: nginx/ingress-nginx
-    chart_version: "{{nginx.nginx_chart_version}}"
+    chart_version: "{{nginx_nginx_chart_version}}"
     release_name: "nginx-{{nginx_type}}"
     release_state: present
     release_namespace: "nginx-{{nginx_type}}"
@@ -70,7 +70,7 @@
 - name: "Install Jetstack certificate manager"
   kubernetes.core.helm:
     chart_ref: cert-manager/cert-manager
-    chart_version: "{{nginx.cert_manager_chart_version}}"
+    chart_version: "{{nginx_cert_manager_chart_version}}"
     release_name: cert-manager
     release_state: present
     release_namespace: cert-manager
@@ -93,7 +93,7 @@
         name: "{{ item.name }}"
       spec:
         acme:
-          email: "{{ nginx.cert_manager_email }}"
+          email: "{{ nginx_cert_manager_email }}"
           preferredChain: ""
           privateKeySecretRef:
             name: "{{ item.name }}"
@@ -103,5 +103,5 @@
                 ingress:
                   class: "{{ item.controller_name }}"
   loop:
-    - { name: "letsencrypt-staging", controller_name: "{{ nginx.controller_name }}", url: "{{nginx_tls_cert_stage_url}}" }
-    - { name: "letsencrypt-prod", controller_name: "{{ nginx.controller_name }}", url: "{{nginx_tls_cert_prod_url}}" }
+    - { name: "letsencrypt-staging", controller_name: "{{ nginx_controller_name }}", url: "{{nginx_tls_cert_stage_url}}" }
+    - { name: "letsencrypt-prod", controller_name: "{{ nginx_controller_name }}", url: "{{nginx_tls_cert_prod_url}}" }
