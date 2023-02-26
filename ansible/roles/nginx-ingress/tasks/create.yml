@@ -78,7 +78,7 @@
     wait: True
     wait_timeout: "300s"
     update_repo_cache: True
-    disable_hook: True
+    #disable_hook: True
     release_values:
       installCRDs: true
 
