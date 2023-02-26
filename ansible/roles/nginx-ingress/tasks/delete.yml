@@ -54,10 +54,3 @@
   when:
     - nginx_cluster == "blk"
     - nginx_type == "internal" or nginx_type == "external"
-
-- name: Remove an ingress classe external
-  k8s:
-    state: absent
-    api_version: v1
-    kind: IngressClass
-    name: nginx-external
