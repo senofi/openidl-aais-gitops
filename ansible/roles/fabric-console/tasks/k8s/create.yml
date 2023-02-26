@@ -76,8 +76,8 @@
       spec:
         ingressClassName: "{{console_ingress_class}}"
         tls:
-        - hosts:
-          - "{{ console_namespace }}-{{ console_name }}-console.{{ console_domain }}"
+        # - hosts:
+        #   - "{{ console_namespace }}-{{ console_name }}-console.{{ console_domain }}"
         secretName: "{{ console_namespace }}-{{ console_name }}-console-tls"
 
 
