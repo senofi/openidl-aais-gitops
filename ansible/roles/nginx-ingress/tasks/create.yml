@@ -27,7 +27,7 @@
     name: cert-manager
     repo_url: "https://charts.jetstack.io"
 
-- name: "Install Nginx Ingress Controller "
+- name: "Install Nginx Ingress Controller"
   kubernetes.core.helm:
     chart_ref: nginx/ingress-nginx
     chart_version: "{{nginx_nginx_chart_version}}"
@@ -41,31 +41,6 @@
     disable_hook: True
     values_files:
       - "{{git_config_path}}/nginx-{{nginx_cluster}}-cluster/values-{{nginx_type}}.yaml"
-
-- name: "Create nginx IngressClass"
-  kubernetes.core.k8s:
-    state: present
-    definition:
-      apiVersion: networking.k8s.io/v1
-      kind: IngressClass
-      metadata:
-        annotations:
-          ingressclass.kubernetes.io/is-default-class: "false"
-          meta.helm.sh/release-name: "nginx-{{nginx_type}}"
-          meta.helm.sh/release-namespace: "nginx-{{nginx_type}}"
-        labels:
-          app.kubernetes.io/component: controller
-          app.kubernetes.io/instance: "nginx-{{nginx_type}}"
-          app.kubernetes.io/name: ingress-nginx
-          app.kubernetes.io/part-of: ingress-nginx
-          cluster: "{{nginx_cluster}}-cluster"
-          component: nginx-ingress-controller
-        name: nginx
-      spec:
-        controller: "k8s.io/ingress-nginx-{{nginx_type}}"
-  when:
-    - nginx_cluster == "blk"
-    - nginx_type == "internal" or nginx_type == "external"
 
 - name: "Create nginx IngressClass"
   kubernetes.core.k8s:
