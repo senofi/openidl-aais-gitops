@@ -78,7 +78,7 @@
         tls:
         # - hosts:
         #   - "{{ console_namespace }}-{{ console_name }}-console.{{ console_domain }}"
-        secretName: "{{ console_namespace }}-{{ console_name }}-console-tls"
+          secretName: "{{ console_namespace }}-{{ console_name }}-console-tls"
 
 
     merge_type: merge
