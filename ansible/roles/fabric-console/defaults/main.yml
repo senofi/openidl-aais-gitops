@@ -24,6 +24,7 @@ console_arch: amd64
 console_storage_class: gp2
 console_storage_size: 5Gi
 console_target: k8s
+console_cluster_issuer: letsencrypt-prod
 
 # Must be custom defined
   # console_domain: "example.com"
