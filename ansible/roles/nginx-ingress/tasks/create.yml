@@ -8,15 +8,6 @@
     wait_sleep: 2
     wait_timeout: 60
 
-- name: "Creating cert-manager namespace if missing"
-  k8s:
-    name: cert-manager
-    kind: Namespace
-    state: present
-    wait: true
-    wait_sleep: 2
-    wait_timeout: 60
-
 - name: "Add Nginx ingress controller chart repo"
   kubernetes.core.helm_repository:
     name: nginx
@@ -66,6 +57,16 @@
   when:
     - nginx_cluster == "blk"
     - nginx_type == "internal" or nginx_type == "external"
+
+
+- name: "Creating cert-manager namespace if missing"
+  k8s:
+    name: cert-manager
+    kind: Namespace
+    state: present
+    wait: true
+    wait_sleep: 2
+    wait_timeout: 60
 
 - name: "Install Jetstack certificate manager"
   kubernetes.core.helm:

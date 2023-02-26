@@ -612,7 +612,7 @@ controller:
     enabled: true
     failurePolicy: Fail
     # timeoutSeconds: 10
-    port: 443
+    port: 8443
     certificate: "/usr/local/certificates/cert"
     key: "/usr/local/certificates/key"
     namespaceSelector: {}
