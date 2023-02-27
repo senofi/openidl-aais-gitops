@@ -1,13 +1,4 @@
 ---
-- name: "Creating Nginx namespace '{{ nginx_nginx_namespace }}' if missing"
-  k8s:
-    name: "nginx-{{ nginx_type }}"
-    kind: Namespace
-    state: present
-    wait: true
-    wait_sleep: 2
-    wait_timeout: 60
-
 - name: "Add Nginx ingress controller chart repo"
   kubernetes.core.helm_repository:
     name: nginx
