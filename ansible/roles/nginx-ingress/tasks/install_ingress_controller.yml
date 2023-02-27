@@ -3,6 +3,7 @@
     template_path: "{{git_config_path}}/nginx-{{nginx_cluster}}-cluster/values-{{nginx_type}}.yaml"
 
 - name: Check if custom config file is provided
+  delegate_to: localhost
   stat:
     path: "{{template_path}}"
   register: values_file_stat
