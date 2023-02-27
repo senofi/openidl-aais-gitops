@@ -1,10 +1,3 @@
 ---
-
-- name: Copy values file to remote from local config
-  ansible.builtin.copy:
-    src: "{{git_config_path}}/nginx-{{nginx_cluster}}-cluster/"
-    dest: "{{git_config_path}}/nginx-{{nginx_cluster}}-cluster/"
-    force: true
-
 - name: "Do action '{{ do }}' role"
   include_tasks: "{{ do | lower }}.yml"
