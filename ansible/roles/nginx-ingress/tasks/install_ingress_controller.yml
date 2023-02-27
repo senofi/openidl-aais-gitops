@@ -29,9 +29,9 @@
   kubernetes.core.helm:
     chart_ref: nginx/ingress-nginx
     chart_version: "{{nginx_nginx_chart_version}}"
-    release_name: "nginx-{{nginx_type}}"
+    release_name: "{{nginx_controller_namespace}}"
     release_state: present
-    release_namespace: "nginx-{{nginx_type}}"
+    release_namespace: "{{nginx_controller_namespace}}"
     force: True
     wait: True
     wait_timeout: "300s"
