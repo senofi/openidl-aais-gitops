@@ -1,0 +1,35 @@
+---
+- name: "Import Export Organisation"
+  hosts: all
+  tasks:
+    - include_role:
+        name: git-config
+
+    - name: "Blockchain collection"
+      include_role:
+        name: setup/blockchain-platform
+      vars:
+        blockchain_collection_install: true
+
+#    - name: "Include vars from git"
+#      include_role:
+#        name: include-config-vars
+
+    - name: "Import Export Organisation role"
+      include_role:
+        name: hlf/import-export-organisation
+      vars:
+        do: export
+        api_endpoint: "https://hlf-operator-console.d1.test.senofi.net"
+        api_authtype: basic
+        api_key: admin
+        api_secret: password
+        organization_name: test_org
+
+    - name: "Upload exported organisation"
+      include_role:
+        name: git-config
+      vars:
+        git_push: true
+        git_src_file: "./test_org.json"
+        git_dest_path: "exported_orgs"
