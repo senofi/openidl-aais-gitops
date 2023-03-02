@@ -97,7 +97,7 @@
               - name: optools
                 volumeMounts:
                   - name: vault-secret
-                    mountPath: /server/conf/vault-secret.yaml
+                    mountPath: /server/conf/vault
                     readOnly: true
             volumes:
               - name: vault-secret
