@@ -39,8 +39,6 @@
           os: "{{ install_os }}"
           arch: "{{ install_arch }}"
           bin_directory: "{{ bin_install_dir }}"
-    - debug:
-        msg: "{{ fabric_operator_k8s_cluster }} ; {{ region }}"
     - include_role:
         name: setup/aws-cli
       vars:
@@ -49,7 +47,6 @@
         aws_external_id: "{{ aws_external_id }}"
         aws_assume_role_arn: "{{ aws_assume_role_arn }}"
         eks_cluster: "{{ fabric_operator_k8s_cluster }}"
-        region: "{{ region }}"
       when: cloud_provider == "aws"
     - include_role:
         name: setup/aws-auth
@@ -66,7 +63,6 @@
         aws_secret_key: "{{ cicd_aws.secret_key }}"
         aws_external_id: "{{ cicd_aws_external_id }}"
         aws_assume_role_arn: "{{ cicd_aws_assume_role_arn }}"
-        region: "{{ region }}"
         default_aws_profile: cicd-role
     vars: #These variables can be overriden from the command line
       privilege_escalate: false           #Default to NOT escalate to root privledges
