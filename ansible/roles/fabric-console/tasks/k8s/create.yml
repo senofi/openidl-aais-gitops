@@ -81,6 +81,30 @@
           secretName: "{{ console_namespace }}-{{ console_name }}-console-tls"
     merge_type: merge
 
+- name: "Patch console vault secret"
+  k8s:
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Deployment
+      metadata:
+        name: "{{ console_name }}"
+        namespace: "{{ console_namespace }}"
+      spec:
+        tempalte:
+          spec:
+            containers:
+              - name: console
+                volumeMounts:
+                  - name: vault-secret
+                    mountPath: /server/conf/valut-secret.yaml
+                    readOnly: true
+            volumes:
+              - name: vault-secret
+                secret:
+                  defaultMode: 420
+                  secretName: "vault-kvs-d1"
+    merge_type: merge
+
 - name: Print console URL
   debug:
     msg: Operator console available at "https://{{ console_namespace }}-{{ console_name }}-console.{{ console_domain }}"
