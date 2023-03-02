@@ -4,7 +4,7 @@
 #  - checks and installs kubectl, helm and vault clients
 #  - If cloud platform is AWS, checks and installs aws-cli and aws-authenticator
 #######################################
-  - hosts: all
+  - hosts: ansible_provisioners
     gather_facts: yes
     no_log: "{{ no_ansible_log | default(false) }}"
     tasks:
@@ -49,6 +49,7 @@
         aws_assume_role_arn: "{{ aws_assume_role_arn }}"
         eks_cluster: "{{ fabric_operator_k8s_cluster }}"
       when: cloud_provider == 'aws'
+
     - name: AWS AUTH setup
       include_role:
         name: setup/aws-auth
