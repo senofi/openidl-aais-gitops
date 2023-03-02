@@ -94,7 +94,7 @@
         tempalte:
           spec:
             containers:
-              - name: console
+              - name: optools
                 volumeMounts:
                   - name: vault-secret
                     mountPath: /server/conf/valut-secret.yaml
