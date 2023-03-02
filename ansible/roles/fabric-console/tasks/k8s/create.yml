@@ -104,7 +104,7 @@
                 secret:
                   defaultMode: 420
                   secretName: "vault-kvs-d1"
-    merge_type: strategic-merge-patch
+    merge_type: strategic-merge
 
 - name: Print console URL
   debug:
