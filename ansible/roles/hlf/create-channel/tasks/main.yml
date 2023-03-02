@@ -1,0 +1,71 @@
+---
+- name: Check to see if the channel already exists
+  ibm.blockchain_platform.channel_block:
+    api_endpoint: "{{ api_endpoint }}"
+    api_authtype: "{{ api_authtype }}"
+    api_key: "{{ api_key }}"
+    api_secret: "{{ api_secret | default(omit) }}"
+    api_token_endpoint: "{{ api_token_endpoint | default(omit) }}"
+    operation: fetch
+    ordering_service: "{{ ordering_service_name }}"
+    identity: "{{ organization_name }}admin.json"
+    msp_id: "{{ msp_id }}"
+    name: "{{ channel_name }}"
+    target: "0"
+    path: channel_genesis_block.bin
+  failed_when: False
+  register: result
+
+- debug:
+    var: result
+
+- name: "Fail on any error other than the channel not existing"
+  fail:
+    msg: "{{ result.msg }}"
+  when: result.msg is defined and 'NOT_FOUND' not in result.msg
+
+- name: "Create the configuration update for the new channel"
+  ibm.blockchain_platform.channel_config:
+    api_endpoint: "{{ api_endpoint }}"
+    api_authtype: "{{ api_authtype }}"
+    api_key: "{{ api_key }}"
+    api_secret: "{{ api_secret | default(omit) }}"
+    api_token_endpoint: "{{ api_token_endpoint | default(omit) }}"
+    operation: create
+    name: "{{ channel_name }}"
+    path: config_update.bin
+    organizations:
+      - "{{ organization_name }}"
+    policies:
+      Admins: "{{ lookup('template', 'admins-policy.json.j2') }}"
+      Readers: "{{ lookup('template', 'readers-policy.json.j2') }}"
+      Writers: "{{ lookup('template', 'writers-policy.json.j2') }}"
+      Endorsement: "{{ lookup('template', 'endorsement-policy.json.j2') }}"
+      LifecycleEndorsement: "{{ lookup('template', 'lifecycle-endorsement-policy.json.j2') }}"
+    capabilities:
+      application: V2_0
+  when: result.msg is defined and 'NOT_FOUND' in result.msg
+
+- name: "Sign the channel configuration update for the new channel"
+  ibm.blockchain_platform.channel_config:
+    operation: sign_update
+    identity: "{{ organization_name }}admin.json"
+    msp_id: "{{ msp_id }}"
+    name: "{{ channel_name }}"
+    path: config_update.bin
+  when: result.msg is defined and 'NOT_FOUND' in result.msg
+
+- name: "Apply the channel configuration update for the new channel"
+  ibm.blockchain_platform.channel_config:
+    api_endpoint: "{{ api_endpoint }}"
+    api_authtype: "{{ api_authtype }}"
+    api_key: "{{ api_key }}"
+    api_secret: "{{ api_secret | default(omit) }}"
+    api_token_endpoint: "{{ api_token_endpoint | default(omit) }}"
+    operation: apply_update
+    ordering_service: "{{ ordering_service_name }}"
+    identity: "{{ organization_name }}admin.json"
+    msp_id: "{{ msp_id }}"
+    name: "{{ channel_name }}"
+    path: config_update.bin
+  when: result.msg is defined and 'NOT_FOUND' in result.msg
