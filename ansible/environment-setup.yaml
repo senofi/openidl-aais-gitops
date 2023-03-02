@@ -39,7 +39,8 @@
           os: "{{ install_os }}"
           arch: "{{ install_arch }}"
           bin_directory: "{{ bin_install_dir }}"
-    - include_role:
+    - name: AWS CLI setup
+      include_role:
         name: setup/aws-cli
       vars:
         aws_access_key: "{{ aws.access_key }}"
@@ -47,15 +48,17 @@
         aws_external_id: "{{ aws_external_id }}"
         aws_assume_role_arn: "{{ aws_assume_role_arn }}"
         eks_cluster: "{{ fabric_operator_k8s_cluster }}"
-      when: cloud_provider == "aws"
-    - include_role:
+      when: cloud_provider == 'aws'
+    - name: AWS AUTH setup
+      include_role:
         name: setup/aws-auth
       vars:
         aws_authenticator:
           os: "{{ install_os }}"
           arch: "{{ install_arch }}"
           bin_directory: "{{ bin_install_dir }}"
-      when: cloud_provider == "aws"
+      when: cloud_provider == 'aws'
+
     - include_role:
         name: setup/fabric
       vars:
