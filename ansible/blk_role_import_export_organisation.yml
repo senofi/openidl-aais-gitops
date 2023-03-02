@@ -1,6 +1,8 @@
 ---
 - name: "Import Export Organisation"
   hosts: all
+  vars:
+    do: import
   tasks:
     - include_role:
         name: git-config
@@ -19,12 +21,15 @@
       include_role:
         name: hlf/import-export-organisation
       vars:
-        do: export
-        api_endpoint: "https://hlf-operator-console.d1.test.senofi.net"
+        # common
+        api_endpoint: "****"
         api_authtype: basic
-        api_key: admin
-        api_secret: password
+        api_key: ****
+        api_secret: ****
         organization_name: test_org
+        # import
+        organization_file_path: "/tmp/roles_configs/exported_orgs"
+
 
     - name: "Upload exported organisation"
       include_role:
@@ -33,3 +38,4 @@
         git_push: true
         git_src_file: "./test_org.json"
         git_dest_path: "exported_orgs"
+      when: do == "export"
