@@ -97,14 +97,14 @@
               - name: optools
                 volumeMounts:
                   - name: vault-secret
-                    mountPath: /server/conf/valut-secret.yaml
+                    mountPath: /server/conf/vault-secret.yaml
                     readOnly: true
             volumes:
               - name: vault-secret
                 secret:
                   defaultMode: 420
                   secretName: "vault-kvs-d1"
-    merge_type: merge
+    merge_type: strategic-merge-patch
 
 - name: Print console URL
   debug:
