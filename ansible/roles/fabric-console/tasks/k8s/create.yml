@@ -91,7 +91,7 @@
         name: "{{ console_name }}"
         namespace: "{{ console_namespace }}"
       spec:
-        tempalte:
+        template:
           spec:
             containers:
               - name: optools
