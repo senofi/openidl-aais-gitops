@@ -39,6 +39,8 @@
           os: "{{ install_os }}"
           arch: "{{ install_arch }}"
           bin_directory: "{{ bin_install_dir }}"
+    - debug:
+        msg: "{{ fabric_operator_k8s_cluster }} ; {{ region }}"
     - include_role:
         name: setup/aws-cli
       vars:
