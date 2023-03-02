@@ -16,8 +16,8 @@
         name: "git-config"
     - include_role:
         name: "include-config-vars"
-    - include_role:
-        name: "fabric-operator"
+    # - include_role:
+    #     name: "fabric-operator"
     - include_role:
         name: "fabric-console"
 
