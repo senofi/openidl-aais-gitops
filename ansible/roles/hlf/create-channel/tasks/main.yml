@@ -40,7 +40,7 @@
     state: absent
     path: "{{channel_block_file_path}}"
 
-- name: Fetch channel
+- name: Fail if channel exists
   ibm.blockchain_platform.channel_block:
     api_endpoint: "{{ console_api_endpoint }}"
     api_authtype: "{{ console_api_authtype }}"
@@ -54,8 +54,9 @@
     name: "{{ channel_name }}"
     target: 0
     path: "{{channel_block_file_path}}"
-  failed_when: failed == false
   register: result
+  failed_when: result.failed == false
+
 
 - debug:
     var: result
