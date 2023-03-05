@@ -25,8 +25,17 @@
      msg: "Please define the name of the channel"
   when: channel_name == ""
 
+- name: Preapre channel block file directory
+  file:
+    state: directory
+    path: "{{channel_file_directory}}"
 
-- name: Check to see if the channel already exists
+- name: Delete any old channel block file
+  file:
+    state: absent
+    path: "{{channel_file_directory}}/{{channel_name}}"
+
+- name: Fetch channel
   ibm.blockchain_platform.channel_block:
     api_endpoint: "{{ console_api_endpoint }}"
     api_authtype: "{{ console_api_authtype }}"
@@ -39,7 +48,7 @@
     msp_id: "{{ msp_id }}"
     name: "{{ channel_name }}"
     target: "0"
-    path: channel_genesis_block.bin
+    path: "{{channel_file_path}}/{{channel_name}}"
   failed_when: False
   register: result
 
