@@ -54,7 +54,7 @@
     name: "{{ channel_name }}"
     target: 0
     path: "{{channel_block_file_path}}"
-  # failed_when: 
+  failed_when: failed == false
   register: result
 
 - debug:
