@@ -1,7 +1,7 @@
 ---
 - name: "Setup"
   include_tasks: setup.yml
-  when: git_setup | default(false)
+  when: git_setup | default(true)
 
 - name: "Pull"
   include_tasks: pull.yml
