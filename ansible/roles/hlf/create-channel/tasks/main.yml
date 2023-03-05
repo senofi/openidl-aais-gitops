@@ -54,7 +54,7 @@
     name: "{{ channel_name }}"
     target: "0"
     path: "{{channel_file_directory}}/{{channel_name}}"
-  failed_when: False
+  # failed_when: False
   register: result
 
 - debug:
