@@ -8,7 +8,7 @@
     wallet_path: "{{ msp_admin_id }}"
 
 - set_fact:
-    msp_admin: "{{ wallet_fetched_identity.data.data.data | b64decode | from_json }}"
+    msp_admin: "{{ wallet_fetched_identity.data.data.data | regex_replace('\\n', '\n') | from_json }}"
 
 - name: Pull admin identity from the wallet
   include_role: 
@@ -18,7 +18,7 @@
     wallet_path: "{{ msp_admin_tls_id }}"
 
 - set_fact:
-    msp_admin_tls: "{{ wallet_fetched_identity.data.data.data | b64decode | from_json }}"
+    msp_admin_tls: "{{ wallet_fetched_identity.data.data.data | regex_replace('\\n', '\n') | from_json }}"
 
 - name: "Fail if channel_name is empty"
   fail:
