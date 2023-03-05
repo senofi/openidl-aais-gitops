@@ -37,11 +37,8 @@
     state: absent
     path: "{{channel_file_directory}}/{{channel_name}}"
 
-- debug:
-    msg: "{{msp_admin}}"
-
 - name: store amdin user on the FS
-   copy:
+  copy:
     content: "{{ msp_admin }}"
     dest: "~/{{msp_admin_id}}"
 
