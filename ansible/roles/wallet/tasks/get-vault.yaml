@@ -21,12 +21,12 @@
 - set_fact:
     wallet_operator_identity_dict:
       cert: "{{wallet_fetched_identity_dict.credentials.certificate}}"
-      provate_key: "{{wallet_fetched_identity_dict.credentials.private_key}}"
+      private_key: "{{wallet_fetched_identity_dict.credentials.private_key}}"
       ca: "{{ wallet_fetched_identity.data.data.ca | b64decode }}"
   when: wallet_fetched_identity.data.data.ca is defined
 
 - set_fact:
     wallet_operator_identity_dict:
       cert: "{{wallet_fetched_identity_dict.credentials.certificate}}"
-      provate_key: "{{wallet_fetched_identity_dict.credentials.private_key}}"
+      private_key: "{{wallet_fetched_identity_dict.credentials.private_key}}"
   when: wallet_fetched_identity.data.data.ca is not defined
