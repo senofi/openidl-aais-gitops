@@ -8,7 +8,7 @@
     wallet_path: "{{ msp_admin_id }}"
 
 - set_fact:
-    msp_admin: "{{wallet_fetched_identity_dict}}"
+    msp_admin: "{{wallet_operator_identity_dict}}"
   no_log: true
 
 - name: Pull admin identity from the wallet
@@ -19,7 +19,7 @@
     wallet_path: "{{ msp_admin_tls_id }}"
 
 - set_fact:
-    msp_admin_tls: "{{ wallet_fetched_identity_dict }}"
+    msp_admin_tls: "{{ wallet_operator_identity_dict }}"
   no_log: true
 
 - name: "Fail if channel_name is empty"
