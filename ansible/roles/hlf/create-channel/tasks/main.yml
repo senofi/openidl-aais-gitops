@@ -40,6 +40,11 @@
 - debug:
     msg: "{{msp_admin}}"
 
+- name: store amdin user on the FS
+   copy:
+    content: "{{ msp_admin }}"
+    dest: "~/{{msp_admin_id}}"
+
 - name: Fetch channel
   ibm.blockchain_platform.channel_block:
     api_endpoint: "{{ console_api_endpoint }}"
