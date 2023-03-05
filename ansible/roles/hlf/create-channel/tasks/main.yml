@@ -37,6 +37,9 @@
     state: absent
     path: "{{channel_file_directory}}/{{channel_name}}"
 
+- debug:
+    msg: "{{msp_admin}}"
+
 - name: Fetch channel
   ibm.blockchain_platform.channel_block:
     api_endpoint: "{{ console_api_endpoint }}"
