@@ -52,7 +52,7 @@
     identity: "{{ msp_admin }}"
     msp_id: "{{ msp_id }}"
     name: "{{ channel_name }}"
-    target: "0"
+    target: 0
     path: "{{channel_file_directory}}/{{channel_name}}"
   # failed_when: False
   register: result
