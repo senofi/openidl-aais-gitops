@@ -14,6 +14,7 @@
 
 - debug:
     msg: "{{wallet_fetched_identity}}"
+
 - set_fact:
     wallet_fetched_identity_dict: "{{ wallet_fetched_identity.data.data.data | regex_replace('\\n', '\n') | from_json }}"
 
@@ -21,4 +22,4 @@
     wallet_operator_identity_dict:
       cert: "{{wallet_fetched_identity_dict.credentials.certificate}}"
       provate_key: "{{wallet_fetched_identity_dict.credentials.private_key}}"
-      ca: "{{ wallet_fetched_identity.data.ca.data | b64decode }}"
+      ca: "{{ wallet_fetched_identity.data.data.ca | b64decode }}"
