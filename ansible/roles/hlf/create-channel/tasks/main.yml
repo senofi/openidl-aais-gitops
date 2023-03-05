@@ -52,7 +52,8 @@
     operation: fetch
     ordering_service: "{{ ordering_service_name }}"
     identity: "{{ msp_admin }}"
-    msp_id: "{{ msp_id }}"
+    # msp_id: "{{ msp_id }}"
+    msp_id: "~/{{msp_admin_id}}.json"
     name: "{{ channel_name }}"
     target: 0
     path: "{{channel_file_directory}}/{{channel_name}}"
