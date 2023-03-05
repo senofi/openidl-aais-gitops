@@ -14,21 +14,21 @@
     - name: "Include vars from git"
       include_role:
         name: include-config-vars
-      vars:
-        organization_id: test_channel
-        configs_directory: "{{git_config_path}}/channels_config"
+      # vars:
+      #   organization_id: test_channel
+      #   configs_directory: "{{git_config_path}}/channels_config"
 
     - name: "Create channel"
       include_role:
         name: hlf/create-channel
-      vars:
+      #vars:
         # common vars
-        api_endpoint: "****"
-        api_authtype: basic
-        api_key: ****
-        api_secret: ****
-        organization_name: test_org
+        #api_endpoint: "****"
+        #console_api_authtype: basic
+        #api_key: ****
+        #api_secret: ****
+        #organization_name: test_org
         # channel specific
-        ordering_service_name: test_org
-        msp_id: testorgmsp
-        channel_name: testchan1
+        #ordering_service_name: test_org
+        #msp_id: testorgmsp
+        #channel_name: testchan1
