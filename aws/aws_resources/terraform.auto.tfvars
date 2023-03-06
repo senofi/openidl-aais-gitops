@@ -2,7 +2,7 @@
 environment, it requires updates here*/
 #-------------------------------------------------------------------------------------------------------------------
 #Bastion host default configuration
-instance_type                 = "t3.small"
+instance_type                 = "t2.micro"
 root_block_device_volume_type = "gp2"
 root_block_device_volume_size = "40"
 #-------------------------------------------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ userpool_email_verification_subject              = "Your password"
 userpool_email_verification_message              = "Your username is {username} and password is {####}."
 #-------------------------------------------------------------------------------------------------------------------
 #EKS cluster default specifications
-app_eks_worker_instance_type         = "t3.xlarge"
+app_eks_worker_instance_type         = "t3.large"
 blk_eks_worker_instance_type         = "t3.large"
 kubeconfig_output_path               = "./kubeconfig_file/"
 manage_aws_auth                      = false
