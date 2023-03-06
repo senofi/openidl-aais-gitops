@@ -27,6 +27,7 @@
           privateKey: "{{ enrolled_identity.enrolled_identity.private_key | b64decode | regex_replace('\r\n' , '\\r\\n') }}"
         mspId: "{{network.org_name}}"
         type: "X.509"
+      ca_certs: "{{enrolled_identity.ca}}"
       id: "{{identity.id}}"
 
 - name: "Put the enrolled identity to Wallet"
