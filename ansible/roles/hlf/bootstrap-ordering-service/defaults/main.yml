@@ -5,4 +5,6 @@ ordering_service_name: "{{msp_id}}"
 certificate_authority: "{{msp_id}}"
 organization_name: "{{msp_id}}"
 ca_admin_id: "{{ msp_id }}_ca_admin"
+ordering_service_enrollment_id: "{{ msp_id }}_service"
+console_api_authtype: "basic"
 state: present
