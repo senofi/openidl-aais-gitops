@@ -1,0 +1,5 @@
+fab_tools_version: '2.4.8'
+fab_tools_platform: "linux-amd64"
+fab_tools_archive: "hyperledger-fabric-{{ fab_tools_platform }}-{{ fab_tools_version }}.tar.gz"
+fabric_tools_home_folder: "/srv/nfs/fabric"
+fabric_tools_url: "https://github.com/hyperledger/fabric/releases/download/v{{ fab_tools_version }}/{{ fab_tools_archive }}"

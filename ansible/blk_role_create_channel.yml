@@ -2,33 +2,16 @@
 - name: "Create the channel"
   hosts: all
   tasks:
-    - include_role:
-        name: git-config
-
     - name: "Blockchain collection"
       include_role:
         name: setup/blockchain-platform
       vars:
         blockchain_collection_install: true
 
-    - name: "Include vars from git"
+    - name: "Import vars from git"
       include_role:
-        name: include-config-vars
-      # vars:
-      #   organization_id: test_channel
-      #   configs_directory: "{{git_config_path}}/channels_config"
+        name: import-config-vars
 
     - name: "Create channel"
       include_role:
         name: hlf/create-channel
-      #vars:
-        # common vars
-        #api_endpoint: "****"
-        #console_api_authtype: basic
-        #api_key: ****
-        #api_secret: ****
-        #organization_name: test_org
-        # channel specific
-        #ordering_service_name: test_org
-        #msp_id: testorgmsp
-        #channel_name: testchan1
