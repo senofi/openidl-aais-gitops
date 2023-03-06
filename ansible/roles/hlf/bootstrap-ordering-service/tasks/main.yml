@@ -21,8 +21,8 @@
     ca_name: "{{ certificate_authority }}"
     ca_admin_identity: "{{ certificate_authority }}admin.json"
     organization_admin_identity: "{{ msp_id }}admin.json"
-    state: "{{state}}"
+    state: "{{ord_state}}"
 
 - include_role:
     name: upload-admin-users-to-wallet
-  when: state == "present"
+  when: ord_state == "present"

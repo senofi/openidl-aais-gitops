@@ -7,4 +7,4 @@ ord_organization_name: "{{msp_id}}"
 ca_admin_id: "{{ msp_id }}_ca_admin"
 ord_service_enrollment_id: "{{ msp_id }}_service"
 console_api_authtype: "basic"
-state: present
+ord_state: present
