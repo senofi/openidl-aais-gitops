@@ -1,10 +1,10 @@
 hlf_ca_version: "1.5.5"
 hlf_orderer_version: "2.4.9"
 hlf_orderer_nodes_num: 3
-ordering_service_name: "{{msp_id}}"
+ord_service_name: "{{msp_id}}"
 certificate_authority: "{{msp_id}}"
-organization_name: "{{msp_id}}"
+ord_organization_name: "{{msp_id}}"
 ca_admin_id: "{{ msp_id }}_ca_admin"
-ordering_service_enrollment_id: "{{ msp_id }}_service"
+ord_service_enrollment_id: "{{ msp_id }}_service"
 console_api_authtype: "basic"
 state: present
