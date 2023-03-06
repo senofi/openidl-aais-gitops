@@ -2,14 +2,14 @@
   slurp:
     src: "{{ item }}"
   loop:
-    - "{{ network.org_name }}admin.json"
-    - "{{ network.ca_name }}admin.json"
+    - "{{ msp_id }}admin.json"
+    - "{{ certificate_authority }}admin.json"
   register: admin_json_result
 
 - set_fact:
     admin_identity_json: 
       data: "{{admin_json_result.results[0].content | b64decode | from_json }}"
-      id: "{{ network.org_name }}-org-admin"
+      id: "{{org_admin_identity_id}}"
 
 - name: "Store org admin identity"
   include_tasks: "store-admin-identity.yml"
@@ -17,7 +17,7 @@
 - set_fact:
     admin_identity_json: 
       data: "{{admin_json_result.results[1].content | b64decode | from_json }}"
-      id: "{{ network.org_name }}-ca-admin"
+      id: "{{org_ca_admin_identity_id}}"
 
 - name: "Store ca admin identity"
   include_tasks: "store-admin-identity.yml"
@@ -28,5 +28,5 @@
     state: absent
     path: "{{item}}"
   with_items:
-    - "{{network.org_name}}admin.json"
-    - "{{network.ca_name}}admin.json"
+    - "{{msp_id}}admin.json"
+    - "{{certificate_authority}}admin.json"

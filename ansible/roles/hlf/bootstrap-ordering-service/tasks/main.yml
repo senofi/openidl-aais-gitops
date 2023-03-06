@@ -1,0 +1,28 @@
+- include_role:
+    name: ibm.blockchain_platform.ordering_organization
+  vars:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    organization_name: "{{ organization_name}}"
+    organization_msp_id: "{{  msp_id }}"
+    ca_admin_enrollment_id: "{{ca_admin_id}}"
+    ca_admin_enrollment_secret: "{{ msp_id }}_ca_admin"
+    ca_version: "{{ hlf_ca_version }}"
+    organization_admin_enrollment_id: "{{ msp_id }}_org_admin"
+    organization_admin_enrollment_secret: "{{ msp_id }}_org_admin"
+    ordering_service_enrollment_id: "{{ordering_service_enrollment_id}}"
+    ordering_service_enrollment_secret: "{{ msp_id }}_service"
+    ordering_service_nodes: "{{ hlf_orderer_nodes_num }}"
+    ordering_service_version: "{{ hlf_orderer_version }}"
+    ordering_service_name: "{{ ordering_service_name }}"
+    wait_timeout: 600
+    ca_name: "{{ certificate_authority }}"
+    ca_admin_identity: "{{ certificate_authority }}admin.json"
+    organization_admin_identity: "{{ msp_id }}admin.json"
+    state: "{{state}}"
+
+- include_role:
+    name: upload-admin-users-to-wallet
+  when: state == "present"
