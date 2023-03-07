@@ -5,6 +5,14 @@
 - debug:
     msg: "Enr secret {{en_secret}}"
 
+- name: Clear json files with admin identities
+  file:
+    state: absent
+    path: "{{item}}"
+  with_items:
+    - "{{ certificate_authority }}-ca-admin.json"
+    - "{{ msp_id }}-msp-admin.json"
+
 - include_role:
     name: ibm.blockchain_platform.ordering_organization
   vars:
@@ -49,4 +57,12 @@
 
 - name: Enroll ordering msp admin TLS with TLS CA
   include_role:
-    name: "identity-deploy"  
+    name: "identity-deploy"
+
+- name: Cleanup json files with admin identities
+  file:
+    state: absent
+    path: "{{item}}"
+  with_items:
+    - "{{ certificate_authority }}-ca-admin.json"
+    - "{{ msp_id }}-msp-admin.json"
