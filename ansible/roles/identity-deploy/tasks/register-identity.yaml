@@ -6,6 +6,14 @@
     wallet_ops: "get"
     wallet_path: "{{ ca_admin_id }}"
 
+
+- set_fact:
+    registrator:
+      cert: "{{wallet_operator_identity_dict.cert}}"
+      private_key: "{{wallet_operator_identity_dict.private_key}}"
+      name: "{{wallet_operator_identity_dict.name}}"
+      type: "{{wallet_operator_identity_dict.type}}"
+
 - name: Register the idenity
   ibm.blockchain_platform.registered_identity:
     state: "present"
@@ -15,14 +23,14 @@
     api_secret: "{{ console_password }}"
     api_timeout: "{{ api_timeout | default(omit) }}"
     certificate_authority: "{{ cert_auth }}"
-    registrar: "{{ wallet_operator_identity_dict }}"
+    registrar: "{{ registrator }}"
     enrollment_id: "{{ identity.id }}"
     enrollment_secret: "{{ identity.enrolment_secret }}"
     max_enrollments: -1
-    attributes: ""
+    attributes: "{{ identity.cert_attrs | default('') }}"
     type: "{{ identity.type }}"
   register: registered_identity
-# "{{ identity.cert_attrs | default('') }}"
+
 - name: "Enroll the identity"
   include_tasks: "re-register.yaml"
   when: identity_force_registration == true and registered_identity.changed == false
