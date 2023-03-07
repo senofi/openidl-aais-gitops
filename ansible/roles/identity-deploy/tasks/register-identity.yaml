@@ -6,9 +6,6 @@
     wallet_ops: "get"
     wallet_path: "{{ ca_admin_id }}"
 
-- set_fact:
-    identity_cert_attributes: "{{ identity.cert_attrs }}"
-
 - name: Register the idenity
   ibm.blockchain_platform.registered_identity:
     state: "present"
@@ -22,7 +19,7 @@
     enrollment_id: "{{ identity.id }}"
     enrollment_secret: "{{ identity.enrolment_secret }}"
     max_enrollments: -1
-    attributes: "{{ identity_cert_attributes }}"
+    attributes: "{{ identity.cert_attrs | default('') }}"
     type: "{{ identity.type }}"
   register: registered_identity
 

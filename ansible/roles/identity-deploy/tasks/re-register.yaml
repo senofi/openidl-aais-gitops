@@ -5,7 +5,11 @@
     seed_attr: "{ \"name\": \"seed\", \"value\": \"{{seed}}\" ,  \"ecert\" : \"true\" }"
 
 - set_fact:
+    identity_cert_attributes: "{{ [ seed_attr ] }}"   
+
+- set_fact:
     identity_cert_attributes: "{{ identity.cert_attrs + [ seed_attr ] }}"
+  when: identity.cert_attrs is defined and identity.cert_attrs != ""
 
 - debug:
     msg: "{{ identity_cert_attributes }}"
