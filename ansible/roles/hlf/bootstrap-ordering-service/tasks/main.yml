@@ -2,6 +2,9 @@
 - set_fact:
     en_secret: "{{ lookup('ansible.builtin.password', '/dev/null chars=ascii_lowercase,digits length=8') }}"
 
+- debug:
+    msg: "Enr secret {{en_secret}}"
+
 - include_role:
     name: ibm.blockchain_platform.ordering_organization
   vars:
