@@ -3,7 +3,7 @@
       data:
         credentials:
           certificate: "{{ admin_identity_json.data.cert | b64decode | regex_replace('\n' , '\\n') }}"
-          private_key: "{{ admin_identity_json.data.private_key | b64decode | regex_replace('\r\n' , '\\r\\n') }}"
+          private_key: "{{ admin_identity_json.data.private_key | b64decode | regex_replace('\n' , '\\n') }}"
         msp_id: "{{msp_id}}"
         type: "X.509"
       cas: "['{{certificate_authority}}']"
