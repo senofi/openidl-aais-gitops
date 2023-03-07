@@ -19,7 +19,7 @@
     enrollment_id: "{{ identity.id }}"
     enrollment_secret: "{{ identity.enrolment_secret }}"
     max_enrollments: -1
-    # attributes: "{{ identity.cert_attrs | default('') }}"
+    attributes: "{{ identity.cert_attrs | default('[{}]') }}"
     type: "{{ identity.type }}"
   register: registered_identity
 
