@@ -46,7 +46,6 @@
     identity:
       id: "{{ msp_admin_tls_id }}"
       type: "admin"
-      cert_attrs: "[{}]"
       enrolment_secret: "{{en_secret}}"
 
 - set_fact:
