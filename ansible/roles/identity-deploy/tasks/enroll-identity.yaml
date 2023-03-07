@@ -14,6 +14,7 @@
     api_timeout: "{{ api_timeout | default(omit) }}"
     certificate_authority: "{{ certificate_authority }}"
     name: "{{ identity.id }}"
+    tls: "{{ enroll_to_tls_ca }}"
     enrollment_id: "{{ identity.id }}"
     path: "enrl-{{ identity.id }}.json"
     enrollment_secret: "{{ identity.enrolment_secret }}"

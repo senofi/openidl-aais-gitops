@@ -2,8 +2,8 @@
   slurp:
     src: "{{ item }}"
   loop:
-    - "{{ msp_id }}admin.json"
-    - "{{ certificate_authority }}admin.json"
+    - "{{ msp_id }}-msp-admin.json"
+    - "{{ certificate_authority }}-ca-admin.json"
   register: admin_json_result
 
 - set_fact:
@@ -28,5 +28,5 @@
     state: absent
     path: "{{item}}"
   with_items:
-    - "{{msp_id}}admin.json"
-    - "{{certificate_authority}}admin.json"
+    - "{{msp_id}}-msp-admin.json"
+    - "{{certificate_authority}}-ca-admin.json"

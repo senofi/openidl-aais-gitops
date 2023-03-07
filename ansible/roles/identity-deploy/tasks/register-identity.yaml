@@ -4,7 +4,7 @@
     name: wallet
   vars:
     wallet_ops: "get"
-    wallet_path: "{{ msp_id }}/ca-admin"
+    wallet_path: "{{ ca_admin_id }}"
 
 - set_fact:
     identity_cert_attributes: "{{ identity.cert_attrs }}"
