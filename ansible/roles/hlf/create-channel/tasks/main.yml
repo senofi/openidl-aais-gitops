@@ -102,6 +102,9 @@
     api_secret: "{{ console_password | default(omit) }}"
     name: "{{ ordering_service_name }}"
   register: ord_service_info
+
+- debug:
+    msg: "{{ord_service_info}}"
 # RETURNS:
 # exists:
 #     description:
