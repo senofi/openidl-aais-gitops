@@ -12,7 +12,7 @@
       cert: "{{wallet_operator_identity_dict.cert}}"
       private_key: "{{wallet_operator_identity_dict.private_key}}"
       name: "{{wallet_operator_identity_dict.name}}"
-      type: "{{wallet_operator_identity_dict.type}}"
+      #type: "{{wallet_operator_identity_dict.type}}"
 
 - name: Register the idenity
   ibm.blockchain_platform.registered_identity:
@@ -27,7 +27,7 @@
     enrollment_id: "{{ identity.id }}"
     enrollment_secret: "{{ identity.enrolment_secret }}"
     max_enrollments: -1
-    attributes: "{{ identity.cert_attrs | default('') }}"
+    # attributes: "{{ identity.cert_attrs | default('') }}"
     type: "{{ identity.type }}"
   register: registered_identity
 
