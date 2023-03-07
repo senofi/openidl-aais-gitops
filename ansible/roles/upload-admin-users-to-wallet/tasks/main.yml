@@ -3,7 +3,7 @@
     src: "{{ item }}"
   loop:
     - "{{ msp_id }}-msp-admin.json"
-    - "{{ certificate_authority }}-ca-admin.json"
+    - "{{ cert_auth }}-ca-admin.json"
   register: admin_json_result
 
 - set_fact:
@@ -29,4 +29,4 @@
     path: "{{item}}"
   with_items:
     - "{{msp_id}}-msp-admin.json"
-    - "{{certificate_authority}}-ca-admin.json"
+    - "{{cert_auth}}-ca-admin.json"

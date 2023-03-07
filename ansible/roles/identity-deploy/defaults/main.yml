@@ -1,6 +1,6 @@
 cloud_deployment: "aws"
 identity_force_registration: true
-certificate_authority: ""
+cert_auth: ""
 msp_id: ""
 ca_admin_id: "{{ msp_id }}-ca-admin"
 enroll_to_tls_ca: false
