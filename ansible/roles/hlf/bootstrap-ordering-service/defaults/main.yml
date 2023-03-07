@@ -1,5 +1,5 @@
-hlf_ca_version: "1.5.5"
-hlf_orderer_version: "2.4.9"
+hlf_ca_version: "1.5.3"
+hlf_orderer_version: "2.4.3"
 hlf_orderer_nodes_num: 3
 ord_service_name: "{{msp_id}}"
 certificate_authority: "{{msp_id}}"
