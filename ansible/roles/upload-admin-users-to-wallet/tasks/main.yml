@@ -7,12 +7,18 @@
   register: admin_json_result
 
 - set_fact:
+    cass: "[]"
+
+- set_fact:
     admin_identity_json: 
       data: "{{admin_json_result.results[0].content | b64decode | from_json }}"
       id: "{{org_admin_identity_id}}"
 
 - name: "Store org admin identity"
   include_tasks: "store-admin-identity.yml"
+
+- set_fact:
+    cass: "[\"{{cert_auth}}\"]"
 
 - set_fact:
     admin_identity_json: 
