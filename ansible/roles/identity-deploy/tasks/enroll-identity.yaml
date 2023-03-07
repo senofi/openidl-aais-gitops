@@ -30,7 +30,7 @@
         msp_id: "{{msp_id}}"
         type: "X.509"
       ca_certs: "['{{ cert_auth }}':'{{enrolled_identity.enrolled_identity.ca}}']"
-      cas: "['{{ cert_auth }}']"
+      cas: "[]"
       id: "{{identity.id}}"
 
 - name: "Put the enrolled identity to Wallet"
