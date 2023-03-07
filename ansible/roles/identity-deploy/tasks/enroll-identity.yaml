@@ -18,10 +18,8 @@
     enrollment_id: "{{ identity.id }}"
     path: "enrl-{{ identity.id }}.json"
     enrollment_secret: "{{ identity.enrolment_secret }}"
+    force_reenroll: true
   register: enrolled_identity
-
-- debug:
-    msg: "Enrolled idenity {{enrolled_identity}}"
 
 - set_fact:
     identity_wallet:
@@ -31,7 +29,7 @@
           private_key: "{{ enrolled_identity.enrolled_identity.private_key | b64decode | regex_replace('\n' , '\\n') }}"
         msp_id: "{{msp_id}}"
         type: "X.509"
-      ca_certs: "['{{ cert_auth }}':'{{enrolled_identity.ca}}']"
+      ca_certs: "['{{ cert_auth }}':'{{enrolled_identity.enrolled_identity.ca}}']"
       cas: "['{{ cert_auth }}']"
       id: "{{identity.id}}"
 
