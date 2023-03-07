@@ -6,7 +6,7 @@
           private_key: "{{ admin_identity_json.data.private_key | b64decode | regex_replace('\n' , '\\n') }}"
         msp_id: "{{msp_id}}"
         type: "X.509"
-      cas: "{{cass|to_json}}"
+      cas: "{{cass}}"
       # ca_certs: "[{ \"{{cert_auth}}\" : \"{{admin_identity_json.data.ca}}\" }]"
       id: "{{admin_identity_json.id}}"
 
