@@ -19,10 +19,10 @@
     enrollment_id: "{{ identity.id }}"
     enrollment_secret: "{{ identity.enrolment_secret }}"
     max_enrollments: -1
-    attributes: "{{ identity.cert_attrs | default('') }}"
+    attributes: ""
     type: "{{ identity.type }}"
   register: registered_identity
-
+# "{{ identity.cert_attrs | default('') }}"
 - name: "Enroll the identity"
   include_tasks: "re-register.yaml"
   when: identity_force_registration == true and registered_identity.changed == false
