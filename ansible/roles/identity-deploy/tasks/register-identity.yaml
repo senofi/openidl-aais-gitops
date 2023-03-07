@@ -6,14 +6,6 @@
     wallet_ops: "get"
     wallet_path: "{{ ca_admin_id }}"
 
-
-# - set_fact:
-#     registrator:
-#       cert: "{{wallet_operator_identity_dict.cert}}"
-#       private_key: "{{wallet_operator_identity_dict.private_key}}"
-#       name: "{{wallet_operator_identity_dict.name}}"
-#       #type: "{{wallet_operator_identity_dict.type}}"
-
 - name: Register the idenity
   ibm.blockchain_platform.registered_identity:
     state: "present"
