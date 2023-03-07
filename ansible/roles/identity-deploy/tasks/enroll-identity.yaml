@@ -20,6 +20,9 @@
     enrollment_secret: "{{ identity.enrolment_secret }}"
   register: enrolled_identity
 
+- debug:
+    msg: "Enrolled idenity {{enrolled_identity}}"
+
 - set_fact:
     identity_wallet:
       data:

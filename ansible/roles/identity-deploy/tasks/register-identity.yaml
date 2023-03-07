@@ -34,6 +34,3 @@
     identity_registered:
       success: "{{registered_identity.changed}}"
       identity: "{{registered_identity.registered_identity}}"
-
-- debug:
-    msg: "Registered {{ identity_registered }}"

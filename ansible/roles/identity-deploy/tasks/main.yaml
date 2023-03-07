@@ -2,8 +2,6 @@
 # 1. Featch the CA admin from vault
 # 2. register and enroll identity
 # 3. save it to vault
-- debug: 
-    msg: "aaaa {{cert_auth}}"
 
 - name: "Register the identity"
   include_tasks: "register-identity.yaml"
