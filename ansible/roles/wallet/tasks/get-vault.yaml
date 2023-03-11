@@ -8,6 +8,7 @@
     url: "{{ vault_config.url }}"
     path: "{{ wallet_resource_path }}"
     engine_mount_point: "{{vault_config.orgName}}"
+    mount_point: "{{vault_config.orgName}}"
     auth_method: userpass
     username: "{{ vault_config.username }}"
     password: "{{ vault_config.password }}"
