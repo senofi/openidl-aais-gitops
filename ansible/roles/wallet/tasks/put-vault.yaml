@@ -12,7 +12,8 @@
         ca_certs: "{{ wallet_identity.ca_certs | to_json }}"
         cas: "{{ wallet_identity.cas | to_json }}"
     auth_method: userpass
+    mount_point: "{{ vault_config.orgName }}"
     username: "{{ vault_config.username }}"
     password: "{{ vault_config.password }}"
-    validate_certs: false
+    validate_certs: true
   register: vault_put_out
