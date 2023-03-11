@@ -1,5 +1,7 @@
 - set_fact:
     wallet_resource_path: "{{vault_config.vaultPath}}/{{wallet_path}}"
+- debug:
+    msg: "{{ vault_config.username }} {{ vault_config.password }}"
 
 - name: Fetch identity certs from Vault {{ vault_config.url }} with path {{ wallet_resource_path }} under {{vault_config.orgName}}
   community.hashi_vault.vault_kv2_get:
