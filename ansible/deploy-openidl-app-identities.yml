@@ -2,10 +2,7 @@
   gather_facts: false
   no_log: "{{ no_ansible_log | default(false) }}"
   tasks:
-    - name: Checkout configuration
-
     - include_role:
         name: "import-config-vars"
-
     - include_role:
         name: "openidl-identities-deploy"
