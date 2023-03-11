@@ -1,5 +1,0 @@
-application_identities:
-  - id: "{{ application_fabric_app_user }}"
-    org_type: "{{ application_identity_org_type }}"
-  - id: "{{ application_fabric_dcp_user }}"
-    org_type: "{{ application_identity_org_type }}"

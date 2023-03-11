@@ -1,0 +1,7 @@
+application_namespace: openidl-apps
+aws_region: "{{region}}"
+git_config_path: "/tmp/roles_configs"
+app_chart_dest_folder: "/tmp/openidl-code"
+apps_chart_gitrepo: github.com/senofi/openidl-aais-gitops.git
+apps_chart_gitrepo_branch: operator-develop
+nginx_controller_name: nginx
