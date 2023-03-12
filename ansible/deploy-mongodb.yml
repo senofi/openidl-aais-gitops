@@ -37,6 +37,5 @@
         mongodb_root_token: "{{ root_token }}"
         mongodb_database: "openidl-offchain-db"
         do: "{{ deploy_action }}"
-        aws_account_number: "{{ aws_account_number }}"
 
 
