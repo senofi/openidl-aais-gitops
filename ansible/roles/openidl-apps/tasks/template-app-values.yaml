@@ -1,10 +1,10 @@
 ---
 # template the file and store it on the remote host
 - set_fact:
-    app-values: "{{ lookup('template', 'templates/app-global-values.yaml.j2')  }}"
+    app_values: "{{ lookup('template', 'templates/app-global-values.yaml.j2')  }}"
 
 - debug:
-    msg: "{{ app-values }}"
+    msg: "{{ app_values }}"
 
 - name: Create destionaion folder
   file:
