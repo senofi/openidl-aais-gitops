@@ -9,3 +9,8 @@ network:
   org_name: "{{org_id}}"
   msp_id: "{{msp_id}}"
   channels: "{{fabric_channels}}"
+
+support:
+  fromAddress: "{{contact_email}}"
+  toAddresses:
+    - "{{contact_email}}"
