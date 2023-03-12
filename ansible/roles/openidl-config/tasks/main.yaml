@@ -60,13 +60,14 @@
   register: organizations
 
 - name: Create a connection profile
+  no_log: true
   ibm.blockchain_platform.connection_profile:
     api_endpoint: "{{ console_api_endpoint }}"
     api_authtype: "{{ console_api_authtype }}"
     api_key: "{{ console_username }}"
     api_secret: "{{ console_password }}"
     name: "{{ org_id }} Gateway"
-    path: "/tmp/openidl-code/{{ env_id }}-config/connection-profile.json"
+    path: "{{config_folder}}/connection-profile.json"
     organization: "{{ org_id }}"
     certificate_authority: "{{ cert_auth }}"
     peers:
@@ -75,7 +76,7 @@
 - name: Generate configuration files
   template:
     src: templates/{{ item }}.j2
-    dest: '/tmp/openidl-code/{{ env_id }}-config/{{ item }}'
+    dest: '{{config_folder}}/{{ item }}'
     mode: 0755
   vars:
     organization_ids: "{{ organizations.stdout }}"
@@ -111,7 +112,7 @@
 - name: Generate configuration files
   template:
     src: templates/{{ item }}.j2
-    dest: '/tmp/openidl-code/{{ env_id }}-config/{{ item }}'
+    dest: '{{config_folder}}/{{ item }}'
     mode: 0755
   vars:
     organization_ids: "{{ organizations.stdout }}"
@@ -138,7 +139,7 @@
 - name: Generate configuration files
   template:
     src: templates/{{ item }}.j2
-    dest: '/tmp/openidl-code/{{ env_id }}-config/{{ item }}'
+    dest: '{{config_folder}}/{{ item }}'
     mode: 0755
   vars:
     organization_ids: "{{ organizations.stdout }}"
