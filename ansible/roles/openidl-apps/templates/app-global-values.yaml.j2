@@ -28,6 +28,7 @@ global:
       tag: {{apps_image_tag}}
   carrierui:
     install: {% if application_node_type == 'carrier' %}true{% else %}false{% endif %}
+
     servicename: carrier-ui-service
     port: 8080
     targetport: 8080
@@ -50,6 +51,7 @@ global:
       tag: {{apps_image_tag}}
   datacallprocessor:
     install: {% if application_node_type == 'carrier' %} true {% else %} false {% endif %}
+
     port: 8080
     targetport: 8080
     servicename: data-call-processor-service
@@ -77,6 +79,7 @@ global:
       tag: {{apps_image_tag}}
   transactionaldataeventlistener:
     install: {% if application_node_type == 'analytics' %} true {% else %} false {% endif %}
+
     port: 8080
     targetport: 8080
     servicename: transactional-data-event-listener-service
@@ -88,6 +91,7 @@ global:
       tag: {{apps_image_tag}}
   ui:
     install: {% if application_node_type == 'analytics' %} true {% else %} false {% endif %}
+
     servicename: ui-service
     port: 8080
     targetport: 8080
