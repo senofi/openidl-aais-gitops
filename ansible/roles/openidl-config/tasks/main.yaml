@@ -133,7 +133,7 @@
     - data-call-mood-listener-mappings-config.json
     - data-call-mood-listener-metadata-config.json
     - data-call-mood-listener-target-channel-config.json
-  when: node_type == "analytics"
+  when: application_node_type == "analytics"
 
 - name: Generate configuration files
   template:
@@ -155,4 +155,4 @@
     - data-call-processor-metadata-config.json
     - listener-channel-config.json
     - target-channel-config.json
-  when: node_type != "analytics"
+  when: application_node_type != "analytics"
