@@ -9,7 +9,7 @@ global:
     servicename: data-call-app-service
     ingressenabled: true
     ingresshostname: data-call-app-service.internal.{{applications_domain}}
-    publicingresshostname: data-call-app-service.{{applications_domain}}
+    publicingresshostname: {{app_data_call_address}}
     image:
       repository: {{apps_image_repository}}/openidl-data-call-app
       pullPolicy: IfNotPresent
