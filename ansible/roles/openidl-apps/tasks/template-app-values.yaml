@@ -3,8 +3,8 @@
 - set_fact:
     app-values: "{{ lookup('template', 'templates/app-global-values.yaml.j2')  }}"
 
-- debug: "| from_yaml"
-    msg: "{{app-values}}"
+- debug:
+    msg: "{{ app-values }}"
 
 - name: Create destionaion folder
   file:
