@@ -27,7 +27,7 @@ global:
       pullPolicy: IfNotPresent
       tag: {{apps_image_tag}}
   carrierui:
-    install: {% if application_node_type == 'carrier' %} true {% else %} false {% endif %}
+    install: {% if application_node_type == 'carrier' %}true{% else %}false{% endif %}
     servicename: carrier-ui-service
     port: 8080
     targetport: 8080
