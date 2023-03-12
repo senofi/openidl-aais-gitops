@@ -27,5 +27,5 @@ hds_username: ""
 hds_password: ""
 hds_dbname: ""
 
-apps_cognito_user_pool: "{{env_id}}-{{org_id}}"
-apps_cognito_appl_client: "{{env_id}}-{{org_id}}-app-client"
+application_cognito_user_pool: "{{env_id}}-{{org_id}}"
+application_cognito_appl_client: "{{env_id}}-{{org_id}}-app-client"
