@@ -42,14 +42,14 @@
   no_log: true
   shell: |
     export AWS_PROFILE={{ default_aws_profile }}
-    /usr/local/bin/aws cognito-idp list-user-pools --region {{ aws_region }} --max-results 20 | jq -r ".UserPools[] | select(.Name | contains(\"{{ env_id }}\")) | .Id"
+    /usr/local/bin/aws cognito-idp list-user-pools --region {{ aws_region }} --max-results 20 | jq -r ".UserPools[] | select(.Name | contains(\"{{ apps_cognito_user_pool }}\")) | .Id"
   register: cognito_user_pool_id
 
 - name: Get Cognito App Client ID
   no_log: false
   shell: |
     export AWS_PROFILE={{ default_aws_profile }}
-    /usr/local/bin/aws cognito-idp list-user-pool-clients --region {{ aws_region }} --user-pool-id {{ cognito_user_pool_id.stdout }} | jq -r ".UserPoolClients[] | select(.ClientName | contains(\"{{ org_id }}-{{ env_id }}\")) | .ClientId"
+    /usr/local/bin/aws cognito-idp list-user-pool-clients --region {{ aws_region }} --user-pool-id {{ cognito_user_pool_id.stdout }} | jq -r ".UserPoolClients[] | select(.ClientName | contains(\"{{ apps_cognito_appl_client }}\")) | .ClientId"
   register: cognito_app_client_id
 
 - name: Get Organizations and IDs
