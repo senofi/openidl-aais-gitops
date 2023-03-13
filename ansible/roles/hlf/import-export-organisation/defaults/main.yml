@@ -1,0 +1,2 @@
+git_dest_path: "exported_orgs"
+import_organization_path: "/tmp/roles_configs/{{git_dest_path}}"

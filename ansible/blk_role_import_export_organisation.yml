@@ -1,8 +1,6 @@
 ---
 - name: "Import Export Organisation"
   hosts: all
-  vars:
-    do: import
   tasks:
     - include_role:
         name: git-config
@@ -13,29 +11,13 @@
       vars:
         blockchain_collection_install: true
 
-#    - name: "Include vars from git"
-#      include_role:
-#        name: include-config-vars
-
     - name: "Import Export Organisation role"
       include_role:
         name: hlf/import-export-organisation
       vars:
         # common
-        api_endpoint: "****"
-        api_authtype: basic
-        api_key: ****
-        api_secret: ****
-        organization_name: test_org
-        # import
-        organization_file_path: "/tmp/roles_configs/exported_orgs"
-
-
-    - name: "Upload exported organisation"
-      include_role:
-        name: git-config
-      vars:
-        git_push: true
-        git_src_file: "./test_org.json"
-        git_dest_path: "exported_orgs"
-      when: do == "export"
+        api_endpoint: "{{ console_api_endpoint }}"
+        api_authtype: "{{ console_api_authtype }}"
+        api_key: "{{ console_username }}"
+        api_secret: "{{ console_password }}"
+        organization_name: "{{ ord_organization_name }}"

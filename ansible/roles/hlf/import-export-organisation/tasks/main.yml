@@ -1,4 +1,9 @@
 ---
+- name: "Fail if 'ord_organization_name' not specified"
+  fail:
+    msg: "'ord_organization_name' not specified or is empty"
+  when: not ord_organization_name is defined or not ord_organization_name
+
 - name: "Fail if 'do' not specified"
   fail:
     msg: "'do' not specified or is not one of 'import' or 'export'"

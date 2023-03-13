@@ -19,3 +19,10 @@
   copy:
     content: "{{ result.organization | to_nice_json }}"
     dest: "{{ organization_name }}.json"
+
+- name: "Upload exported organisation"
+  include_role:
+    name: git-config
+  vars:
+    git_push: true
+    git_src_file: "./{{organization_name}}.json"

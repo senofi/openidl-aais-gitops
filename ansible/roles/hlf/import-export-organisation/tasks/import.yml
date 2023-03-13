@@ -1,4 +1,10 @@
 ---
+- name: "org"
+  no_log: false
+  slurp:
+    src: "{{import_organization_path}}/{{organization_name}}.json"
+  register: org_file
+
 - name: "Import the organization"
   ibm.blockchain_platform.external_organization:
     api_endpoint: "{{ api_endpoint }}"
@@ -6,4 +12,4 @@
     api_key: "{{ api_key }}"
     api_secret: "{{ api_secret | default(omit) }}"
     api_token_endpoint: "{{ api_token_endpoint | default(omit) }}"
-    organization: "/tmp/roles_configs/exported_orgs/test_org.json"
+    organization: "{{ org_file['content'] | b64decode }}"
