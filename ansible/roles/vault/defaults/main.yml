@@ -12,6 +12,7 @@ vault_tls_secret_name: "{{vault_name}}-tls"
 delete_secrets: false
 vault_address: "{{vault_name}}.{{vault_domain}}"
 hide_sensitive_logs: true
+aws_iam_user_prefix: "{{env_id}}"
 
 vault:
   name: "{{vault_name}}"
