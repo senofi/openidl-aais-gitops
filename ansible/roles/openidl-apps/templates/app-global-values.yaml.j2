@@ -10,6 +10,7 @@ global:
     ingressenabled: true
     ingresshostname: data-call-app-service.internal.{{applications_domain}}
     publicingresshostname: {{app_data_call_address}}
+    ingressClassName: {{nginx_controller_name}}
     image:
       repository: {{apps_image_repository}}/openidl-data-call-app
       pullPolicy: IfNotPresent
@@ -22,6 +23,7 @@ global:
     ingressenabled: true
     ingresshostname: utilities-service.internal.{{applications_domain}}
     publicingresshostname: utilities-service.{{applications_domain}}
+    ingressClassName: {{nginx_controller_name}}
     image:
       repository: {{apps_image_repository}}/openidl-utilities
       pullPolicy: IfNotPresent
@@ -34,6 +36,7 @@ global:
     targetport: 8080
     ingressenabled: true
     ingresshostname: openidl.{{applications_domain}}
+    ingressClassName: {{nginx_controller_name}}
     image:
       repository: {{apps_image_repository}}/openidl-carrier-ui
       pullPolicy: IfNotPresent
@@ -45,6 +48,7 @@ global:
     servicename: insurance-data-manager-service
     ingressenabled: true
     ingresshostname: insurance-data-manager-service.{{applications_domain}}
+    ingressClassName: {{nginx_controller_name}}
     image:
       repository: {{apps_image_repository}}/openidl-insurance-data-manager
       pullPolicy: IfNotPresent
@@ -55,6 +59,7 @@ global:
     port: 8080
     targetport: 8080
     servicename: data-call-processor-service
+    ingressClassName: {{nginx_controller_name}}
     image:
       repository: {{apps_image_repository}}/openidl-data-call-processor
       pullPolicy: IfNotPresent
@@ -64,6 +69,7 @@ global:
     port: 80
     targetport: 80
     servicename: upload-service
+    ingressClassName: {{nginx_controller_name}}
     image:
       repository: ghcr.io/openidl-org/openidl-upload
       pullPolicy: IfNotPresent
@@ -72,6 +78,7 @@ global:
     install: true
     port: 8080
     targetport: 8080
+    ingressClassName: {{nginx_controller_name}}
     servicename: data-call-mood-listener-service
     image:
       repository: {{apps_image_repository}}/openidl-data-call-mood-listener
@@ -84,6 +91,7 @@ global:
     targetport: 8080
     servicename: transactional-data-event-listener-service
     ingressenabled: true
+    ingressClassName: {{nginx_controller_name}}
     ingresshostname: transactional-data-event-listener.{{applications_domain}}
     image:
       repository: {{apps_image_repository}}/openidl-transactional-data-event-listener
@@ -96,6 +104,7 @@ global:
     port: 8080
     targetport: 8080
     ingressenabled: true
+    ingressClassName: {{nginx_controller_name}}
     ingresshostname: openidl.{{applications_domain}}
     image:
       repository: {{apps_image_repository}}/openidl-org/openidl-ui
@@ -103,6 +112,3 @@ global:
       tag: {{apps_image_tag}}
   secrets:
     install: false
-
-ingress:
-  ingressClassName: {{nginx_controller_name}}
