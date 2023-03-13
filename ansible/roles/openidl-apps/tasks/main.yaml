@@ -26,15 +26,13 @@
 - name: Deploy openIDL app on Analytics node using helm
   shell: |
     helm upgrade --recreate-pods --install {{ env_id }}-{{ org_id }} {{app_chart_dest_folder}}/openidl-k8s \
-    -f {{app_values_path}} -n {{ application_namespace }} \
-    --set global.secrets.install=false
+    -f {{app_values_path}} -n {{ application_namespace }}
   when: application_node_type == "analytics"
 
 - name: Deploy openIDL app on Carrier node using helm
   shell: |
     helm upgrade --recreate-pods --install {{ env_id }}-{{ org_id }} {{app_chart_dest_folder}}/openidl-k8s \
-    -f {{app_values_path}} -n {{ application_namespace }} \
-    --set global.secrets.install=false
+    -f {{app_values_path}} -n {{ application_namespace }}
   when: application_node_type == "carrier"
 
 - name: Annotate ingress
