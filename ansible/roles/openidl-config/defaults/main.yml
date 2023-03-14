@@ -30,3 +30,5 @@ hds_dbname: ""
 
 application_cognito_user_pool: "{{env_id}}-{{org_id}}"
 application_cognito_appl_client: "{{env_id}}-{{org_id}}-app-client"
+
+hide_sensitive_logs: true
