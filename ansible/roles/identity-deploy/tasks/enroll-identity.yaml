@@ -32,7 +32,7 @@
         msp_id: "{{msp_id}}"
         type: "X.509"
       ca_root_certs: "[\"{{enrolled_identity.enrolled_identity.ca}}\"]"
-      cas: "[]"
+      cas: "{{[]}}"
       id: "{{identity.id}}"
 
 - name: "Put the enrolled identity to Wallet"
