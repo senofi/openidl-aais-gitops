@@ -7,7 +7,7 @@
         msp_id: "{{msp_id}}"
         type: "X.509"
       cas: "{{cass}}"
-      ca_certs: "[{ \"{{cert_auth}}\" : \"{{admin_identity_json.data.ca}}\" }]"
+      ca_root_certs: "[ \"{{admin_identity_json.data.ca}}\" ]"
       id: "{{admin_identity_json.id}}"
 
 - name: "Put the admin identity to Wallet"
