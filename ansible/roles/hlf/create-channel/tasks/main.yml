@@ -12,7 +12,7 @@
   no_log: true
 
 - name: Pull admin identity from the wallet
-  include_role: 
+  include_role:
     name: wallet
   vars:
     wallet_ops: "get"
@@ -57,45 +57,45 @@
   register: result
   failed_when: result.failed == false
 
-- name: "Create the configuration update for the new channel"
-  ibm.blockchain_platform.channel_config:
-    api_endpoint: "{{ console_api_endpoint }}"
-    api_authtype: "{{ console_api_authtype }}"
-    api_key: "{{ console_username }}"
-    api_secret: "{{ console_password | default(omit) }}"
-    # api_token_endpoint: "{{ api_token_endpoint | default(omit) }}"
-    operation: create
-    name: "{{ channel_name }}"
-    identity: "{{ msp_admin }}"
-    msp_id: "{{ msp_id }}"
-    path: "{{channel_block_file_path}}"
-    organizations:
-      - "{{ msp_id }}"
-    policies:
-      Admins: "{{ lookup('template', 'admins-policy.json.j2') }}"
-      Readers: "{{ lookup('template', 'readers-policy.json.j2') }}"
-      Writers: "{{ lookup('template', 'writers-policy.json.j2') }}"
-      Endorsement: "{{ lookup('template', 'endorsement-policy.json.j2') }}"
-      LifecycleEndorsement: "{{ lookup('template', 'lifecycle-endorsement-policy.json.j2') }}"
-    capabilities:
-      application: V2_0
-  when: result.msg is defined and 'NOT_FOUND' in result.msg
+#- name: "Create the configuration update for the new channel"
+#  ibm.blockchain_platform.channel_config:
+#    api_endpoint: "{{ console_api_endpoint }}"
+#    api_authtype: "{{ console_api_authtype }}"
+#    api_key: "{{ console_username }}"
+#    api_secret: "{{ console_password | default(omit) }}"
+#    # api_token_endpoint: "{{ api_token_endpoint | default(omit) }}"
+#    operation: create
+#    name: "{{ channel_name }}"
+#    identity: "{{ msp_admin }}"
+#    msp_id: "{{ msp_id }}"
+#    path: "{{channel_block_file_path}}"
+#    organizations:
+#      - "{{ msp_id }}"
+#    policies:
+#      Admins: "{{ lookup('template', 'admins-policy.json.j2') }}"
+#      Readers: "{{ lookup('template', 'readers-policy.json.j2') }}"
+#      Writers: "{{ lookup('template', 'writers-policy.json.j2') }}"
+#      Endorsement: "{{ lookup('template', 'endorsement-policy.json.j2') }}"
+#      LifecycleEndorsement: "{{ lookup('template', 'lifecycle-endorsement-policy.json.j2') }}"
+#    capabilities:
+#      application: V2_0
+#  when: result.msg is defined and 'NOT_FOUND' in result.msg
 
-- name: "Sign the channel configuration update for the new channel"
-  ibm.blockchain_platform.channel_config:
-    api_endpoint: "{{ console_api_endpoint }}"
-    api_authtype: "{{ console_api_authtype }}"
-    api_key: "{{ console_username }}"
-    api_secret: "{{ console_password | default(omit) }}"
-    operation: sign_update
-    identity: "{{ msp_admin }}"
-    msp_id: "{{ msp_id }}"
-    name: "{{ channel_name }}"
-    path: "{{channel_block_file_path}}"
-  when: result.msg is defined and 'NOT_FOUND' in result.msg
+#- name: "Sign the channel configuration update for the new channel"
+#  ibm.blockchain_platform.channel_config:
+#    api_endpoint: "{{ console_api_endpoint }}"
+#    api_authtype: "{{ console_api_authtype }}"
+#    api_key: "{{ console_username }}"
+#    api_secret: "{{ console_password | default(omit) }}"
+#    operation: sign_update
+#    identity: "{{ msp_admin }}"
+#    msp_id: "{{ msp_id }}"
+#    name: "{{ channel_name }}"
+#    path: "{{channel_block_file_path}}"
+#  when: result.msg is defined and 'NOT_FOUND' in result.msg
 
 - name: "Retreive the ordering service info"
-  ibm.blockchain_platform.channel_config:
+  ibm.blockchain_platform.ordering_service_info:
     api_endpoint: "{{ console_api_endpoint }}"
     api_authtype: "{{ console_api_authtype }}"
     api_key: "{{ console_username }}"
@@ -103,8 +103,140 @@
     name: "{{ ordering_service_name }}"
   register: ord_service_info
 
-- debug:
-    msg: "{{ord_service_info}}"
+#- debug:
+#    var: ord_service_info
+
+- name: "Retrieve endorsing service info"
+  ibm.blockchain_platform.organization_info:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password | default(omit) }}"
+    name: "{{ endorsing_service_name }}"
+  register: endorsing_service_info
+
+#- debug:
+#    var: endorsing_service_info
+
+- name: "Retreive the ordering service info"
+  ibm.blockchain_platform.organization_info:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password | default(omit) }}"
+    name: "{{ ordering_service_name }}"
+  register: ord_org_info
+
+#- debug:
+#    var: ord_org_info
+
+- name: Get ord org certificate authority
+  ibm.blockchain_platform.certificate_authority_info:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password | default(omit) }}"
+    name: "{{ ordering_service_name }}"
+  register: ord_ca_info
+
+#- debug:
+#    var: ord_ca_info
+
+- name: Get endorsing org certificate authority
+  ibm.blockchain_platform.certificate_authority_info:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password | default(omit) }}"
+    name: "{{ endorsing_service_name }}CA"
+  register: endr_ca_info
+
+#- debug:
+#    var: endr_ca_info
+
+- name: Create TLS folder structure
+  file:
+    state: directory
+    path: "{{item}}"
+  loop:
+    - "{{ channel_file_directory }}/msp/admincerts"
+    - "{{ channel_file_directory }}/msp/cacerts"
+    - "{{ channel_file_directory }}/msp/tlscacerts"
+    - "{{ channel_file_directory }}/endorsing/admincerts"
+    - "{{ channel_file_directory }}/endorsing/cacerts"
+    - "{{ channel_file_directory }}/endorsing/tlscacerts"
+    - "{{ channel_file_directory }}/tx"
+    - "{{ channel_file_directory }}/genesis"
+    - "{{ channel_file_directory }}/peers"
+
+- name: peers certs
+  no_log: true
+  copy:
+    dest: "{{ channel_file_directory }}/peers/{{ item.file }}"
+    content: "{{ item.content | b64decode }}"
+  with_items:
+    - { file: "{{ msp_id }}_0.pem", content: "{{ ord_service_info.ordering_service[0].tls_cert }}" }
+    - { file: "{{ msp_id }}_1.pem", content: "{{ ord_service_info.ordering_service[1].tls_cert }}" }
+    - { file: "{{ msp_id }}_2.pem", content: "{{ ord_service_info.ordering_service[2].tls_cert }}" }
+
+
+- name: client cert file ord org
+  no_log: true
+  copy:
+    dest: "{{ channel_file_directory }}/msp/{{ item.file }}"
+    content: "{{ item.content | b64decode }}"
+  with_items:
+    - { file: "admincerts/{{ msp_id }}-msp-admin.pem", content: "{{ ord_org_info.organization.admins[0] }}" }
+    - { file: "tlscacerts/{{ msp_id }}-tls-ca.pem", content: "{{ ord_ca_info.certificate_authority.tls_cert }}" }
+    - { file: "cacerts/{{ msp_id }}-ca.pem", content: "{{ ord_ca_info.certificate_authority.pem }}" }
+
+- name: client cert file endorsing org
+  no_log: true
+  copy:
+    dest: "{{ channel_file_directory }}/endorsing/{{ item.file }}"
+    content: "{{ item.content | b64decode }}"
+  with_items:
+    - { file: "admincerts/{{ endorsing_service_info.organization.msp_id }}-msp-admin.pem", content: "{{ endorsing_service_info.organization.admins[0] }}" }
+    - { file: "tlscacerts/{{ endorsing_service_info.organization.msp_id }}-tls-ca.pem", content: "{{ endr_ca_info.certificate_authority.tls_cert }}" }
+    - { file: "cacerts/{{ endorsing_service_info.organization.msp_id }}-ca.pem", content: "{{ endr_ca_info.certificate_authority.pem }}" }
+
+- name: configtx template
+  template:
+    src: configtx.yaml.j2
+    dest: "{{ channel_file_directory }}/tx/configtx.yaml"
+
+- name: Generate genesis block
+  shell: |
+    configtxgen -profile AppChannelEtcdRaft \
+      -configPath {{ channel_file_directory }}/tx \
+      -outputBlock {{ channel_file_directory }}/genesis/genesis_block.pb \
+      -channelID {{ channel_name }}
+
+- name: "Join orderer to channel"
+  include_role:
+    name: hlf/join-orderer-to-channel
+  vars:
+    do: join-single
+
+#- name: Apply the channel configuration update for the new channel
+#  ibm.blockchain_platform.channel_config:
+#    api_endpoint: "{{ console_api_endpoint }}"
+#    api_authtype: "{{ console_api_authtype }}"
+#    api_key: "{{ console_username }}"
+#    api_secret: "{{ console_password | default(omit) }}"
+#    operation: apply_update
+#    ordering_service: "{{ ordering_service_name }}"
+#    identity: "{{ msp_admin }}"
+#    msp_id: "{{ msp_id }}"
+#    name: "{{ channel_name }}"
+#    path: "{{channel_block_file_path}}"
+#  when: result.msg is defined and 'NOT_FOUND' in result.msg
+
+
+
+
+
+
 # RETURNS:
 # exists:
 #     description:
@@ -217,3 +349,7 @@
 #       --ca-file=CA-FILE          Path to file containing PEM-encoded TLS CA certificate(s) for the OSN
       # --client-cert=CLIENT-CERT  Path to file containing PEM-encoded X509 public key to use for mutual TLS communication with the OSN
       # --client-key=CLIENT-KEY    Path to file containing PEM-encoded private key to use for mutual TLS communication with the OSN
+
+
+
+

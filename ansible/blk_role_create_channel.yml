@@ -15,3 +15,15 @@
     - name: "Create channel"
       include_role:
         name: hlf/create-channel
+      vars:
+        channel_name: chantest12
+        msp_id: nikiorg
+        endorsing_service_name: nikiendrorg
+#        ordering_service_name: mytest
+        region: us-east-2
+        env_id: d1-test
+        ###########
+        console_api_endpoint: "https://hlf-operator-console.d1.test.senofi.net"
+        console_api_authtype: basic
+        console_username: admin
+        console_password: password

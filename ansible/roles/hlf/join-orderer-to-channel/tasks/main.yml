@@ -1,0 +1,8 @@
+---
+- name: Joing single
+  include_tasks: join-single.yml
+  when: do == "join-single"
+
+- name: Join all
+  include_tasks: join-all.yml
+  when: do == "join-all"

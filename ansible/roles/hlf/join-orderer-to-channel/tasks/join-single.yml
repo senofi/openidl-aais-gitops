@@ -1,0 +1,56 @@
+# osnadmin related stuff here
+# join single or join all
+
+# Loop over ord_service_info.ordering_service[] , join ordering nodes to the new channel only if the ordering nodesa re not already part of the channel
+# use ordering node address variable that is passed will join a single ordering node to the chnanel
+
+# Use msp_admin_tls to get the client-cert, client-key , the ca-file is part of the ordering info above see tls_ca_root_cert , store them in files and pass to the command line
+# decode them first from base64
+# - name: Join all ordering nodes to the channel
+#     shell: |
+#       osnadmin channel join --channelID "{{channel_name}}" --config-block "{{channel_block_file_path}}" -o "{{order-address}}"
+#       --ca-file=CA-FILE          Path to file containing PEM-encoded TLS CA certificate(s) for the OSN
+# --client-cert=CLIENT-CERT  Path to file containing PEM-encoded X509 public key to use for mutual TLS communication with the OSN
+# --client-key=CLIENT-KEY    Path to file containing PEM-encoded private key to use for mutual TLS communication with the OSN
+
+---
+#- debug:
+#    var: ord_service_info.ordering_service
+
+- name: "Get node"
+  no_log: true
+  set_fact:
+    orderer_node: "{{ord_service_info.ordering_service[0]}}"
+  #with_items: "{{ord_service_info.ordering_service}}"
+  #when: item.name == "{{ msp_id }}_0"
+
+- debug:
+    var: orderer_node
+
+- name: client cert file
+  copy:
+    dest: "{{msp_admin_tls.name}}.crt"
+    content: "{{ msp_admin_tls.cert | b64decode }}"
+
+- name: client key file
+  copy:
+    dest: "{{msp_admin_tls.name}}.key"
+    content: "{{ msp_admin_tls.private_key | b64decode }}"
+
+- name: ca cert file
+  copy:
+    dest: "{{orderer_node.name}}.ca.pem"
+    content: "{{ orderer_node.tls_ca_root_cert | b64decode }}"
+
+- name: Join ordering org to the channel
+  shell: |
+   osnadmin channel join \
+      --channelID "{{channel_name}}" \
+      --config-block "{{ channel_file_directory }}/genesis/genesis_block.pb" \
+      -o "hlf-nikiorg1node1-admin.d1.test.senofi.net:443" \
+      --ca-file="{{orderer_node.name}}.ca.pem" \
+      --client-cert="{{msp_admin_tls.name}}.crt" \
+      --client-key="{{msp_admin_tls.name}}.key"
+
+#"{{orderer_node.api_url | replace("grpcs://", "", 1) | replace(":443", "", 1) }}" \
+

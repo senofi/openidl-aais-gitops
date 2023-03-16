@@ -1,0 +1,258 @@
+---
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+Organizations:
+  # ordering org
+  - &{{ msp_id }}
+    Name: {{ msp_id }}
+    SkipAsForeign: false
+    ID: {{ msp_id }}
+    # folder to orderer org certs
+    MSPDir: {{ channel_file_directory }}/msp
+    Policies: &{{ msp_id }}Policies
+      Readers:
+        Type: Signature
+        Rule: "OR('{{ msp_id }}.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('{{ msp_id }}.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('{{ msp_id }}.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('{{ msp_id }}.member')"
+    OrdererEndpoints:
+    # | replace(":443", "", 1)
+      - "{{ ord_service_info.ordering_service[0].api_url | replace("grpcs://", "", 1) }}"
+      - "{{ ord_service_info.ordering_service[1].api_url | replace("grpcs://", "", 1) }}"
+      - "{{ ord_service_info.ordering_service[2].api_url | replace("grpcs://", "", 1) }}"
+
+  # endorsing org
+  - &{{ endorsing_service_info.organization.msp_id }}
+    Name: {{ endorsing_service_info.organization.msp_id }}
+    ID: {{ endorsing_service_info.organization.msp_id }}
+    MSPDir: {{ channel_file_directory }}/endorsing
+    Policies: &{{ endorsing_service_info.organization.msp_id }}Policies
+      Readers:
+        Type: Signature
+        Rule: "OR('{{ endorsing_service_info.organization.msp_id }}.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('{{ endorsing_service_info.organization.msp_id }}.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('{{ endorsing_service_info.organization.msp_id }}.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('{{ endorsing_service_info.organization.msp_id }}.member')"
+
+
+Application: &ApplicationDefaults
+  ACLs: &ACLsDefault
+
+    # ACL policy for _lifecycle's "CheckCommitReadiness" function
+    _lifecycle/CheckCommitReadiness: /Channel/Application/Writers
+
+    # ACL policy for _lifecycle's "CommitChaincodeDefinition" function
+    _lifecycle/CommitChaincodeDefinition: /Channel/Application/Writers
+
+    # ACL policy for _lifecycle's "QueryChaincodeDefinition" function
+    _lifecycle/QueryChaincodeDefinition: /Channel/Application/Writers
+
+    # ACL policy for _lifecycle's "QueryChaincodeDefinitions" function
+    _lifecycle/QueryChaincodeDefinitions: /Channel/Application/Writers
+
+    #---Lifecycle System Chaincode (lscc) function to policy mapping for access control---#
+
+    # ACL policy for lscc's "getid" function
+    lscc/ChaincodeExists: /Channel/Application/Readers
+
+    # ACL policy for lscc's "getdepspec" function
+    lscc/GetDeploymentSpec: /Channel/Application/Readers
+
+    # ACL policy for lscc's "getccdata" function
+    lscc/GetChaincodeData: /Channel/Application/Readers
+
+    # ACL Policy for lscc's "getchaincodes" function
+    lscc/GetInstantiatedChaincodes: /Channel/Application/Readers
+
+    #---Query System Chaincode (qscc) function to policy mapping for access control---#
+
+    # ACL policy for qscc's "GetChainInfo" function
+    qscc/GetChainInfo: /Channel/Application/Readers
+
+    # ACL policy for qscc's "GetBlockByNumber" function
+    qscc/GetBlockByNumber: /Channel/Application/Readers
+
+    # ACL policy for qscc's  "GetBlockByHash" function
+    qscc/GetBlockByHash: /Channel/Application/Readers
+
+    # ACL policy for qscc's "GetTransactionByID" function
+    qscc/GetTransactionByID: /Channel/Application/Readers
+
+    # ACL policy for qscc's "GetBlockByTxID" function
+    qscc/GetBlockByTxID: /Channel/Application/Readers
+
+    #---Configuration System Chaincode (cscc) function to policy mapping for access control---#
+
+    # ACL policy for cscc's "GetConfigBlock" function
+    cscc/GetConfigBlock: /Channel/Application/Readers
+
+    # ACL policy for cscc's "GetChannelConfig" function
+    cscc/GetChannelConfig: /Channel/Application/Readers
+
+    #---Miscellaneous peer function to policy mapping for access control---#
+
+    # ACL policy for invoking chaincodes on peer
+    peer/Propose: /Channel/Application/Writers
+
+    # ACL policy for chaincode to chaincode invocation
+    peer/ChaincodeToChaincode: /Channel/Application/Writers
+
+    #---Events resource to policy mapping for access control###---#
+
+    # ACL policy for sending block events
+    event/Block: /Channel/Application/Readers
+
+    # ACL policy for sending filtered block events
+    event/FilteredBlock: /Channel/Application/Readers
+
+  # Organizations lists the orgs participating on the application side of the
+  # network.
+  Organizations:
+
+  Policies: &ApplicationDefaultPolicies
+    LifecycleEndorsement:
+#      Type: ImplicitMeta
+#      Rule: "MAJORITY Endorsement"
+      Type: Signature
+      Rule: "AND('{{ endorsing_service_info.organization.msp_id }}.member')"
+    Endorsement:
+#      Type: ImplicitMeta
+#      Rule: "MAJORITY Endorsement"
+      Type: Signature
+      Rule: "AND('{{ endorsing_service_info.organization.msp_id }}.member')"
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+#      Type: ImplicitMeta
+#      Rule: "MAJORITY Admins"
+      Type: Signature
+      Rule: "AND('{{ endorsing_service_info.organization.msp_id }}.member')"
+
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+
+Orderer: &OrdererDefaults
+
+  # Orderer Type: The orderer implementation to start.
+  # Available types are "solo", "kafka" and "etcdraft".
+  OrdererType: etcdraft
+
+  Addresses:
+  # - 127.0.0.1:7050
+
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 500
+    AbsoluteMaxBytes: 10 MB
+    PreferredMaxBytes: 2 MB
+
+  MaxChannels: 0
+
+  EtcdRaft:
+    Consenters:
+      - Host: {{ ord_service_info.ordering_service[0].api_url | replace("grpcs://", "", 1) | replace(":443", "", 1) }}
+        Port: 443
+        ClientTLSCert: {{ channel_file_directory }}/peers/{{ msp_id }}_0.pem
+        ServerTLSCert: {{ channel_file_directory }}/peers/{{ msp_id }}_0.pem
+      - Host: {{ ord_service_info.ordering_service[1].api_url | replace("grpcs://", "", 1) | replace(":443", "", 1) }}
+        Port: 443
+        ClientTLSCert: {{ channel_file_directory }}/peers/{{ msp_id }}_1.pem
+        ServerTLSCert: {{ channel_file_directory }}/peers/{{ msp_id }}_1.pem
+      - Host: {{ ord_service_info.ordering_service[2].api_url | replace("grpcs://", "", 1) | replace(":443", "", 1) }}
+        Port: 443
+        ClientTLSCert: {{ channel_file_directory }}/peers/{{ msp_id }}_2.pem
+        ServerTLSCert: {{ channel_file_directory }}/peers/{{ msp_id }}_2.pem
+
+    Options:
+      TickInterval: 500ms
+      ElectionTick: 10
+      HeartbeatTick: 1
+      MaxInflightBlocks: 5
+      SnapshotIntervalSize: 16 MB
+
+  Organizations:
+
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+  Capabilities:
+    <<: *OrdererCapabilities
+
+
+Channel: &ChannelDefaults
+  Policies:
+    # Who may invoke the 'Deliver' API
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    # Who may invoke the 'Broadcast' API
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    # By default, who may modify elements at this config level
+    Admins:
+#      Type: ImplicitMeta
+#      Rule: "MAJORITY Admins"
+      Type: Signature
+      Rule: "AND('{{ endorsing_service_info.organization.msp_id }}.admin')"
+
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+  AppChannelEtcdRaft:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      OrdererType: etcdraft
+      Organizations:
+        - <<: *{{ msp_id }}
+          Policies:
+            <<: *{{ msp_id }}Policies
+            Admins:
+              Type: Signature
+              Rule: "OR('{{ msp_id }}.member')"
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - <<: *{{ endorsing_service_info.organization.msp_id }}
+          Policies:
+            <<: *{{ endorsing_service_info.organization.msp_id }}Policies
+            Admins:
+              Type: Signature
+              Rule: "OR('{{ endorsing_service_info.organization.msp_id }}.member')"
