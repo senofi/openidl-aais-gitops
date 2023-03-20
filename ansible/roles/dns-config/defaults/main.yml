@@ -1,0 +1,4 @@
+---
+dns_zone:
+nginx_controller_name: nginx-external
+nginx_controller_namespace: nginx-external
