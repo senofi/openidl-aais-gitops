@@ -1,8 +1,6 @@
 ---
 - name: "Setup Route53 hosted zones"
-  hosts: localhost # change to localhost if connection: local is configured
-  # enable this to run locally
-  connection: local
+  hosts: all
   gather_facts: yes
   roles:
     - role: import-config-vars
