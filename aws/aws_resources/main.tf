@@ -1,9 +1,9 @@
 terraform {
-  cloud {
-    organization = "openIDL"
-
-    workspaces {
-      name = "testnet-openidl-aws-resources"
-    }
-  }
+#  cloud {
+#    organization = "openIDL"
+#
+#    workspaces {
+#      name = "testnet-openidl-aws-resources"
+#    }
+#  }
 }

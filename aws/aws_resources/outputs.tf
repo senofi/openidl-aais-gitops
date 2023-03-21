@@ -119,34 +119,34 @@ output "secrets_kms_key_arn" {
 output "secrets_kms_key_alias_name" {
   value = var.create_kms_keys ? aws_kms_alias.sm_kms_key_alias[0].name : ""
 }
-output "dynamodb_arn" {
-  value = aws_dynamodb_table.etl.arn
-}
-output "s3-bucket-idm-loader" {
-  value = aws_s3_bucket.etl["idm-loader"].arn
-}
-output "s3-bucket-intake" {
-  value = aws_s3_bucket.etl["intake"].arn
-}
-output "s3-bucket-failures" {
-  value = aws_s3_bucket.etl["failure"].arn
-}
-#include lambda functions
-output "lambda-idm-loader" {
-  value = aws_lambda_function.etl_success_processor.arn
-}
-output "lambda-intake-processor" {
-  value = aws_lambda_function.etl_intake_processor.arn
-}
-output "upload_ui_s3_website_endpoint" {
-  value = aws_s3_bucket.upload_ui.website_endpoint
-}
-output "s3_static_website_bucket" {
-  value = aws_s3_bucket.upload_ui.arn
-}
-output "api_gateway_endpoint" {
-  value = aws_api_gateway_deployment.upload_v1.invoke_url
-}
+#output "dynamodb_arn" {
+#  value = aws_dynamodb_table.etl.arn
+#}
+#output "s3-bucket-idm-loader" {
+#  value = aws_s3_bucket.etl["idm-loader"].arn
+#}
+#output "s3-bucket-intake" {
+#  value = aws_s3_bucket.etl["intake"].arn
+#}
+#output "s3-bucket-failures" {
+#  value = aws_s3_bucket.etl["failure"].arn
+#}
+##include lambda functions
+#output "lambda-idm-loader" {
+#  value = aws_lambda_function.etl_success_processor.arn
+#}
+#output "lambda-intake-processor" {
+#  value = aws_lambda_function.etl_intake_processor.arn
+#}
+#output "upload_ui_s3_website_endpoint" {
+#  value = aws_s3_bucket.upload_ui.website_endpoint
+#}
+#output "s3_static_website_bucket" {
+#  value = aws_s3_bucket.upload_ui.arn
+#}
+#output "api_gateway_endpoint" {
+#  value = aws_api_gateway_deployment.upload_v1.invoke_url
+#}
 
 
 

@@ -48,19 +48,19 @@ locals {
   #Lambda function related
   config-intake = templatefile("resources/config-intake.tftpl",
     {
-      successBucket = "${aws_s3_bucket.etl["idm-loader"].id}"
-      failureBucket = "${aws_s3_bucket.etl["failure"].id}"
-      dynamoDB = "${aws_dynamodb_table.etl.name}",
-      successTopicARN = "${aws_sns_topic.etl["success"].arn}",
-      failureTopicARN = "${aws_sns_topic.etl["failure"].arn}",
+#      successBucket = "${aws_s3_bucket.etl["idm-loader"].id}"
+#      failureBucket = "${aws_s3_bucket.etl["failure"].id}"
+#      dynamoDB = "${aws_dynamodb_table.etl.name}",
+#      successTopicARN = "${aws_sns_topic.etl["success"].arn}",
+#      failureTopicARN = "${aws_sns_topic.etl["failure"].arn}",
       state = "${var.state}",
       region = "${var.aws_region}"
     })
   config-success = templatefile("resources/config-success.tftpl",
     {
-      dynamoDB = "${aws_dynamodb_table.etl.name}",
-      successTopicARN = "${aws_sns_topic.etl["success"].arn}",
-      failureTopicARN = "${aws_sns_topic.etl["failure"].arn}",
+#      dynamoDB = "${aws_dynamodb_table.etl.name}",
+#      successTopicARN = "${aws_sns_topic.etl["success"].arn}",
+#      failureTopicARN = "${aws_sns_topic.etl["failure"].arn}",
       apiUsername = "${var.api_username}",
       apiPassword = "${var.api_user_password}",
       carrierId = "${var.carrier_id}",
@@ -143,12 +143,12 @@ locals {
 
   dns_entries_list_non_prod = var.create_bastion_host ? {
     "app-bastion.${var.aws_env}.${local.public_domain}" = aws_eip.bastion_host_eip[0].public_ip #module.bastion_nlb[0].lb_dns_name
-    "upload.${var.aws_env}.${local.public_domain}" = aws_s3_bucket_website_configuration.upload_ui.website_endpoint
+#    "upload.${var.aws_env}.${local.public_domain}" = aws_s3_bucket_website_configuration.upload_ui.website_endpoint
     } : {}
 
   dns_entries_list_prod = var.create_bastion_host ? {
     "app-bastion.${local.public_domain}" = aws_eip.bastion_host_eip[0].public_ip #module.bastion_nlb[0].lb_dns_name
-    "upload.${local.public_domain}" = aws_s3_bucket_website_configuration.upload_ui.website_endpoint
+#    "upload.${local.public_domain}" = aws_s3_bucket_website_configuration.upload_ui.website_endpoint
     } : {}
 
   app_eks_control_plane_sg_computed_ingress = var.create_bastion_host ? [
