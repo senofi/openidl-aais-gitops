@@ -1,0 +1,33 @@
+---
+- name: "Pull admin identity from the wallet"
+  include_role:
+    name: wallet
+  vars:
+    wallet_ops: "get"
+    wallet_path: "{{ msp_admin_id }}"
+
+- set_fact:
+    msp_admin: "{{wallet_operator_identity_dict}}"
+  no_log: true
+
+- name: "Pull endorsing admin identity from the wallet"
+  include_role:
+    name: wallet
+  vars:
+    wallet_ops: "get"
+    wallet_path: "{{endorsing_org}}-msp-admin"
+
+- set_fact:
+    endr_msp_admin: "{{wallet_operator_identity_dict}}"
+  no_log: true
+
+- name: create identity files
+  no_log: true
+  copy:
+    dest: "{{identity.name}}"
+    content: "{{identity.content}}"
+  loop:
+    - { name: "{{resource_path}}/identities/{{msp_id}}-msp-admin.json", content: "{{msp_admin}}"}
+    - { name: "{{resource_path}}/identities/{{endorsing_org}}-msp-admin.json", content: "{{endr_msp_admin}}"}
+  loop_control:
+    loop_var: identity

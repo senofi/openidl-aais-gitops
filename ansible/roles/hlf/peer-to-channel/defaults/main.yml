@@ -1,0 +1,5 @@
+---
+region: us-east-2
+env_id: d1-test
+resource_path: "/tmp/hlf/peers"
+console_api_authtype: "basic"

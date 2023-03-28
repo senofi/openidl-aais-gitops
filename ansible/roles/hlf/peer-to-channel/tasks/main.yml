@@ -1,0 +1,48 @@
+---
+- name: "Resources path"
+  file:
+    state: directory
+    path: "/tmp/hlf/peers/{{folder}}"
+  loop:
+    - identities
+    - configs
+  loop_control:
+    loop_var: folder
+
+- set_fact:
+    peers_list: []
+
+- set_fact:
+    peers_list: "{{peers_list + [item.peer_name]}}"
+  when: item.anchor
+  with_items:
+    - "{{ network.peer_channel}}"
+
+- include_tasks: identities.yml
+  vars:
+    msp_id: "{{ network.peer_channel[0].ordering_service}}"
+    msp_admin_id: "{{ network.peer_channel[0].ordering_service }}-msp-admin"
+    endorsing_org: "{{ network.peer_channel[0].endorsing_org}}"
+
+- include_tasks: "join_peer.yml"
+  vars:
+    msp_id: "{{item.ordering_service}}"
+    msp_admin_id: "{{ item.ordering_service }}-msp-admin"
+    ordering_service_name: "{{item.ordering_service}}"
+    endorsing_org: "{{item.endorsing_org}}"
+    peer_name: "{{item.peer_name}}"
+    channel_name: "{{item.channel_name}}"
+  with_items:
+    - "{{network.peer_channel}}"
+
+- include_tasks: "peer_anchor.yml"
+  vars:
+    msp_id: "{{item.ordering_service}}"
+    msp_admin_id: "{{ item.ordering_service }}-msp-admin"
+    ordering_service_name: "{{item.ordering_service}}"
+    endorsing_org: "{{item.endorsing_org}}"
+    peer_name: "{{item.peer_name}}"
+    channel_name: "{{item.channel_name}}"
+  with_items:
+    - "{{network.peer_channel}}"
+  when: item.anchor

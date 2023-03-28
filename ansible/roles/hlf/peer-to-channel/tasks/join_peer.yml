@@ -1,0 +1,26 @@
+---
+- name: "Fetch the genesis block for the channel"
+  ibm.blockchain_platform.channel_block:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    operation: fetch
+    ordering_service: "{{ ordering_service_name }}"
+    identity: "{{ msp_id }}-msp-admin.json"
+    msp_id: "{{ msp_id }}"
+    name: "{{ channel_name }}"
+    target: "0"
+    path: "{{resource_path}}/configs/channel_genesis_block.bin"
+
+- name: "Join the peer to the channel"
+  ibm.blockchain_platform.peer_channel:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    operation: join
+    peer: "{{peer_name}}"
+    identity: "{{endorsing_org}}-msp-admin.json"
+    msp_id: "{{endorsing_org}}"
+    path: "{{resource_path}}/configs/channel_genesis_block.bin"

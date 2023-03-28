@@ -1,0 +1,81 @@
+---
+- name: "Get the ordering service information"
+  ibm.blockchain_platform.ordering_service_info:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    name: "{{ ordering_service_name }}"
+  register: ordering_service
+
+- name: "Fail if the ordering service does not exist"
+  fail:
+    msg: "{{ ordering_service_name }} does not exist"
+  when: not ordering_service.exists
+
+- name: "Fetch the channel configuration"
+  ibm.blockchain_platform.channel_config:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    ordering_service: "{{ ordering_service_name }}"
+    identity: "{{ msp_id }}-msp-admin.json"
+    msp_id: "{{ msp_id }}"
+    operation: fetch
+    name: "{{ channel_name }}"
+    path: "{{resource_path}}/configs/original_config.bin"
+  register: channel_info_fetch
+
+- name: "Create a copy of the channel configuration"
+  copy:
+    remote_src: true
+    src: "{{resource_path}}/configs/original_config.bin"
+    dest: "{{resource_path}}/configs/updated_config.bin"
+
+- name: "Update the organization"
+  ibm.blockchain_platform.channel_member:
+    state: present
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    organization: "{{ endorsing_org }}"
+    anchor_peers: "{{peers_list}}"
+    path: "{{resource_path}}/configs/updated_config.bin"
+
+- name: "Compute the channel configuration update"
+  ibm.blockchain_platform.channel_config:
+    operation: compute_update
+    name: "{{ channel_name }}"
+    original: "{{resource_path}}/configs/original_config.bin"
+    updated: "{{resource_path}}/configs/updated_config.bin"
+    path: "{{resource_path}}/configs/config_update.bin"
+  register: compute_update
+
+- name: "Sign the channel configuration update"
+  ibm.blockchain_platform.channel_config:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    operation: sign_update
+    identity: "{{endorsing_org}}-msp-admin.json"
+    msp_id: "{{ endorsing_org }}"
+    name: "{{ channel_name }}"
+    path: "{{resource_path}}/configs/config_update.bin"
+  when: compute_update.path
+
+- name: "Apply the channel configuration update"
+  ibm.blockchain_platform.channel_config:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    operation: apply_update
+    ordering_service: "{{ ordering_service_name }}"
+    identity: "{{endorsing_org}}-msp-admin.json"
+    msp_id: "{{ endorsing_org }}"
+    name: "{{ channel_name }}"
+    path: "{{resource_path}}/configs/config_update.bin"
+  when: compute_update.path
