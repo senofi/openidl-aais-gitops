@@ -1,0 +1,5 @@
+---
+resource_path: "/tmp/hlf/chaincode"
+git_config_path: "/tmp/roles_configs"
+chaincode_configs_directory: "orgs_config"
+configs_directory: "{{git_config_path}}/{{chaincode_configs_directory}}"

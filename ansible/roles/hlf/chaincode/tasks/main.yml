@@ -1,0 +1,49 @@
+---
+- name: "Resources path"
+  file:
+      state: directory
+      path: "{{resource_path}}/{{folder}}"
+  loop:
+      - identities
+      - packages
+  loop_control:
+      loop_var: folder
+
+- name: "Create list of endorsing_org"
+  set_fact:
+    endorsing_org_list: "{{ chaincode | map(attribute='endorsing_org') | list }}"
+
+- name: "Download chaincode package"
+  maven_artifact:
+    group_id: "{{maven_group_id}}"
+    artifact_id: "{{maven_artifact_id}}"
+    repository_url: "{{maven_repository_url}}"
+    extension: "{{maven_extension}}"
+    version: "{{maven_version}}"
+    username: "{{maven_username}}"
+    password: "{{maven_password}}"
+    dest: "{{resource_path}}/packages/{{maven.artifact_id}}.{{maven.extension}}"
+
+- include_tasks: identities.yml
+  vars:
+    msp_id: "{{ item.ordering_service }}"
+    msp_admin_id: "{{ item.ordering_service }}-msp-admin"
+    endorsing_org: "{{ item.endorsing_org }}"
+  with_items:
+    - "{{chaincode}}"
+
+- include_tasks: propose.yml
+  vars:
+    ordering_service: "{{ item.ordering_service }}"
+    endorsing_org: "{{ item.endorsing_org }}"
+    peer_name: "{{ item.peer_name }}"
+    channel_name: "{{ item.channel_name }}"
+  with_items:
+    - "{{chaincode}}"
+
+- include_tasks: commit.yml
+  vars:
+    ordering_service: "{{ chaincode[0].ordering_service }}"
+    endorsing_org: "{{ chaincode[0].endorsing_org }}"
+    peer_name: "{{chaincode[0].peer_name}}"
+    channel_name: "{{chaincode[0].channel_name}}"

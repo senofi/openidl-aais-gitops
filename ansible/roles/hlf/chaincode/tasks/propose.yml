@@ -1,0 +1,29 @@
+---
+- name: "Install the chaincode on the peer {{ peer_name }}"
+  ibm.blockchain_platform.installed_chaincode:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    peer: "{{ peer_name }}"
+    identity: "{{resource_path}}/identities/{{ endorsing_org }}-msp-admin.json"
+    msp_id: "{{ endorsing_org }}"
+    path: "{{ resource_path }}/packages/openidl-cc-default.tgz"
+  register: result
+
+- name: "Approve the chaincode on the channel"
+  ibm.blockchain_platform.approved_chaincode:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    peer: "{{ peer_name }}"
+    identity: "{{resource_path}}/identities/{{ endorsing_org }}-msp-admin.json"
+    msp_id: "{{ endorsing_org }}"
+    channel: "{{ channel_name }}"
+    name: "{{ smart_contract_name }}"
+    version: "{{ smart_contract_version }}"
+    package_id: "{{ result.installed_chaincode.package_id }}"
+    sequence: "{{ smart_contract_sequence }}"
+    endorsement_policy: "{{ smart_contract_endorsement_policy | default(omit) }}"
+    collections_config: "{{ smart_contract_collections_file | default(omit) }}"

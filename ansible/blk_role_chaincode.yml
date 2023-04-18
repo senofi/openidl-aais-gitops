@@ -1,0 +1,18 @@
+---
+- name: "Chaincode"
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: "Import vars from git"
+      include_role:
+        name: import-config-vars
+      vars:
+        git_config_path: "/tmp/roles_configs"
+        configs_directory: "{{git_config_path}}/chaincode_config"
+    - name: "Blockchain collection"
+      include_role:
+        name: setup/blockchain-platform
+      vars:
+        blockchain_collection_install: false
+    - include_role:
+        name: hlf/chaincode
