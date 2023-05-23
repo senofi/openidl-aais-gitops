@@ -218,7 +218,6 @@ resource "aws_s3_bucket_policy" "s3_bucket_policy_hds" {
 resource "aws_s3_bucket" "s3_bucket_logos_public" {
   count = var.create_s3_bucket_public ? 1 : 0
   bucket = "${local.std_name}-${var.s3_bucket_name_logos}"
-  acl    = "private"
   force_destroy = true
   versioning {
     enabled = false
@@ -229,6 +228,13 @@ resource "aws_s3_bucket" "s3_bucket_logos_public" {
       "name" = "${local.std_name}-${var.s3_bucket_name_logos}"
     },)
 }
+
+resource "aws_s3_bucket_acl" "s3_bucket_logos_public" {
+  bucket = aws_s3_bucket.s3_bucket_logos_public[0].id
+  acl  = "private"
+  depends_on = [aws_s3_bucket.s3_bucket_logos_public, aws_s3_bucket_ownership_controls.s3_bucket_logos_public]
+}
+
 #Blocking public access to s3 bucket
 resource "aws_s3_bucket_public_access_block" "s3_bucket_logos_public_access_block" {
   count = var.create_s3_bucket_public ? 1 : 0
