@@ -358,7 +358,7 @@ resource "aws_s3_bucket_public_access_block" "s3_bucket_public_access_block_acce
   ignore_public_acls      = true
   restrict_public_buckets = true
   bucket                  = aws_s3_bucket.s3_bucket_access_logs.id
-  depends_on              = [aws_s3_bucket.s3_bucket_access_logs, aws_s3_bucket_policy.s3_bucket_policy_access_logs]
+  depends_on              = [aws_s3_bucket.s3_bucket_access_logs, aws_s3_bucket_policy.s3_bucket_policy_access_logs, aws_s3_bucket_ownership_controls.s3_bucket_access_logs_acl_ownership]
 }
 
 # Resource to avoid error "AccessControlListNotSupported: The bucket does not allow ACLs"

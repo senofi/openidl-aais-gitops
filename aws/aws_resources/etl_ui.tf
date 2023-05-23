@@ -58,7 +58,7 @@ resource "aws_s3_bucket_public_access_block" "upload_ui" {
     ignore_public_acls      = true
     restrict_public_buckets = true
     bucket = aws_s3_bucket.upload_ui.id
-    depends_on = [aws_s3_bucket.upload_ui]
+    depends_on = [aws_s3_bucket.upload_ui, aws_s3_bucket_ownership_controls.upload_ui_acl_ownership]
 }
 #resource "aws_s3_bucket_policy" "upload_ui" {
 #  depends_on = [aws_cloudfront_origin_access_identity.origin_access_identity,aws_cloudfront_distribution.upload_ui]
