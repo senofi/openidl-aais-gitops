@@ -3,7 +3,12 @@ resource "aws_s3_bucket" "upload_ui" {
   bucket = "${local.std_name}-${var.s3_bucket_name_upload_ui}.${var.aws_env}.${local.public_domain}"
   force_destroy = true
   tags = merge( local.tags, {"name" = "${local.std_name}-${var.s3_bucket_name_upload_ui}.${var.aws_env}.${local.public_domain}"})
+}
+
+resource "aws_s3_bucket_acl" "upload_ui" {
+  bucket = aws_s3_bucket.upload_ui.id
   acl  = "public-read"
+  depends_on = [aws_s3_bucket.upload_ui, aws_s3_bucket_ownership_controls.upload_ui_acl_ownership]
 }
 
 resource "aws_s3_bucket_ownership_controls" "upload_ui_acl_ownership" {

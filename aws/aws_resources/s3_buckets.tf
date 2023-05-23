@@ -311,7 +311,6 @@ resource "aws_s3_bucket_policy" "s3_bucket_logos_policy" {
 #S3 bucket for storing access logs of s3 and its objects
 resource "aws_s3_bucket" "s3_bucket_access_logs" {
   bucket = "${local.std_name}-${var.s3_bucket_name_access_logs}"
-  acl    = "log-delivery-write"
   force_destroy = true
   versioning {
     enabled = true
@@ -351,6 +350,20 @@ resource "aws_s3_bucket" "s3_bucket_access_logs" {
     }
   }  
 }
+
+resource "aws_s3_bucket_acl" "s3_bucket_access_logs" {
+  bucket = aws_s3_bucket.s3_bucket_access_logs.id
+  acl = "log-delivery-write"
+  depends_on = [aws_s3_bucket.etl, aws_s3_bucket_ownership_controls.s3_bucket_access_log_acl_ownership]
+}
+
+resource "aws_s3_bucket_ownership_controls" "s3_bucket_access_log_acl_ownership" {
+  bucket = aws_s3_bucket.s3_bucket_access_logs.id
+  rule {
+    object_ownership = "ObjectWriter"
+  }
+}
+
 #Blocking public access to s3 bucket used for s3 access logging
 resource "aws_s3_bucket_public_access_block" "s3_bucket_public_access_block_access_logs" {
   block_public_acls       = true
@@ -368,6 +381,7 @@ resource "aws_s3_bucket_ownership_controls" "s3_bucket_access_logs_acl_ownership
     object_ownership = "ObjectWriter"
   }
 }
+
 #Setting up a bucket policy to restrict access to s3 bucket used for s3 access logging
 resource "aws_s3_bucket_policy" "s3_bucket_policy_access_logs" {
   bucket     = "${local.std_name}-${var.s3_bucket_name_access_logs}"
