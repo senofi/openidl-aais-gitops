@@ -230,6 +230,7 @@ resource "aws_s3_bucket" "s3_bucket_logos_public" {
 }
 
 resource "aws_s3_bucket_acl" "s3_bucket_logos_public" {
+  count = var.create_s3_bucket_public ? 1 : 0
   bucket = aws_s3_bucket.s3_bucket_logos_public[0].id
   acl  = "private"
   depends_on = [aws_s3_bucket.s3_bucket_logos_public, aws_s3_bucket_ownership_controls.s3_bucket_logos_public]
@@ -247,6 +248,7 @@ resource "aws_s3_bucket_public_access_block" "s3_bucket_logos_public_access_bloc
 }
 
 resource "aws_s3_bucket_ownership_controls" "s3_bucket_logos_public" {
+  count = var.create_s3_bucket_public ? 1 : 0
   bucket = aws_s3_bucket.s3_bucket_logos_public[0].id
   rule {
     object_ownership = "ObjectWriter"
