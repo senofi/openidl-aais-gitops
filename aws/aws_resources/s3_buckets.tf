@@ -241,7 +241,7 @@ resource "aws_s3_bucket_public_access_block" "s3_bucket_logos_public_access_bloc
 }
 
 resource "aws_s3_bucket_ownership_controls" "s3_bucket_logos_policy" {
-  bucket = aws_s3_bucket.s3_bucket_logos_public.id
+  bucket = aws_s3_bucket.s3_bucket_logos_public[0].id
   rule {
     object_ownership = "ObjectWriter"
   }
