@@ -5,6 +5,14 @@ resource "aws_s3_bucket" "upload_ui" {
   tags = merge( local.tags, {"name" = "${local.std_name}-${var.s3_bucket_name_upload_ui}.${var.aws_env}.${local.public_domain}"})
   acl  = "public-read"
 }
+
+resource "aws_s3_bucket_ownership_controls" "upload_ui_acl_ownership" {
+  bucket = aws_s3_bucket.upload_ui.id
+  rule {
+    object_ownership = "ObjectWriter"
+  }
+}
+
 resource "aws_s3_bucket_lifecycle_configuration" "upload_ui" {
     bucket = aws_s3_bucket.upload_ui.id
     rule {

@@ -243,7 +243,8 @@ resource "aws_s3_bucket_public_access_block" "s3_bucket_logos_public_access_bloc
 resource "aws_s3_bucket_policy" "s3_bucket_logos_policy" {
   count = var.create_s3_bucket_public ? 1 : 0
   bucket     = "${local.std_name}-${var.s3_bucket_name_logos}"
-  depends_on = [aws_s3_bucket.s3_bucket_logos_public]
+  depends_on = [aws_s3_bucket.s3_bucket_logos_public, aws_s3_bucket_ownership_controls.upload_ui_acl_ownership]
+
   policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
@@ -359,10 +360,18 @@ resource "aws_s3_bucket_public_access_block" "s3_bucket_public_access_block_acce
   bucket                  = aws_s3_bucket.s3_bucket_access_logs.id
   depends_on              = [aws_s3_bucket.s3_bucket_access_logs, aws_s3_bucket_policy.s3_bucket_policy_access_logs]
 }
+
+# Resource to avoid error "AccessControlListNotSupported: The bucket does not allow ACLs"
+resource "aws_s3_bucket_ownership_controls" "s3_bucket_access_logs_acl_ownership" {
+  bucket = aws_s3_bucket.s3_bucket_access_logs.id
+  rule {
+    object_ownership = "ObjectWriter"
+  }
+}
 #Setting up a bucket policy to restrict access to s3 bucket used for s3 access logging
 resource "aws_s3_bucket_policy" "s3_bucket_policy_access_logs" {
   bucket     = "${local.std_name}-${var.s3_bucket_name_access_logs}"
-  depends_on = [aws_s3_bucket.s3_bucket_access_logs]
+  depends_on = [aws_s3_bucket.s3_bucket_access_logs, aws_s3_bucket_ownership_controls.s3_bucket_access_logs_acl_ownership]
   policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
