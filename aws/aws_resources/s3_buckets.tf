@@ -239,11 +239,19 @@ resource "aws_s3_bucket_public_access_block" "s3_bucket_logos_public_access_bloc
   bucket                  = aws_s3_bucket.s3_bucket_logos_public[0].id
   depends_on              = [aws_s3_bucket.s3_bucket_logos_public, aws_s3_bucket_policy.s3_bucket_logos_policy]
 }
+
+resource "aws_s3_bucket_ownership_controls" "s3_bucket_logos_policy" {
+  bucket = aws_s3_bucket.s3_bucket_logos_public.id
+  rule {
+    object_ownership = "ObjectWriter"
+  }
+}
+
 #S3 bucket policy for public s3 bucket
 resource "aws_s3_bucket_policy" "s3_bucket_logos_policy" {
   count = var.create_s3_bucket_public ? 1 : 0
   bucket     = "${local.std_name}-${var.s3_bucket_name_logos}"
-  depends_on = [aws_s3_bucket.s3_bucket_logos_public, aws_s3_bucket_ownership_controls.upload_ui_acl_ownership]
+  depends_on = [aws_s3_bucket.s3_bucket_logos_public, aws_s3_bucket_ownership_controls.s3_bucket_logos_policy]
 
   policy = jsonencode({
     "Version": "2012-10-17",
