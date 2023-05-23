@@ -164,8 +164,8 @@ resource "aws_s3_bucket_policy" "etl" {
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-                  "${aws_iam_role.etl_lambda.arn}",
-                  "${aws_iam_role.upload.arn}"
+                  "${aws_iam_role.etl_lambda.arn}"
+                  # "${aws_iam_role.upload.arn}"
                 ]
             },
             "Action": [
