@@ -4,15 +4,19 @@
     msg: "'main_domain' not set"
   when: not main_domain
 
+
+- name: "Fail if resource domain tag not provided"
+  fail:
+    msg: "Resource_domain must be provided"
+  when: not resource_domain
+
 - name: "Set facts"
   include_tasks: set_facts.yml
 
+- set_fact:
+    subdomain: "{{resource_domain}}"
+  when: not zone_exists.stdout
+
 - name: "Create hosted zone"
   include_tasks: create-zone.yml
-  vars:
-    subdomain: "{{resource_domain}}"
-  loop:
-    - "{{applications_domain}}"
-    - "{{console_domain}}"
-  loop_control:
-    loop_var: resource_domain
+

@@ -18,9 +18,3 @@
         elb_tag_key: "{{fabric_operator_k8s_cluster}}"
     - include_role:
         name: "dns-config"
-    - set_fact:
-        resource_domain: "{{applications_domain}}"
-    - set_fact:
-        elb_tag_key: "{{openidl_apps_cluster}}"
-    - include_role:
-        name: "dns-config"

@@ -1,11 +1,8 @@
 ---
-- set_fact:
-    elb_tag_key: "{{openidl_apps_cluster}}"
-  when: subdomain == applications_domain
-
-- set_fact:
-    elb_tag_key: "{{fabric_operator_k8s_cluster}}"
-  when: subdomain == console_domain
+- name: "Fail if elb tag not provided"
+  fail:
+    msg: "External Load Balancer tag must be provided"
+  when: not elb_tag_key
 
 - name: "Get ELB tags - {{subdomain}}"
   shell: |
