@@ -1,6 +1,7 @@
 ---
 - name: "Is hosted zone {{subdomain}} created?"
   shell: |
+    export AWS_PROFILE={{aws_conf_profile}}
     aws route53 list-hosted-zones | jq -c '.[][] | select( .Name == "{{subdomain}}.")'
   register: zone_exists
 
@@ -8,6 +9,7 @@
   shell: |
     sleep 2;
     export DATA=`date +%Y-%m-%d-%H:%M:%S`;
+    export AWS_PROFILE={{aws_conf_profile}}
     aws route53 create-hosted-zone \
       --name {{subdomain}} \
       --hosted-zone-config Comment=Ansible-Managed,PrivateZone=false \
@@ -25,6 +27,7 @@
 
 - name: "Get app NS records - {{subdomain}}"
   shell: |
+    export AWS_PROFILE={{aws_conf_profile}}
     aws route53 list-resource-record-sets --hosted-zone-id {{hosted_zone.Id | replace("/hostedzone/", "", 1)}}
   register: ns_records
 
@@ -45,6 +48,7 @@
 
 - name: "create ns records in root zone - {{subdomain}}"
   shell: |
+    export AWS_PROFILE={{aws_conf_profile}}
     aws route53 change-resource-record-sets \
       --hosted-zone-id {{ dns_zone }} \
       --change-batch file://recordset.json
