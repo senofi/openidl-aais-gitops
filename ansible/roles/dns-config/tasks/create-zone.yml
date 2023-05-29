@@ -25,6 +25,9 @@
     hosted_zone: "{{zone_info.stdout | from_json}}"
   when: not zone_exists.stdout
 
+- debug:
+    msg: "{{hosted_zone}}"
+
 - name: "Get app NS records - {{subdomain}}"
   shell: |
     export AWS_PROFILE={{aws_conf_profile}}
