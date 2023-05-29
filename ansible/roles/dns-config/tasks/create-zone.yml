@@ -31,7 +31,7 @@
 - name: "Get app NS records - {{subdomain}}"
   shell: |
     export AWS_PROFILE={{aws_conf_profile}}
-    aws route53 list-resource-record-sets --hosted-zone-id {{hosted_zone.Id | replace("/hostedzone/", "", 1)}}
+    aws route53 list-resource-record-sets --hosted-zone-id {{hosted_zone.HostedZone.Id | replace("/hostedzone/", "", 1)}}
   register: ns_records
 
 - set_fact:
@@ -69,7 +69,7 @@
   shell: |
     export AWS_PROFILE={{aws_conf_profile}}
     aws route53 change-resource-record-sets \
-      --hosted-zone-id {{hosted_zone.Id | replace("/hostedzone/", "", 1)}} \
+      --hosted-zone-id {{hosted_zone.HostedZone.Id | replace("/hostedzone/", "", 1)}} \
       --change-batch file://arecord.json
   when: elb_tags_info.stdout
 
