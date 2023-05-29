@@ -2,6 +2,15 @@
 - name: "Setup DNS hosted zones"
   hosts: all
   gather_facts: yes
-  roles:
-    - role: import-config-vars
-    - role: dns-config
+
+  tasks:
+    - include_role:
+        name: "import-config-vars"
+    - set_fact:
+        aws_conf_profile: "dns-setup-role"
+    - set_fact:
+        aws_conf_user: "dns-setup-user"
+    - include_role:
+        name: "setup/set-aws-profile"
+    - include_role:
+        name: "dns-config"

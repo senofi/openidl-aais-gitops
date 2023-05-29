@@ -1,0 +1,3 @@
+---
+aws_conf_profile: baf-role
+aws_conf_user: baf-user
