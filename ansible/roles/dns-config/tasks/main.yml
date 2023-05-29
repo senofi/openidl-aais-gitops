@@ -15,7 +15,6 @@
 
 - set_fact:
     subdomain: "{{resource_domain}}"
-  when: not zone_exists.stdout
 
 - name: "Create hosted zone"
   include_tasks: create-zone.yml
