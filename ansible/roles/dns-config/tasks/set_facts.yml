@@ -1,6 +1,7 @@
 ---
 - name: "Get {{main_domain}} DNS info"
   shell: |
+    export AWS_PROFILE={{aws_conf_profile}}
     aws route53 list-hosted-zones | jq -c '.[][] | select( .Name == "{{main_domain}}.")'
   register: root_zone_info
 

@@ -9,6 +9,7 @@
 
 - name: "Get ELB tags - {{subdomain}}"
   shell: |
+    export AWS_PROFILE={{aws_conf_profile}}
     aws elbv2  describe-load-balancers | \
       jq -r .[][].LoadBalancerArn | \
       while read lbarn; do 
@@ -23,6 +24,7 @@
 
 - name: "Get ELB info - {{subdomain}}-cluster"
   shell: |
+    export AWS_PROFILE={{aws_conf_profile}}
     aws elbv2  describe-load-balancers | jq -c '.[][] | select( .LoadBalancerArn == "{{elb_tags.ResourceArn}}")'
   register: elb_info
   when: elb_tags_info.stdout

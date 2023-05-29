@@ -60,6 +60,7 @@
 
 - name: "create A records in hosted zone {{subdomain}}"
   shell: |
+    export AWS_PROFILE={{aws_conf_profile}}
     aws route53 change-resource-record-sets \
       --hosted-zone-id {{hosted_zone.Id | replace("/hostedzone/", "", 1)}} \
       --change-batch file://arecord.json
