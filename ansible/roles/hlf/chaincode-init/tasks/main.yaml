@@ -144,10 +144,23 @@
 
 
 - debug:
-    msg: "Endorsers string {{ endorsers_string }}"
+    msg: "endorsers_string  {{ endorsers_string }}"
 
 - debug:
-    msg: "tlsRootCertFiles string {{ tlsRootCertFiles }}"
+    msg: "tls_root_cert_string  {{ tls_root_cert_string }}"
+
+
+- name: Discover ordering service endpoint for channel {{ channel_id }} and peer endpoint {{peer_endpoint}}
+  shell: >
+    discover --peerTLSCA {{config_folder}}/{{msp_id}}/tls_ca_root_cert.cert --userKey {{config_folder}}/{{msp_id}}/msp_admin_key.pem --userCert {{config_folder}}/{{msp_id}}/msp_admin.cert --MSP {{msp_id}} config --channel {{ channel_id }}  --server {{peer_endpoint}}
+  register: channelConfigOut
+
+- set_fact:
+    channel_config: "{{channelConfigOut.stdout | from_json}}"
+
+- set_fact:
+    orderer_endpoint: "{{channel_config.orderers.OrdererOrg.endpoint[0]}}"
+
 
 - debug:
     msg: "peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} -o {{orderer_endpoint}} -C {{channel_id}} -n {{chaincode_id}} --isInit -c '{\"Args\":[\"invoke\",\"a\",\"b\",\"10\"]}'"
