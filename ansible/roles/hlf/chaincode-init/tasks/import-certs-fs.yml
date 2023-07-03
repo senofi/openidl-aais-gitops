@@ -1,10 +1,9 @@
 - name: "Get the organization"
   ibm.blockchain_platform.organization_info:
-    api_endpoint: "{{ api_endpoint }}"
-    api_authtype: "{{ api_authtype }}"
-    api_key: "{{ api_key }}"
-    api_secret: "{{ api_secret | default(omit) }}"
-    api_token_endpoint: "{{ api_token_endpoint | default(omit) }}"
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
     name: "{{ msp_peer.MSPID }}"
   register: result
 
