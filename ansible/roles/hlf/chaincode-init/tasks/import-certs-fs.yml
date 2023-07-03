@@ -13,9 +13,9 @@
     msg: "Organization {{ msp_peer.MSPID }} not found in console"
   when: not result
 
-- name: "Creates directory {{config_folder}}/{{msp_peer.MSPID}}/{{msp_peer.MSPID}}_tls_ca_root.pem"
+- name: "Creates directory {{config_folder}}/{{msp_peer.MSPID}}"
   file:
-    path: "{{config_folder}}/{{msp_peer.MSPID}}/{{msp_peer.MSPID}}_tls_ca_root.pem"
+    path: "{{config_folder}}/{{msp_peer.MSPID}}"
     state: directory
 
 # Store the MSP CA TLS certs in a file
