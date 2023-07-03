@@ -13,12 +13,12 @@
     state: directory
 
 - set_fact:
-    fabric_config: "{{config_folder}}/{{msp_id}}/config"
+    fabric_config: "{{ fabric_tools_home_folder }}/config"
 
-- name: "Creates directory {{fabric_config}}"
-  file:
-    path: "{{fabric_config}}"
-    state: directory
+# - name: "Creates directory {{fabric_config}}"
+#   file:
+#     path: "{{fabric_config}}"
+#     state: directory
 
 - set_fact:
     msp_path: "{{config_folder}}/{{msp_id}}/msp"
