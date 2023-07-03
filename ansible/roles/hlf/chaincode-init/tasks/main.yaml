@@ -118,7 +118,7 @@
     msg: "tlsRootCertFiles string {{ tlsRootCertFiles }}"
 
 - debug:
-    msg: "peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} -o {{orderer_endpoint}} -C {{channel_id}} -n {{chaincode_id}} --isInit -c '{"Args":["invoke","a","b","10"]}'"
+    msg: "peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} -o {{orderer_endpoint}} -C {{channel_id}} -n {{chaincode_id}} --isInit -c '{\"Args\":[\"invoke\",\"a\",\"b\",\"10\"]}'"
 
 # ####### Fetch the orderer endpoint for channel {{channel_id}}
 # - name: "Fetch channel {{ channel_id }} info from console"
