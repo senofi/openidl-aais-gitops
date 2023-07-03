@@ -157,9 +157,11 @@
 
 - set_fact:
     channel_config: "{{channelConfigOut.stdout | from_json}}"
-
 - set_fact:
-    orderer_endpoint: "{{channel_config.orderers.OrdererOrg.endpoint[0]}}"
+    ord_dict: "{{channel_config.orderers | dict2items}}"
+    
+- set_fact:
+    orderer_endpoint: "{{ ord_dict.value.endpoint[0]}}"
 
 
 - debug:
