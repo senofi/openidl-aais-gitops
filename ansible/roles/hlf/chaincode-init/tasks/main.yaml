@@ -84,6 +84,9 @@
 - set_fact:
     discovery_endorsers: "{{endorsersOutput.stdout | from_json}}"
 
+- debug:
+    msg: "Discovered  string {{ discovery_endorsers[0].Layouts[0].quantities_by_group }}"
+
 - set_fact:
     endorsers_string: ""
 - set_fact:
@@ -92,8 +95,8 @@
 - include: collect-endorsers.yml
     group_quantity="{{group.value}}"
     group_id="{{group.key}}"
-    groups="{{discovery_endorsers.EndorsersByGroups}}"
-  loop: "{{ discovery_endorsers.Layouts[0].quantities_by_group | dict2items }}"
+    groups="{{discovery_endorsers[0].EndorsersByGroups}}"
+  loop: "{{ discovery_endorsers[0].Layouts[0].quantities_by_group | dict2items }}"
   loop_control:
     loop_var: group
 
