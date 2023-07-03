@@ -95,7 +95,7 @@
 - include: collect-endorsers.yml
     group_quantity="{{group.value}}"
     group_id="{{group.key}}"
-    groups="{{discovery_endorsers[0].EndorsersByGroups}}"
+    egroups="{{discovery_endorsers[0].EndorsersByGroups}}"
   loop: "{{ discovery_endorsers[0].Layouts[0].quantities_by_group | dict2items }}"
   loop_control:
     loop_var: group
