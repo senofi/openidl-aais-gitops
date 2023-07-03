@@ -78,10 +78,7 @@
 #  ##### Extract the endorsing peers requried for chaincode invoke, store the root TLS CA certs on the FS #####
 - name: Discover endorsers for chaincode {{chaincode_id}} on channel {{ channel_id }} with MSP {{msp_id}} and peer {{peer_endpoint}}
   shell: >
-    discover --peerTLSCA {{config_folder}}/{{msp_id}}/tls_ca_root_cert.cert --userKey {{config_folder}}/{{msp_id}}/msp_admin_key.pem 
-    --userCert {{config_folder}}/{{msp_id}}/msp_admin.cert --MSP {{msp_id}} 
-     endorsers 
-    --channel {{ channel_id }}  --server {{peer_endpoint}} --chaincode {{chaincode_id}}
+    discover --peerTLSCA {{config_folder}}/{{msp_id}}/tls_ca_root_cert.cert --userKey {{config_folder}}/{{msp_id}}/msp_admin_key.pem --userCert {{config_folder}}/{{msp_id}}/msp_admin.cert --MSP {{msp_id}} endorsers --channel {{ channel_id }}  --server {{peer_endpoint}} --chaincode {{chaincode_id}}
   register: endorsersOutput
 
 - set_fact:
