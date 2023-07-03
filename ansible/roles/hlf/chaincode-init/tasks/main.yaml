@@ -61,7 +61,7 @@
 - name: "Fail if peer not found"
   fail:
     msg: "Peer {{ console_peer }} not found in console {{peer_info}}"
-  when: peer_info.api_url is not defined or not peer_info.api_url
+  when: peer_info.peer.api_url is not defined or not peer_info.peer.api_url
 
 #  Peer endpoint
 - set_fact:

@@ -16,7 +16,7 @@
 
 # Store the MSP CA TLS certs in a file
 - copy:
-    content: "{{ result.tls_root_certs | b64decode }}"
+    content: "{{ result.organization.tls_root_certs | b64decode }}"
     dest: "{{config_folder}}/{{msp_id}}/{{msp_peer.MSPID}}_tls_ca_root.pem"
 
  
