@@ -31,22 +31,6 @@
 
 #  #########################
 
-- name: "Pull the org connection profile from console of MSP {{ msp_id }}"
-  no_log: "{{hide_sensitive_logs}}"
-  ibm.blockchain_platform.connection_profile:
-    api_endpoint: "{{ console_api_endpoint }}"
-    api_authtype: "{{ console_api_authtype }}"
-    api_key: "{{ console_username }}"
-    api_secret: "{{ console_password }}"
-    name: "{{ msp_id }} Gateway"
-    path: "{{config_folder}}/connection-profile.json"
-    organization: "{{ msp_id }}"
-    certificate_authority: "{{ cert_auth }}"
-    peers:
-      - "{{ console_peer }}"
-
-
-
 #  ##### Pull the MSP peer info from console, extract peer endpoint and TLS CA certs #####
 - name: "Pull {{ console_peer }} info from console for MSP {{ msp_id }}"
   no_log: "{{hide_sensitive_logs}}"
@@ -71,7 +55,6 @@
 - copy:
     content: "{{ peer_info.peer.tls_ca_root_cert | b64decode }}"
     dest: "{{config_folder}}/{{msp_id}}/tls_ca_root_cert.cert"
-
 #  #########################
 
 
@@ -100,55 +83,11 @@
   loop_control:
     loop_var: group
 
-
-# - name: Collect groups in a list
-#   set_fact:
-#     groups: "{{ groups | default([]) + [ group.value ] }}"
-#   loop: "{{ discovery_endorsers.EndorsersByGroups | dict2items }}"
-#   loop_control:
-#     loop_var: group
-
-# - name: Collect peers of the groups in a list
-#   set_fact:
-#     peers: "{{ peers | default([]) + [ group.value ] }}"
-#   loop: "{{ discovery_endorsers.EndorsersByGroups | dict2items }}"
-#   loop_control:
-#     loop_var: peer
-
-# - include: import-certs-fs.yml
-#     msp_peers="{{d_item.value}}"
-#   loop: "{{ discovery_endorsers.EndorsersByGroups | dict2items }}"
-#   loop_control:
-#     loop_var: d_item
-
-#  #########################  
-
-
-# ##### Assemble the list of endorsing peers and their root TLS CA certs
-# - set_fact:
-#     endorsers_string: ""
-# - set_fact:
-#     tls_root_cert_string: ""
-
-# - include: assemble-endorsers-and-certs.yml
-#     endorsement_peer="{{endorsement_peer_var}}"
-#     endorsers_string="{{endorsers_string}}"
-#     tls_root_cert_string="{{tls_root_cert_string}}"
-#     endorserPrefix="--peerAddresses "
-#     endorserTlsPrefix="--tlsRootCertFiles "
-#   loop: "{{ discovery_endorsers }}"
-#   loop_control:
-#     loop_var: endorsement_peer_var
-
-# #########################  
-
-
 - debug:
     msg: "endorsers_string  {{ endorsers_string }}"
 
 - debug:
     msg: "tls_root_cert_string  {{ tls_root_cert_string }}"
-
 
 - name: Discover ordering service endpoint for channel {{ channel_id }} and peer endpoint {{peer_endpoint}}
   shell: >
@@ -163,50 +102,16 @@
 - set_fact:
     orderer_endpoint: "{{ ord_dict[0].value.endpoint[0]}}"
 
-
-- debug:
-    msg: "peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} -o {{orderer_endpoint.host}}:{{orderer_endpoint.port}} -C {{channel_id}} -n {{chaincode_id}} --isInit -c '{\"Args\":[\"invoke\",\"a\",\"b\",\"10\"]}'"
-
-# ####### Fetch the orderer endpoint for channel {{channel_id}}
-# - name: "Fetch channel {{ channel_id }} info from console"
-#   no_log: "{{hide_sensitive_logs}}"
-#   ibm.blockchain_platform.peer_info:
-#     api_endpoint: "{{ console_api_endpoint }}"
-#     api_authtype: "{{ console_api_authtype }}"
-#     api_key: "{{ console_username }}"
-#     api_secret: "{{ console_password }}"
-#     name: "{{ console_peer }}"
-#   register: peer_info
-
-#  #########################  
+- set_fact:
+    orderer: "{{orderer_endpoint.host}}:{{orderer_endpoint.port}}"
+'{"function":"'${CC_INIT_FCN}'","Args":[]}'
+- set_fact:
+    invoke_params: "{{ {\"function\":\"'${CC_INIT_FCN}'\",\"Args\":['jojo']} }}"
 
 # Invoke the chaincode
-# - name: Commit the chaincode {{ cc_id }} version  {{cc_ver}} sequence {{ cc_sequence}} on channel {{ channel.channel }}
-#   shell: >
-#     peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} -o {{orderer_endpoint}} -C {{channel_id}} -n {{chaincode_id}} --isInit -c '{"Args":["invoke","a","b","10"]}'
-#   register: fetchOutput
+- name: Invoke the chaincode {{ chaincode_id }} on channel {{ channel_id }}
+  shell: >
+    peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} -o {{orderer}} -C {{channel_id}} -n {{chaincode_id}} --isInit -c '{{invoke_params}}'
+  register: invoke
 
 #  #########################  
-
-
-# - name: "Get the organization"
-#   ibm.blockchain_platform.organization_info:
-#     api_endpoint: "{{ api_endpoint }}"
-#     api_authtype: "{{ api_authtype }}"
-#     api_key: "{{ api_key }}"
-#     api_secret: "{{ api_secret | default(omit) }}"
-#     api_token_endpoint: "{{ api_token_endpoint | default(omit) }}"
-#     name: "{{ organization_name }}"
-#   register: result
-
-
-# - name: "Fail if the organization does not exist"
-#   fail:
-#     msg: "Organization {{ organization_name }} does not exist"
-#   when: not result.exists
-
-# - name: "Store the organization in a file"
-#   copy:
-#     content: "{{ result.organization | to_nice_json }}"
-#     dest: "{{ organization_name }}.json"
-
