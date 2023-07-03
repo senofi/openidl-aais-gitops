@@ -7,7 +7,10 @@
 #  3. Fetch the MSP definition of the ordering service
 #  4. Assemble the peer chaincode invoke command
 #  5. Invoke the chaincode init passing the supplied parameters
-
+- name: "Creates directory {{config_folder}}/{{msp_id}}"
+  file:
+    path: "{{config_folder}}/{{msp_id}}"
+    state: directory
 
 #  ##### Pull admin identity from wallet and store the cert and PK #####
 - name: "Pull admin identity from the wallet"
