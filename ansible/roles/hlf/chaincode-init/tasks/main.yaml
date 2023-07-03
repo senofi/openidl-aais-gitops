@@ -42,6 +42,14 @@
 - set_fact:
     admin_cert_path: "{{msp_path}}/signcerts"
 
+- set_fact:
+    admin_ca_certs: "{{msp_path}}/cacerts"
+
+- name: "Creates directory {{admin_ca_certs}}"
+  file:
+    path: "{{admin_ca_certs}}"
+    state: directory
+
 - name: "Creates directory {{admin_cert_path}}"
   file:
     path: "{{admin_cert_path}}"
@@ -60,7 +68,23 @@
     content: "{{ wallet_operator_identity_dict.private_key | b64decode }}"
     dest: "{{admin_key_path}}/msp_admin_key.pem"
 
+- name: "Get the organization"
+  ibm.blockchain_platform.organization_info:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    name: "{{ msp_id }}"
+  register: msp_result
 
+- name: "Fail if organization not found {{msp_id}}"
+  fail:
+    msg: "Organization {{ msp_id }} not found in console"
+  when: not msp_result
+
+- copy:
+    content: "{{ msp_result.organization.root_certs | b64decode }}"
+    dest: "{{admin_ca_certs}}/{{msp_id}}_ca_root.certs"
 
 #  #########################
 
