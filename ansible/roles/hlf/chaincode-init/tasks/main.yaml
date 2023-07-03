@@ -84,29 +84,58 @@
 - set_fact:
     discovery_endorsers: "{{endorsersOutput.stdout | from_json}}"
 
-- include: import-certs-fs.yml
-  loop: "{{ discovery_endorsers }}"
-  loop_control:
-    loop_var: msp_peer
-
-#  #########################  
-
-
-# ##### Assemble the list of endorsing peers and their root TLS CA certs
 - set_fact:
     endorsers_string: ""
 - set_fact:
     tls_root_cert_string: ""
 
-- include: assemble-endorsers-and-certs.yml
-    endorsement_peer="{{endorsement_peer_var}}"
-    endorsers_string="{{endorsers_string}}"
-    tls_root_cert_string="{{tls_root_cert_string}}"
-    endorserPrefix="--peerAddresses "
-    endorserTlsPrefix="--tlsRootCertFiles "
-  loop: "{{ discovery_endorsers }}"
+- include: collect-endorsers.yml
+    group_quantity="{{group.value}}"
+    group_id="{{group.key}}"
+    groups="{{discovery_endorsers.EndorsersByGroups}}"
+  loop: "{{ discovery_endorsers.Layouts[0].quantities_by_group | dict2items }}"
   loop_control:
-    loop_var: endorsement_peer_var
+    loop_var: group
+
+
+# - name: Collect groups in a list
+#   set_fact:
+#     groups: "{{ groups | default([]) + [ group.value ] }}"
+#   loop: "{{ discovery_endorsers.EndorsersByGroups | dict2items }}"
+#   loop_control:
+#     loop_var: group
+
+# - name: Collect peers of the groups in a list
+#   set_fact:
+#     peers: "{{ peers | default([]) + [ group.value ] }}"
+#   loop: "{{ discovery_endorsers.EndorsersByGroups | dict2items }}"
+#   loop_control:
+#     loop_var: peer
+
+# - include: import-certs-fs.yml
+#     msp_peers="{{d_item.value}}"
+#   loop: "{{ discovery_endorsers.EndorsersByGroups | dict2items }}"
+#   loop_control:
+#     loop_var: d_item
+
+#  #########################  
+
+
+# ##### Assemble the list of endorsing peers and their root TLS CA certs
+# - set_fact:
+#     endorsers_string: ""
+# - set_fact:
+#     tls_root_cert_string: ""
+
+# - include: assemble-endorsers-and-certs.yml
+#     endorsement_peer="{{endorsement_peer_var}}"
+#     endorsers_string="{{endorsers_string}}"
+#     tls_root_cert_string="{{tls_root_cert_string}}"
+#     endorserPrefix="--peerAddresses "
+#     endorserTlsPrefix="--tlsRootCertFiles "
+#   loop: "{{ discovery_endorsers }}"
+#   loop_control:
+#     loop_var: endorsement_peer_var
 
 # #########################  
 
