@@ -1,3 +1,6 @@
+- debug:
+    msg: "Endorsment groupss {{ groups }}"
+
 - set_fact: 
     endorsment_group: "{{ groups[group_id] }}"
 
