@@ -65,11 +65,11 @@
 
 #  Peer endpoint
 - set_fact:
-    peer_endpoint: "{{ peer_info.api_url.split('//')[1] }}"
+    peer_endpoint: "{{ peer_info.peer.api_url.split('//')[1] }}"
 
 # store the MSP CA TLS certs into a file
 - copy:
-    content: "{{ peer_info.tls_ca_root_cert | b64decode }}"
+    content: "{{ peer_info.peer.tls_ca_root_cert | b64decode }}"
     dest: "{{config_folder}}/{{msp_id}}/tls_ca_root_cert.cert"
 
 #  #########################
