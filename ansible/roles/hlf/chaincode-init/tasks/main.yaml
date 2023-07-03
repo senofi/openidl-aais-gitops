@@ -37,6 +37,15 @@
     wallet_path: "{{ msp_admin_id }}"
 
 - set_fact:
+    admin_certs: "{{msp_path}}/admincerts"
+
+- name: "Creates directory {{admin_certs}}"
+  file:
+    path: "{{admin_certs}}"
+    state: directory
+
+
+- set_fact:
     admin_key_path: "{{msp_path}}/keystore"
 
 - set_fact:
@@ -86,6 +95,9 @@
     content: "{{ msp_result.organization.root_certs | b64decode }}"
     dest: "{{admin_ca_certs}}/{{msp_id}}_ca_root.certs"
 
+- copy:
+    content: "{{ msp_result.organization.admins | b64decode }}"
+    dest: "{{admin_certs}}/{{msp_id}}_admin.certs"
 #  #########################
 
 #  ##### Pull the MSP peer info from console, extract peer endpoint and TLS CA certs #####
