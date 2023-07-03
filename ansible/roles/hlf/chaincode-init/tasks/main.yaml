@@ -104,9 +104,9 @@
 
 - set_fact:
     orderer: "{{orderer_endpoint.host}}:{{orderer_endpoint.port}}"
-'{"function":"'${CC_INIT_FCN}'","Args":[]}'
+
 - set_fact:
-    invoke_params: "{{ {\"function\":\"'${CC_INIT_FCN}'\",\"Args\":['jojo']} }}"
+    invoke_params: "{{ {\"function\":\"'Init'\",\"Args\":['jojo']} }}"
 
 # Invoke the chaincode
 - name: Invoke the chaincode {{ chaincode_id }} on channel {{ channel_id }}
