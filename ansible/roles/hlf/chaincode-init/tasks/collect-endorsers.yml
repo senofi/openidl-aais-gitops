@@ -8,7 +8,7 @@
     msg: "Endorsment group {{ endorsment_group }}"
 
 - include: import-certs-fs.yml
-    msp_peers="{{endorsment_peer}}"
+    msp_peer="{{endorsment_peer}}"
   loop: "{{ endorsment_group }}"
   loop_control:
     loop_var: endorsment_peer
