@@ -13,6 +13,14 @@
     state: directory
 
 - set_fact:
+    fabric_config: "{{config_folder}}/{{msp_id}}/config"
+
+- name: "Creates directory {{fabric_config}}"
+  file:
+    path: "{{fabric_config}}"
+    state: directory
+
+- set_fact:
     msp_path: "{{config_folder}}/{{msp_id}}/msp"
 
 - name: "Creates directory {{msp_path}}"
@@ -151,7 +159,7 @@
     CORE_PEER_LOCALMSPID: "{{msp_id}}"
     CORE_PEER_TLS_ENABLED: "true"
     CA_ORD_FILE: "{{config_folder}}/{{msp_id}}/ord_tls_root_cert.cert"
-    # FABRIC_CFG_PATH: "{{ fab_home_folder }}/current/config"
+    FABRIC_CFG_PATH: "{{fabric_config}}"
     # CORE_PEER_TLS_CERT_FILE: "{{ local_pki_folder }}/{{ domain }}/users/peerAdmin/tls/cert.crt"
     # CORE_PEER_TLS_KEY_FILE: "{{ local_pki_folder }}/{{ domain }}/users/peerAdmin/tls/key.key"
     # CORE_PEER_TLS_ROOTCERT_FILE: "{{ local_pki_folder }}/{{ domain }}/users/peerAdmin/tls/ca.crt"
