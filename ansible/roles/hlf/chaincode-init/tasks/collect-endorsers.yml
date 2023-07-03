@@ -1,5 +1,5 @@
 - set_fact: 
-    endorsment_group: "{{ groups.[group_id] }}"
+    endorsment_group: "{{ groups[group_id] }}"
 
 - debug:
     msg: "Endorsment group {{ endorsment_group }}"
