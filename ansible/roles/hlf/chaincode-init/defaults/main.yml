@@ -1,0 +1,9 @@
+ca_admin_id: "{{ msp_id }}-ca-admin"
+
+
+
+msp_admin_id: "{{ msp_id }}-msp-admin"
+config_folder: "/tmp/openidl-code/{{ env_id }}-config"
+cert_auth: "{{msp_id}}"
+console_api_authtype: "basic"
+hide_sensitive_logs: true

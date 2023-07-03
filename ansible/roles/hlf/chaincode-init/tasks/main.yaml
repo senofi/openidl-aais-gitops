@@ -1,0 +1,165 @@
+
+---
+
+
+#  1. Use discovery service to collect all endorsing peers and their MSP ids
+#  2. Fetch the MSP definition for each of the endoring MSPs in order to extract the MSP root TLS CA certs
+#  3. Fetch the MSP definition of the ordering service
+#  4. Assemble the peer chaincode invoke command
+#  5. Invoke the chaincode init passing the supplied parameters
+
+
+#  ##### Pull admin identity from wallet and store the cert and PK #####
+- name: "Pull admin identity from the wallet"
+  include_role:
+    name: wallet
+  vars:
+    wallet_ops: "get"
+    wallet_path: "{{ msp_admin_id }}"
+
+
+- copy:
+    content: "{{ wallet_operator_identity_dict.cert | b64decode }}"
+    dest: "{{config_folder}}/{{msp_id}}/msp_admin.cert"
+
+- copy:
+    content: "{{ wallet_operator_identity_dict.private_key | b64decode }}"
+    dest: "{{config_folder}}/{{msp_id}}/msp_admin_key.pem"
+
+#  #########################
+
+- name: "Pull the org connection profile from console of MSP {{ msp_id }}"
+  no_log: "{{hide_sensitive_logs}}"
+  ibm.blockchain_platform.connection_profile:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    name: "{{ msp_id }} Gateway"
+    path: "{{config_folder}}/connection-profile.json"
+    organization: "{{ msp_id }}"
+    certificate_authority: "{{ cert_auth }}"
+    peers:
+      - "{{ console_peer }}"
+
+
+
+#  ##### Pull the MSP peer info from console, extract peer endpoint and TLS CA certs #####
+- name: "Pull {{ console_peer }} info from console for MSP {{ msp_id }}"
+  no_log: "{{hide_sensitive_logs}}"
+  ibm.blockchain_platform.peer_info:
+    api_endpoint: "{{ console_api_endpoint }}"
+    api_authtype: "{{ console_api_authtype }}"
+    api_key: "{{ console_username }}"
+    api_secret: "{{ console_password }}"
+    name: "{{ console_peer }}"
+  register: peer_info
+
+- name: "Fail if peer not found"
+  fail:
+    msg: "Peer {{ console_peer }} not found in console"
+  when: peer_info.api_url is not defined or not peer_info.api_url
+
+#  Peer endpoint
+- set_fact:
+  peer_endpoint: {{ peer_info.api_url.split("//")[1] }}
+
+# store the MSP CA TLS certs into a file
+- copy:
+    content: "{{ peer_info.tls_ca_root_cert | b64decode }}"
+    dest: "{{config_folder}}/{{msp_id}}/tls_ca_root_cert.cert"
+
+#  #########################
+
+
+#  ##### Extract the endorsing peers requried for chaincode invoke, store the root TLS CA certs on the FS #####
+- name: Discover endorsers for chaincode {{chaincode_id}} on channel {{ channel_id }} with MSP {{msp_id}} and peer {{peer_endpoint}}
+  shell: >
+    discover --peerTLSCA {{config_folder}}/{{msp_id}}/tls_ca_root_cert.cert --userKey {{config_folder}}/{{msp_id}}/msp_admin_key.pem 
+    --userCert {{config_folder}}/{{msp_id}}/msp_admin.cert --MSP {{msp_id}} 
+     endorsers 
+    --channel {{ channel_id }}  --server {{peer_endpoint}} --chaincode {{chaincode_id}}
+  register: endorsersOutput
+
+- set_fact:
+    discovery_endorsers: "{{endorsersOutput.stdout | from_json}}"
+
+- include: import-certs-fs.yml
+  loop: "{{ discovery_endorsers }}"
+  loop_control:
+    loop_var: msp_peer
+
+#  #########################  
+
+
+# ##### Assemble the list of endorsing peers and their root TLS CA certs
+- set_fact:
+    endorsers_string: ""
+- set_fact:
+    tls_root_cert_string: ""
+
+- include: assemble-endorsers-and-certs.yml
+    endorsement_peer="{{endorsement_peer_var}}"
+    endorsers_string="{{endorsers_string}}"
+    tls_root_cert_string="{{tls_root_cert_string}}"
+    endorserPrefix="--peerAddresses "
+    endorserTlsPrefix="--tlsRootCertFiles "
+  loop: "{{ discovery_endorsers }}"
+  loop_control:
+    loop_var: endorsement_peer_var
+
+# #########################  
+
+
+- debug:
+    msg: "Endorsers string {{ endorsers_string }}"
+
+- debug:
+    msg: "tlsRootCertFiles string {{ tlsRootCertFiles }}"
+
+- debug:
+    msg: "peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} -o {{orderer_endpoint}} -C {{channel_id}} -n {{chaincode_id}} --isInit -c '{"Args":["invoke","a","b","10"]}'"
+
+# ####### Fetch the orderer endpoint for channel {{channel_id}}
+# - name: "Fetch channel {{ channel_id }} info from console"
+#   no_log: "{{hide_sensitive_logs}}"
+#   ibm.blockchain_platform.peer_info:
+#     api_endpoint: "{{ console_api_endpoint }}"
+#     api_authtype: "{{ console_api_authtype }}"
+#     api_key: "{{ console_username }}"
+#     api_secret: "{{ console_password }}"
+#     name: "{{ console_peer }}"
+#   register: peer_info
+
+#  #########################  
+
+# Invoke the chaincode
+# - name: Commit the chaincode {{ cc_id }} version  {{cc_ver}} sequence {{ cc_sequence}} on channel {{ channel.channel }}
+#   shell: >
+#     peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} -o {{orderer_endpoint}} -C {{channel_id}} -n {{chaincode_id}} --isInit -c '{"Args":["invoke","a","b","10"]}'
+#   register: fetchOutput
+
+#  #########################  
+
+
+# - name: "Get the organization"
+#   ibm.blockchain_platform.organization_info:
+#     api_endpoint: "{{ api_endpoint }}"
+#     api_authtype: "{{ api_authtype }}"
+#     api_key: "{{ api_key }}"
+#     api_secret: "{{ api_secret | default(omit) }}"
+#     api_token_endpoint: "{{ api_token_endpoint | default(omit) }}"
+#     name: "{{ organization_name }}"
+#   register: result
+
+
+# - name: "Fail if the organization does not exist"
+#   fail:
+#     msg: "Organization {{ organization_name }} does not exist"
+#   when: not result.exists
+
+# - name: "Store the organization in a file"
+#   copy:
+#     content: "{{ result.organization | to_nice_json }}"
+#     dest: "{{ organization_name }}.json"
+
