@@ -13,7 +13,7 @@
   loop_control:
     loop_var: endorsment_peer
     index_var: indx
-  when: group_quantity > 0 and indx < group_quantity
+  when: group_quantity | int > 0 and indx < group_quantity | int
 
 
 - include: assemble-endorsers-and-certs.yml
@@ -26,4 +26,4 @@
   loop_control:
     loop_var: endorsement_peer_var
     index_var: indx
-  when: group_quantity > 0 and indx < group_quantity
+  when: group_quantity | int > 0 and indx < group_quantity | int
