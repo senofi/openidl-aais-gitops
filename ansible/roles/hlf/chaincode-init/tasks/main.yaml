@@ -17,7 +17,7 @@
 
 - name: "Creates directory {{msp_path}}"
   file:
-    path: "msp_path"
+    path: "{{msp_path}}"
     state: directory
 
 #  ##### Pull admin identity from wallet and store the cert and PK #####
@@ -36,13 +36,12 @@
 
 - name: "Creates directory {{admin_cert_path}}"
   file:
-    path: "admin_cert_path"
+    path: "{{admin_cert_path}}"
     state: directory
-
 
 - name: "Creates directory {{admin_key_path}}"
   file:
-    path: "admin_key_path"
+    path: "{{admin_key_path}}"
     state: directory
 
 - copy:
