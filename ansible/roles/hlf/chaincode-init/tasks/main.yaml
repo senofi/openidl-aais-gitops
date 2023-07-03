@@ -93,7 +93,7 @@
     tls_root_cert_string: ""
 
 - include: collect-endorsers.yml
-    group_quantity="{{group.value}}"
+    group_quantity="{{group.value | int }}"
     group_id="{{group.key}}"
     egroups="{{discovery_endorsers[0].EndorsersByGroups}}"
   loop: "{{ discovery_endorsers[0].Layouts[0].quantities_by_group | dict2items }}"
