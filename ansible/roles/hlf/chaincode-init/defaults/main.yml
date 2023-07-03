@@ -1,7 +1,4 @@
-ca_admin_id: "{{ msp_id }}-ca-admin"
-
-
-
+fabric_tools_home_folder: "/srv/nfs/fabric"
 msp_admin_id: "{{ msp_id }}-msp-admin"
 config_folder: "/tmp/openidl-code/{{ env_id }}-config"
 cert_auth: "{{msp_id}}"
