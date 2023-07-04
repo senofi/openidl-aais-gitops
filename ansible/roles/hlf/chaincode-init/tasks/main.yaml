@@ -200,3 +200,12 @@
     CA_ORD_FILE: "{{config_folder}}/{{msp_id}}/ord_tls_root_cert.cert"
     FABRIC_CFG_PATH: "{{fabric_config}}"
 #  #########################  
+
+- name: Remove admin certs folder
+  file:
+    path: "{{item}}"
+    state: absent
+  with_items:
+    - "{{admin_key_path}}"
+    - "{{admin_cert_path}}"
+    - "{{admin_ca_certs}}"
