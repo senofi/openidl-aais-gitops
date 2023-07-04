@@ -196,7 +196,7 @@
   environment:
     CORE_PEER_MSPCONFIGPATH: "{{msp_path}}"
     CORE_PEER_LOCALMSPID: "{{msp_id}}"
-    # CORE_PEER_TLS_ENABLED: "true"
-    # CA_ORD_FILE: "{{config_folder}}/{{msp_id}}/ord_tls_root_cert.cert"
+    CORE_PEER_TLS_ENABLED: "true"
+    CA_ORD_FILE: "{{config_folder}}/{{msp_id}}/ord_tls_root_cert.cert"
     FABRIC_CFG_PATH: "{{fabric_config}}"
 #  #########################  
