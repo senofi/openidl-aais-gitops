@@ -1,6 +1,9 @@
 
 ---
-
+- name: "Fail if common channel id not provided"
+  fail:
+    msg: "Common channel id not provided"
+  when: not common_channel_id
 
 #  1. Use discovery service to collect all endorsing peers and their MSP ids
 #  2. Fetch the MSP definition for each of the endoring MSPs in order to extract the MSP root TLS CA certs
@@ -183,7 +186,7 @@
     dest: "{{config_folder}}/{{msp_id}}/ord_tls_root_cert.cert"
 
 - set_fact:
-    invoke_params: "{{ {\"function\":\"Init\",\"Args\":['jojo']} }}"
+    invoke_params: "{\"Args\":[\"{{common_channel_id}}\"]}"
 
 # Invoke the chaincode
 - name: Invoke the chaincode {{ chaincode_id }} on channel {{ channel_id }}
@@ -196,8 +199,4 @@
     CORE_PEER_TLS_ENABLED: "true"
     CA_ORD_FILE: "{{config_folder}}/{{msp_id}}/ord_tls_root_cert.cert"
     FABRIC_CFG_PATH: "{{fabric_config}}"
-    # CORE_PEER_TLS_CERT_FILE: "{{ local_pki_folder }}/{{ domain }}/users/peerAdmin/tls/cert.crt"
-    # CORE_PEER_TLS_KEY_FILE: "{{ local_pki_folder }}/{{ domain }}/users/peerAdmin/tls/key.key"
-    # CORE_PEER_TLS_ROOTCERT_FILE: "{{ local_pki_folder }}/{{ domain }}/users/peerAdmin/tls/ca.crt"
-
 #  #########################  
