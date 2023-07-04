@@ -3,7 +3,7 @@
 - name: "Fail if common channel id not provided"
   fail:
     msg: "Common channel id not provided"
-  when: not common_channel_id
+  when: common_channel_id is not defined or not common_channel_id
 
 #  1. Use discovery service to collect all endorsing peers and their MSP ids
 #  2. Fetch the MSP definition for each of the endoring MSPs in order to extract the MSP root TLS CA certs
