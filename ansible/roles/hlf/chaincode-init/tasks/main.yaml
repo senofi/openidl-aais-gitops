@@ -191,7 +191,7 @@
 # Invoke the chaincode
 - name: Invoke the chaincode {{ chaincode_id }} on channel {{ channel_id }}
   shell: >
-    peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} -o {{orderer}} -C {{channel_id}} -n {{chaincode_id}} --isInit -c '{\\"Args\\":[\\"{{common_channel_id}}\\"]}'
+    peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} -o {{orderer}} -C {{channel_id}} -n {{chaincode_id}} --isInit -c ' {"Args":["{{common_channel_id}}"]}'
   register: invoke
   environment:
     CORE_PEER_MSPCONFIGPATH: "{{msp_path}}"
