@@ -18,11 +18,6 @@
 - set_fact:
     fabric_config: "{{ fabric_tools_home_folder }}/config"
 
-# - name: "Creates directory {{fabric_config}}"
-#   file:
-#     path: "{{fabric_config}}"
-#     state: directory
-
 - set_fact:
     msp_path: "{{config_folder}}/{{msp_id}}/msp"
 
@@ -157,9 +152,6 @@
 
 - debug:
     msg: "endorsers_string  {{ endorsers_string }}"
-
-- debug:
-    msg: "tls_root_cert_string  {{ tls_root_cert_string }}"
 
 - name: Discover ordering service endpoint for channel {{ channel_id }} and peer endpoint {{peer_endpoint}}
   shell: >
