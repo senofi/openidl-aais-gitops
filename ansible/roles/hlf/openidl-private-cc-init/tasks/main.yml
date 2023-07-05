@@ -21,7 +21,7 @@
 
 
 - include_role:
-    name: chaincode-init
+    name: hlf/chaincode-init
   vars:
     target_chaincode_id: "{{cc_id}}"
     taget_channel_id: "{{target_chan_id}}"
