@@ -1,0 +1,28 @@
+- set_fact:
+    common_chan_id: "{{chan.name}}"
+  loop: "{{ fabric_channels }}"
+  loop_control:
+    loop_var: chan
+  when: chan.common == false
+
+- set_fact:
+    target_chan_id: "{{chan.name}}"
+  loop: "{{ fabric_channels }}"
+  loop_control:
+    loop_var: chan
+  when: chan.common == true
+
+- set_fact:
+    cc_id: "{{chan.chaincode.name}}"
+  loop: "{{ fabric_channels }}"
+  loop_control:
+    loop_var: chan
+  when: chan.common == false
+
+
+- include_role:
+    name: chaincode-init
+  vars:
+    target_chaincode_id: "{{cc_id}}"
+    taget_channel_id: "{{target_chan_id}}"
+    chaincode_init_parameter: "{{common_chan_id}}"

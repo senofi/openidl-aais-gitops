@@ -1,15 +1,25 @@
-
 ---
-- name: "Fail if common channel id not provided"
+- name: "Fail if init parameter is not provided"
   fail:
-    msg: "Common channel id not provided"
-  when: common_channel_id is not defined or not common_channel_id
+    msg: "Chaincode Init parameter not provided"
+  when: chaincode_init_parameter is not defined
+
+- name: "Fail if target channel id not provided"
+  fail:
+    msg: "Target channel id not provided"
+  when: target_channel_id is not defined or not target_channel_id
+
+- name: "Fail if target chaincode id not provided"
+  fail:
+    msg: "Target chaincode id id not provided"
+  when: target_chaincode_id is not defined or not target_chaincode_id
+
 
 #  1. Use discovery service to collect all endorsing peers and their MSP ids
 #  2. Fetch the MSP definition for each of the endoring MSPs in order to extract the MSP root TLS CA certs
-#  3. Fetch the MSP definition of the ordering service
-#  4. Assemble the peer chaincode invoke command
-#  5. Invoke the chaincode init passing the supplied parameters
+#  3. Fetch the ordering service endpoint from the channe;
+#  4. Assemble and execute the peer chaincode invoke command
+
 - name: "Creates directory {{config_folder}}/{{msp_id}}"
   file:
     path: "{{config_folder}}/{{msp_id}}"
@@ -126,9 +136,9 @@
 
 
 #  ##### Extract the endorsing peers requried for chaincode invoke, store the root TLS CA certs on the FS #####
-- name: Discover endorsers for chaincode {{chaincode_id}} on channel {{ channel_id }} with MSP {{msp_id}} and peer {{peer_endpoint}}
+- name: Discover endorsers for chaincode {{target_chaincode_id}} on channel {{ target_channel_id }} with MSP {{msp_id}} and peer {{peer_endpoint}}
   shell: >
-    discover --peerTLSCA {{config_folder}}/{{msp_id}}/tls_ca_root_cert.cert --userKey {{admin_key_path}}/msp_admin_key.pem --userCert {{admin_cert_path}}/msp_admin.cert --MSP {{msp_id}} endorsers --channel {{ channel_id }}  --server {{peer_endpoint}} --chaincode {{chaincode_id}}
+    discover --peerTLSCA {{config_folder}}/{{msp_id}}/tls_ca_root_cert.cert --userKey {{admin_key_path}}/msp_admin_key.pem --userCert {{admin_cert_path}}/msp_admin.cert --MSP {{msp_id}} endorsers --channel {{ target_channel_id }}  --server {{peer_endpoint}} --chaincode {{target_chaincode_id}}
   register: endorsersOutput
 
 - set_fact:
@@ -153,9 +163,9 @@
 - debug:
     msg: "endorsers_string  {{ endorsers_string }}"
 
-- name: Discover ordering service endpoint for channel {{ channel_id }} and peer endpoint {{peer_endpoint}}
+- name: Discover ordering service endpoint for channel {{ target_channel_id }} and peer endpoint {{peer_endpoint}}
   shell: >
-    discover --peerTLSCA {{config_folder}}/{{msp_id}}/tls_ca_root_cert.cert --userKey {{admin_key_path}}/msp_admin_key.pem  --userCert {{admin_cert_path}}/msp_admin.cert --MSP {{msp_id}} config --channel {{ channel_id }}  --server {{peer_endpoint}}
+    discover --peerTLSCA {{config_folder}}/{{msp_id}}/tls_ca_root_cert.cert --userKey {{admin_key_path}}/msp_admin_key.pem  --userCert {{admin_cert_path}}/msp_admin.cert --MSP {{msp_id}} config --channel {{ target_channel_id }}  --server {{peer_endpoint}}
   register: channelConfigOut
 
 - set_fact:
@@ -177,13 +187,10 @@
     content: "{{ ord_tls_root_cert | b64decode }}"
     dest: "{{config_folder}}/{{msp_id}}/ord_tls_root_cert.cert"
 
-- set_fact:
-    invoke_params: "{\"Args\":[\"{{common_channel_id}}\"]}"
-
 # Invoke the chaincode
-- name: Invoke the chaincode {{ chaincode_id }} on channel {{ channel_id }}
+- name: Invoke the chaincode {{ target_chaincode_id }} on channel {{ target_channel_id }}
   shell: >
-    peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} --cafile {{config_folder}}/{{msp_id}}/ord_tls_root_cert.cert --tls -o {{orderer}} -C {{channel_id}} -n {{chaincode_id}} --isInit -c '{"Args":["{{common_channel_id}}"]}'
+    peer chaincode invoke {{endorsers_string}} {{ tls_root_cert_string }} --cafile {{config_folder}}/{{msp_id}}/ord_tls_root_cert.cert --tls -o {{orderer}} -C {{target_channel_id}} -n {{target_chaincode_id}} --isInit -c '{"Args":["{{chaincode_init_parameter}}"]}'
   register: invoke
   environment:
     CORE_PEER_MSPCONFIGPATH: "{{msp_path}}"
