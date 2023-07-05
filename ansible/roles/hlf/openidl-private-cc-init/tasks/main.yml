@@ -45,4 +45,4 @@
   loop: "{{ fabric_channels }}"
   loop_control:
     loop_var: chan
-  when: init_on_channel_id is not defined chan.common == false
+  when: init_on_channel_id is not defined and chan.common == false
