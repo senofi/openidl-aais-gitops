@@ -36,7 +36,7 @@
   kubernetes.core.helm:
     chart_ref: hashicorp/vault
     chart_version: "{{ vault.vault_chart_version }}"
-    release_name: "{{ vault.name }}"
+    release_name: "test-vault-rel-name"
     release_state: present
     release_namespace: "test-vault"
     create_namespace: true
