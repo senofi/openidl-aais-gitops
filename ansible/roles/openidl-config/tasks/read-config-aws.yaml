@@ -60,7 +60,7 @@
   no_log: "{{hide_sensitive_logs}}"
   shell: |
     export AWS_PROFILE={{ default_aws_profile }}
-    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-kvs-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString | jq -r .organizations
+    /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-kvs-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString
   register: vault_config_secret
 
 - set_fact:
