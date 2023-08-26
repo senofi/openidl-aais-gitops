@@ -64,5 +64,5 @@
   register: vault_config_secret
 
 - set_fact:
-    no_log: "{{hide_sensitive_logs}}"
+  no_log: "{{hide_sensitive_logs}}"
     vault_config: "{{vault_config_secret.stdout | string }}"
