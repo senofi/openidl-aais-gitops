@@ -45,8 +45,8 @@
 
 - name: Generate configuration files
   template:
-    src: templates/{{ item }}.j2
-    dest: '{{config_folder}}/{{ item }}'
+    src: templates/{{ item.source }}.j2
+    dest: '{{config_folder}}/{{ item.dest }}'
     mode: 0755
   vars:
     organization_ids: "{{ organizations.stdout }}"
@@ -62,8 +62,8 @@
 
 - name: Generate configuration files
   template:
-    src: templates/{{ item }}.j2
-    dest: '{{config_folder}}/{{ item }}'
+    src: templates/{{ item.source }}.j2
+    dest: '{{config_folder}}/{{ item.dest }}'
     mode: 0755
   vars:
     organization_ids: "{{ organizations.stdout }}"
