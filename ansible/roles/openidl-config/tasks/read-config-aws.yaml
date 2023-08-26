@@ -63,6 +63,7 @@
     /usr/local/bin/aws secretsmanager get-secret-value --secret-id {{ env_id }}-kvs-vault --version-stage AWSCURRENT --region {{ aws_region }} | jq -r .SecretString
   register: vault_config_secret
 
-- set_fact:
+- name: Set vault config
   no_log: "{{hide_sensitive_logs}}"
+  set_fact:
     vault_config: "{{vault_config_secret.stdout | string }}"
