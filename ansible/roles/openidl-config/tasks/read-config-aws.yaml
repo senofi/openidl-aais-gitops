@@ -64,7 +64,7 @@
   register: vault_config_secret
 
 - set_fact:
-    vault_config: "{{vault_config_secret.stdout}}"
+    vault_config: "{{vault_config_secret.stdout}} | string"
 
 - debug:
     msg: "{{vault_config}}"
