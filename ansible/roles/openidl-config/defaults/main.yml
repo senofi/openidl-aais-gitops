@@ -66,6 +66,8 @@ app_config_files_list:
     dest: "local-vault-config.json"
   - source: "s3-bucket-config.json"
     dest: "s3-bucket-config.json"
+  - source: "ui-mappings-config.json"
+    dest: "ui-mappings-config.json"
   - source: "unique-identifiers-config.json"
     dest: "unique-identifiers-config.json"
   - source: "utilities-admin-config.json"
