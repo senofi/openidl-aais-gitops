@@ -11,7 +11,8 @@
     mode: 0755
 
 - name: "Pull openidl apps configs"
-  include_tasks: "read-config-{{ cloud_provider }}.yaml"
+  include_tasks: "read-config-{{ apps_config_reader_name }}.yaml"
+  when: apps_config_reader_name != ""
 
 - name: Create a connection profile
   no_log: "{{hide_sensitive_logs}}"
@@ -33,13 +34,13 @@
     dest: '{{config_folder}}/{{ item.dest }}'
     mode: 0755
   vars:
-    organization_ids: "{{ organizations.stdout }}"
-    aws_access_id: "{{ apps_user_access_id.stdout }}"
-    aws_access_secret_key: "{{ apps_user_secret_key.stdout }}"
-    aws_cognito_application_id: "{{ cognito_app_client_id.stdout }}"
-    aws_cognito_pool_id: "{{ cognito_user_pool_id.stdout }}"
-    mongo_user: "{{ mongodb_user.stdout }}"
-    mongo_user_token: "{{ mongodb_user_token.stdout }}"
+    organization_ids: "{{ organizations }}"
+    aws_access_id: "{{ apps_user_access_id }}"
+    aws_access_secret_key: "{{ apps_user_secret_key }}"
+    aws_cognito_application_id: "{{ cognito_app_client_id }}"
+    aws_cognito_pool_id: "{{ cognito_user_pool_id }}"
+    mongo_user: "{{ mongodb_user }}"
+    mongo_user_token: "{{ mongodb_user_token }}"
     s3_hds_bucket: "{{aws_s3_hds_bucket}}"
   with_items: "{{app_config_files_list}}"
 
@@ -49,13 +50,13 @@
     dest: '{{config_folder}}/{{ item.dest }}'
     mode: 0755
   vars:
-    organization_ids: "{{ organizations.stdout }}"
-    aws_access_id: "{{ apps_user_access_id.stdout }}"
-    aws_secret_key: "{{ apps_user_secret_key.stdout }}"
-    aws_cognito_application_id: "{{ cognito_app_client_id.stdout }}"
-    aws_cognito_pool_id: "{{ cognito_user_pool_id.stdout }}"
-    mongo_user: "{{ mongodb_user.stdout }}"
-    mongo_user_token: "{{ mongodb_user_token.stdout }}"
+    organization_ids: "{{ organizations }}"
+    aws_access_id: "{{ apps_user_access_id }}"
+    aws_secret_key: "{{ apps_user_secret_key }}"
+    aws_cognito_application_id: "{{ cognito_app_client_id }}"
+    aws_cognito_pool_id: "{{ cognito_user_pool_id }}"
+    mongo_user: "{{ mongodb_user }}"
+    mongo_user_token: "{{ mongodb_user_token }}"
     s3_hds_bucket: "{{aws_s3_hds_bucket}}"
   with_items: "{{app_config_files_analytics_list}}"
   when: application_node_type == "analytics"
@@ -66,13 +67,13 @@
     dest: '{{config_folder}}/{{ item.dest }}'
     mode: 0755
   vars:
-    organization_ids: "{{ organizations.stdout }}"
-    aws_access_id: "{{ apps_user_access_id.stdout }}"
-    aws_access_secret_key: "{{ apps_user_secret_key.stdout }}"
-    aws_cognito_application_id: "{{ cognito_app_client_id.stdout }}"
-    aws_cognito_pool_id: "{{ cognito_user_pool_id.stdout }}"
-    mongo_user: "{{ mongodb_user.stdout }}"
-    mongo_user_token: "{{ mongodb_user_token.stdout }}"
+    organization_ids: "{{ organizations }}"
+    aws_access_id: "{{ apps_user_access_id }}"
+    aws_access_secret_key: "{{ apps_user_secret_key }}"
+    aws_cognito_application_id: "{{ cognito_app_client_id }}"
+    aws_cognito_pool_id: "{{ cognito_user_pool_id }}"
+    mongo_user: "{{ mongodb_user }}"
+    mongo_user_token: "{{ mongodb_user_token }}"
     s3_hds_bucket: "{{aws_s3_hds_bucket}}"
   with_items: "{{app_config_files_carrier_list}}"
   when: application_node_type != "analytics"

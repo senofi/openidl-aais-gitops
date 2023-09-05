@@ -9,6 +9,17 @@ config_folder: "/tmp/openidl-code/{{ env_id }}-config"
 aws_iam_user_prefix: "{{env_id}}"
 aws_s3_hds_bucket: "{{ org_id }}-{{ env_id }}-openidl-hdsdatastore"
 
+apps_config_reader_name: "{{ cloud_provider }}"
+
+organizations: ""
+apps_user_access_id: ""
+apps_user_secret_key: ""
+cognito_app_client_id: ""
+cognito_user_pool_id: ""
+mongodb_user: ""
+mongodb_user_token: ""
+vault_config: ""
+
 network:
   org_name: "{{org_id}}"
   msp_id: "{{msp_id}}"
