@@ -20,6 +20,12 @@ mongodb_user: ""
 mongodb_user_token: ""
 vault_config: ""
 
+oauth2_client_id: ""
+oauth2_authorization_url: ""
+oauth2_issuer_url: ""
+
+app_admin_user_id: ""
+
 network:
   org_name: "{{org_id}}"
   msp_id: "{{msp_id}}"
@@ -69,6 +75,8 @@ app_config_files_list:
     dest: "local-cognito-admin-config.json"
   - source: "local-cognito-config.json"
     dest: "local-cognito-config.json"
+  - source: "local-auth-config.json"
+    dest: "local-auth-config.json"
   - source: "local-db-config.json"
     dest: "local-db-config.json"
   - source: "kvs-config-{{app_config_pki_storage}}.json"
