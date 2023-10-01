@@ -3,3 +3,4 @@ mongodb:
 
 aws_region: "{{region}}"
 aws_iam_user_prefix: "{{env_id}}"
+mongodb_access_store_type: "aws-sm"
