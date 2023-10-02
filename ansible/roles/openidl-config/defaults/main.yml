@@ -38,8 +38,7 @@ support:
   toAddresses:
     - "{{contact_email}}"
 
-mongodb:
-  namespace: "mongodb-{{org_id}}"
+mongodb_namespace: "mongodb-{{org_id}}"
 
 # Must be defined as a secure credential
 hds_host: ""

@@ -14,7 +14,7 @@
     wait: true
     release_name: "{{ org_id }}"
     release_state: absent
-    release_namespace: "{{ mongodb.namespace }}"
+    release_namespace: "{{ mongodb_namespace }}"
 
   register: mongodb
 
