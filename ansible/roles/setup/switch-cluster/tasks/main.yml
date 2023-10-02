@@ -6,3 +6,4 @@
 
 - name: Switch to k8s cluster {{ switch_to_cluster }}
   include_tasks: "switch-cluster-{{ cloud_deployment }}.yml"
+  when: cloud_deployment != ""
