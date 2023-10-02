@@ -12,7 +12,6 @@
         name: setup/blockchain-platform
       vars:
         blockchain_collection_install: true
-        mongodb_access_store_type
     - set_fact:
         apps_config_reader_name: "k8s-secret"
     - include_role:
