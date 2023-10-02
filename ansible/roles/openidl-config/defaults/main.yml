@@ -26,8 +26,6 @@ oauth2_issuer_url: ""
 
 app_admin_user_id: ""
 
-mongodb_namespace: "mongodb-{{org_id}}"
-
 network:
   org_name: "{{org_id}}"
   msp_id: "{{msp_id}}"
