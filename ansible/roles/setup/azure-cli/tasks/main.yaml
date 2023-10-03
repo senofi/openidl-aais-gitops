@@ -23,5 +23,5 @@
     become: true
     shell: |
       cd "{{ tmp_directory.path }}"
-      curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      curl -L https://aka.ms/InstallAzureCli | bash
 
