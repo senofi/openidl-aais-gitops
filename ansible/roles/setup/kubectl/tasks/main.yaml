@@ -46,7 +46,7 @@
       state: file
 
   - name: Test kubectl installation
-    command: "{{ kubectl.bin_directory | default(default.bin_directory) }}/kubectl version --client --short"
+    command: "{{ kubectl.bin_directory | default(default.bin_directory) }}/kubectl version --client"
     changed_when: false
     tags:
       - molecule-idempotence-notest
