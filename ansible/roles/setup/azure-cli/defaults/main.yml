@@ -2,3 +2,7 @@
 
 default:
   bin_directory: "{{ bin_install_dir | default('/usr/local/bin') }}"  #Default to ~/bin install directory for binaries
+
+azure_cli:
+  bin_directory: "{{ bin_install_dir | default('~/bin') }}" # Default to ~/bin install directory for binaries
+  install_arch: "x86_64"  # Use aarch64 for Linux ARM
