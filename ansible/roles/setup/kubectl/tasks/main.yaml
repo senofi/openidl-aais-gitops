@@ -42,9 +42,8 @@
     become: true
     file:
       path: "{{ kubectl.bin_directory | default(default.bin_directory) }}/kubectl"
-      recurse: yes
       mode: '645'
-      state: directory
+      state: file
 
   - name: Test kubectl installation
     command: "{{ kubectl.bin_directory | default(default.bin_directory) }}/kubectl version --client --short"
