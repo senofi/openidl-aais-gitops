@@ -1,5 +1,6 @@
 ---
 - name: Create the YUM repository (RedHat)
+  become: true
   yum_repository:
     name: "{{ yum_repo_name }}"
     description: "{{ yum_repo_description }}"
@@ -9,6 +10,7 @@
     enabled: yes
 
 - name: Install the application package (RedHat)
+  become: true
   package:
     name: "{{ azure_package_name }}"
     state: present
