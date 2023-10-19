@@ -1,8 +1,8 @@
 ---
-- name: Fail if azure_aks_name not defined
+- name: Fail if switch_to_cluster not defined
   fail:
-    msg: azure_aks_name == ""
-  when: azure_aks_name == ""
+    msg: switch_to_cluster == ""
+  when: switch_to_cluster == ""
 
 - name: Login with Azure CLI using service principal
   shell: |
@@ -14,6 +14,6 @@
     
 - name: Get AKS credentials
   shell: |
-    az aks get-credentials --resource-group {{ azure_aks_rg }} --name {{ azure_aks_name }}
+    az aks get-credentials --resource-group {{ azure_aks_rg }} --name {{ switch_to_cluster }}
 
 
