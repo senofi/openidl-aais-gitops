@@ -1,0 +1,19 @@
+---
+- name: Fail if azure_aks_name not defined
+  fail:
+    msg: azure_aks_name == ""
+  when: azure_aks_name == ""
+
+- name: Login with Azure CLI using service principal
+  shell: |
+    az login --service-principal -u {{ azure_cli_user }} -p {{ azure_cli_pw }}  --tenant {{ azure_cli_tenant }}
+
+- name: Set Azure account subscription
+  shell: |
+    az account set --subscription {{ azure_cli_subscription }}
+    
+- name: Get AKS credentials
+  shell: |
+    az aks get-credentials --resource-group {{ azure_aks_rg }} --name {{ azure_aks_name }}
+
+
