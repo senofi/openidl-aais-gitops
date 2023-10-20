@@ -12,7 +12,7 @@
 - name: Create the APT repository (Debian)
   become: true
   apt_repository:
-    repo: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ansible_distribution_release}} main"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ {{ansible_distribution_release}} main"
     filename: "{{ azure_package_name }}"
     state: present
 
