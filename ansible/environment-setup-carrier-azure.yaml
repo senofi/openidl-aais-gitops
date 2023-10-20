@@ -8,33 +8,33 @@
     tasks:
     - include_role:
         name: "import-config-vars"
-    - include_role:
-        name: setup/hlf-fabric-tools
-    - include_role:
-        name: setup/common-packages
-      vars:
-        common_packages:
-          - git
-          - jq
-          - gcc
-          - python3-devel
-    - include_role:
-        name:  setup/kubectl
-      vars:
-        kubectl:
-          os: "{{ install_os }}"
-          arch: "{{ install_arch }}"
-          bin_directory: "{{ bin_install_dir }}"
-    - include_role:
-        name:  setup/helm
-      vars:
-        helm:
-          os: "{{ install_os }}"
-          arch: "{{ install_arch }}"
-          bin_directory: "{{ bin_install_dir }}"
+    # - include_role:
+    #     name: setup/hlf-fabric-tools
+    # - include_role:
+    #     name: setup/common-packages
+    #   vars:
+    #     common_packages:
+    #       - git
+    #       - jq
+    #       - gcc
+    #       - python3-devel
+    # - include_role:
+    #     name:  setup/kubectl
+    #   vars:
+    #     kubectl:
+    #       os: "{{ install_os }}"
+    #       arch: "{{ install_arch }}"
+    #       bin_directory: "{{ bin_install_dir }}"
+    # - include_role:
+    #     name:  setup/helm
+    #   vars:
+    #     helm:
+    #       os: "{{ install_os }}"
+    #       arch: "{{ install_arch }}"
+    #       bin_directory: "{{ bin_install_dir }}"
 
-    - include_role:
-        name:  setup/azure-cli
+    # - include_role:
+    #     name:  setup/azure-cli
 
     - include_role:
         name: setup/fabric
