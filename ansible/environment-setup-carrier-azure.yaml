@@ -17,7 +17,7 @@
           - git
           - jq
           - gcc
-          - python3-devel
+          - python3-dev
     - include_role:
         name:  setup/kubectl
       vars:
