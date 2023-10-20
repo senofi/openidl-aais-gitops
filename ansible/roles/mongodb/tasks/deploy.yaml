@@ -43,9 +43,9 @@
         password: "{{ mongodb_user_token }}"
         database: "{{ mongodb_database }}"
       persistence:
-        enabled: true
-        size: 20Gi
-        mountPath: "/bitnami/mongodb"
+        # enabled: true
+        # size: 20Gi
+        # mountPath: "/bitnami/mongodb"
         storageClass: "openidl-sc"
       serviceAccount:
         create: true
