@@ -14,14 +14,6 @@
       metadata:
         name: "{{ mongodb_namespace}}"
 
-# - name: mongodb Helm chart repo
-#   kubernetes.core.helm_repository:
-#     name: bitnami
-#     repo_url: oci://registry-1.docker.io/bitnamicharts/mongodb
-#   tags:
-#     - mongodb
-#     - mongodb-helm-repo
-
 - name: Install mongodb helm chart
   kubernetes.core.helm:
     chart_ref: oci://registry-1.docker.io/bitnamicharts/mongodb
@@ -35,7 +27,6 @@
     disable_hook: True
     release_values:
       architecture: replicaset
-      # useStatefulSet: true
       auth:
         enabled: true
         rootPassword: "{{ mongodb_root_token }}"
@@ -43,9 +34,6 @@
         password: "{{ mongodb_user_token }}"
         database: "{{ mongodb_database }}"
       persistence:
-        # enabled: true
-        # size: 20Gi
-        # mountPath: "/bitnami/mongodb"
         storageClass: "openidl-sc"
       serviceAccount:
         create: true
@@ -55,8 +43,6 @@
         service:
           type: ClusterIP
       replicaSetHostnames: true
-      # replicaCount: 3
-      # 
       tls:
         enabled: false
       readinessProbe:
