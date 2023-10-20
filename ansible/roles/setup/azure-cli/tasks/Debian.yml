@@ -17,6 +17,7 @@
     sudo tee /etc/apt/sources.list.d/azure-cli.list
 
 - name: Install the application package (Debian)
+  become: true
   apt:
     name: "{{ azure_package_name }}"
     update_cache: yes
