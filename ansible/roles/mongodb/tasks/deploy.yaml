@@ -14,17 +14,17 @@
       metadata:
         name: "{{ mongodb_namespace}}"
 
-- name: mongodb Helm chart repo
-  kubernetes.core.helm_repository:
-    name: bitnami
-    repo_url: oci://registry-1.docker.io/bitnamicharts/mongodb
-  tags:
-    - mongodb
-    - mongodb-helm-repo
+# - name: mongodb Helm chart repo
+#   kubernetes.core.helm_repository:
+#     name: bitnami
+#     repo_url: oci://registry-1.docker.io/bitnamicharts/mongodb
+#   tags:
+#     - mongodb
+#     - mongodb-helm-repo
 
 - name: Install mongodb helm chart
   kubernetes.core.helm:
-    chart_ref: bitnami/mongodb
+    chart_ref: oci://registry-1.docker.io/bitnamicharts/mongodb
     release_name: "{{ org_id }}"
     release_state: present
     release_namespace: "{{ mongodb_namespace }}"
