@@ -10,6 +10,7 @@
 
 
 - name: Create the APT repository (Debian)
+  become: true
   apt_repository:
     repo: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ansible_distribution_release}} main"
     filename: "{{ azure_package_name }}"
