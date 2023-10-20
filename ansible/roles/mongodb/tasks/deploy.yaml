@@ -17,7 +17,7 @@
 - name: mongodb Helm chart repo
   kubernetes.core.helm_repository:
     name: bitnami
-    repo_url: https://charts.bitnami.com/bitnami
+    repo_url: oci://registry-1.docker.io/bitnamicharts/mongodb
   tags:
     - mongodb
     - mongodb-helm-repo
