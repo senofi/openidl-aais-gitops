@@ -1,6 +1,6 @@
 ---
 - name: Install required Python packages
-  become: true
+
   pip:
     name: "{{ item.pkg_name }}"
     executable: "{{ item.exec }}"
