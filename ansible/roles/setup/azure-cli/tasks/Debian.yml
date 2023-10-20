@@ -1,8 +1,13 @@
 ---
 - name: Import the APT repo key (Debian)
-  apt_key:
-    keyserver: "{{ apt_key_server }}"
-    id: "{{ apt_key_id }}"
+  become: true
+  shell: |
+    sudo mkdir -p /etc/apt/keyrings
+    curl -sLS https://packages.microsoft.com/keys/microsoft.asc |
+    gpg --dearmor |
+    sudo tee /etc/apt/keyrings/microsoft.gpg > /dev/null
+    sudo chmod go+r /etc/apt/keyrings/microsoft.gpg
+
 
 - name: Create the APT repository (Debian)
   apt_repository:
