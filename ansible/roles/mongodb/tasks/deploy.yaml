@@ -55,7 +55,7 @@
         service:
           type: ClusterIP
       replicaSetHostnames: true
-      replicaCount: 3
+      replicaCount: 1
       tls:
         enabled: false
       readinessProbe:
