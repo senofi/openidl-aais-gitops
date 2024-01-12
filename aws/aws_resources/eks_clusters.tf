@@ -286,19 +286,3 @@ module "blk_eks_cluster" {
     aws_iam_role_policy_attachment.eks_nodegroup_AmazonEKSWorkerNodePolicy,
     aws_iam_instance_profile.eks_instance_profile]
 }
-
-resource "aws_eks_addon" "blk_ebs_csi_driver" {
-  cluster_name      = local.blk_cluster_name
-  addon_name        = "aws-ebs-csi-driver"
-  addon_version     = "v1.26.1-eksbuild.1"
-  resolve_conflicts = "PRESERVE"
-  depends_on = [module.blk_eks_cluster.aws_eks_cluster]
-}
-
-resource "aws_eks_addon" "app_ebs_csi_driver" {
-  cluster_name      = local.app_cluster_name
-  addon_name        = "aws-ebs-csi-driver"
-  addon_version     = "v1.26.1-eksbuild.1"
-  resolve_conflicts = "PRESERVE"
-  depends_on = [module.app_eks_cluster.aws_eks_cluster]
-}
