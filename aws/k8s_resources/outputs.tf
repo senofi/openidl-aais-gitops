@@ -1,9 +1,4 @@
-output "dns_entries_required_to_update" {
-  value = var.domain_info.r53_public_hosted_zone_required == "no" && var.aws_env == "prod" ? local.dns_entries_list_prod : null
-}
-output "dns_entries_required_to_add" {
-  value = var.domain_info.r53_public_hosted_zone_required == "no" && var.aws_env != "prod" ? local.dns_entries_list_non_prod : null
-}
+
 #-----------------------------------------------------------------------------------------------------------------
 #AWS cognito application client outputs
 output "cognito_user_pool_id" {
@@ -70,14 +65,6 @@ output "hds_data_s3_bucket_name" {
 }
 output "s3_public_bucket_logos" {
   value = var.create_s3_bucket_public ? data.terraform_remote_state.base_setup.outputs.s3_public_bucket_logos_name : null
-}
-#Route53 entries
-output "aws_name_servers" {
-  value       = var.domain_info.r53_public_hosted_zone_required == "yes"  ? data.terraform_remote_state.base_setup.outputs.aws_name_servers : null
-  description = "The name servers to be updated in the domain registrar"
-}
-output "public_bastion_fqdn" {
-  value = var.domain_info.r53_public_hosted_zone_required == "yes" && var.create_bastion_host ? data.terraform_remote_state.base_setup.outputs.public_bastion_fqdn : null
 }
 #-----------------------------------------------------------------------------------------------------------------
 #KMS key related to vault unseal
