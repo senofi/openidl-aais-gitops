@@ -50,7 +50,10 @@ spec:
         # image: aais:1
         # for local development against minikube registry
         image: {{ .Values.global.datacallprocessor.image.repository | default .Values.image.repository }}:{{ .Values.global.datacallprocessor.image.tag | default .Values.image.tag }}
-        imagePullPolicy: {{ .Values.global.datacallprocessor.image.pullPolicy | default .Values.image.pullPolicy }}      
+        imagePullPolicy: {{ .Values.global.datacallprocessor.image.pullPolicy | default .Values.image.pullPolicy }}
+        env:
+        - name: PGSSLMODE
+          value: require
         ports:
         - containerPort: {{ .Values.global.datacallprocessor.port }}
         volumeMounts:
