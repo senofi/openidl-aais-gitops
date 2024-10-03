@@ -9,7 +9,14 @@
         "port": "{{ hds_port }}",
         "username": "{{ hds_username }}",
         "password": "{{ hds_password }}",
-        "database": "{{ hds_dbname }}"
+        "database": "{{ hds_dbname }}",
+        "dialect": "postgres",
+        "dialectOptions": {
+            "SSL": {
+              "require": true,
+              "rejectUnauthorized": false
+            }
+         }
     },
     "defaultDbType": "mongo",
     "admin": {
